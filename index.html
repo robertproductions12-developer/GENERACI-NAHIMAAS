@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
   <title>Olimpiadas 2026 · AVCS</title>
+  <!-- ICONO DE LA PÁGINA (FAVICON) -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/favicon.png" />
   <!-- Firebase SOLO DATABASE (sin Storage) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -37,7 +40,7 @@
       position: relative;
     }
 
-    /* HEADER */
+    /* HEADER - ESTATICO EN MOVIL */
     .header-fixed {
       position: sticky;
       top: 0;
@@ -433,33 +436,33 @@
       color: #4a6a8a;
     }
 
-    /* MEDALLERO - ESTILO IMAGEN */
+    /* MEDALLERO - ESTILO PROFESIONAL RESPONSIVE */
     .medallero-container {
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.2rem;
       margin-top: 1.5rem;
       background: #ffffff;
-      border-radius: 20px;
+      border-radius: 16px;
       overflow: hidden;
       border: 2px solid #dde6f0;
     }
     .medallero-header {
       display: grid;
-      grid-template-columns: 60px 1fr 120px 80px;
-      padding: 0.8rem 1.5rem;
+      grid-template-columns: 50px 1fr 110px 70px;
+      padding: 0.7rem 1.2rem;
       background: #1a2e42;
       color: #CDF22B;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
     .medallero-header span:last-child { text-align: right; }
     .medallero-fila {
       display: grid;
-      grid-template-columns: 60px 1fr 120px 80px;
-      padding: 0.7rem 1.5rem;
+      grid-template-columns: 50px 1fr 110px 70px;
+      padding: 0.6rem 1.2rem;
       background: #f8faff;
       border-bottom: 1px solid #eef2f6;
       transition: 0.3s;
@@ -467,54 +470,53 @@
     }
     .medallero-fila:hover {
       background: #eef4fc;
-      transform: translateX(5px);
     }
     .medallero-fila .posicion {
       font-weight: 900;
       color: #1E45FB;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-family: 'Segoe UI', sans-serif;
     }
     .medallero-fila .zona-info {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 0.6rem;
     }
-    .medallero-fila .zona-circulo {
-      width: 32px;
-      height: 32px;
+    .medallero-fila .zona-color {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
       color: white;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       border: 2px solid rgba(26,46,66,0.2);
       flex-shrink: 0;
     }
     .medallero-fila .zona-nombre {
       font-weight: 600;
       color: #1a2e42;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
     .medallero-fila .medallas {
       display: flex;
-      gap: 0.8rem;
-      font-size: 1.2rem;
+      gap: 0.6rem;
+      font-size: 1.1rem;
       justify-content: center;
     }
     .medallero-fila .medallas span {
       display: flex;
       align-items: center;
-      gap: 0.2rem;
+      gap: 0.1rem;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #1a2e42;
     }
     .medallero-fila .medallas .count {
-      font-size: 0.95rem;
-      min-width: 18px;
+      font-size: 0.85rem;
+      min-width: 16px;
       font-weight: 800;
     }
     .medallero-fila .medalla-oro .count { color: #f1c40f; }
@@ -524,7 +526,7 @@
       font-weight: 700;
       color: #1E45FB;
       text-align: right;
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
     .medallero-fila.primero {
       background: linear-gradient(90deg, #fef9e7, #fdf2d0);
@@ -1118,8 +1120,15 @@
       border-radius: 8px;
     }
 
+    /* RESPONSIVE MEJORADO */
     @media (max-width: 700px) {
-      .header-fixed { flex-direction: column; align-items: stretch; gap: 0.6rem; padding: 0.6rem 1rem; }
+      .header-fixed { 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 0.6rem; 
+        padding: 0.6rem 1rem; 
+        position: static; /* QUITAMOS EL STICKY EN MÓVIL */
+      }
       .menu-wrapper { align-self: flex-end; }
       .form-atleta { grid-template-columns: 1fr; }
       .filtros-atletas { border-radius: 30px; flex-direction: column; align-items: stretch; }
@@ -1128,11 +1137,34 @@
       .footer .social { gap: 1rem; }
       .login-options { flex-direction: column; }
       .slider-container { height: 300px; }
-      .medallero-header { grid-template-columns: 40px 1fr 100px 60px; font-size: 0.7rem; padding: 0.5rem 1rem; }
-      .medallero-fila { grid-template-columns: 40px 1fr 100px 60px; padding: 0.5rem 1rem; gap: 0.3rem; }
-      .medallero-fila .posicion { font-size: 1rem; }
-      .medallero-fila .medallas { font-size: 1rem; gap: 0.4rem; }
-      .medallero-fila .zona-circulo { width: 28px; height: 28px; font-size: 0.8rem; }
+      
+      /* MEDALLERO RESPONSIVE - SIN CÍRCULOS, SOLO TEXTO */
+      .medallero-header { 
+        grid-template-columns: 35px 1fr 100px 50px; 
+        font-size: 0.65rem; 
+        padding: 0.4rem 0.8rem; 
+      }
+      .medallero-fila { 
+        grid-template-columns: 35px 1fr 100px 50px; 
+        padding: 0.4rem 0.8rem; 
+        gap: 0.2rem;
+      }
+      .medallero-fila .posicion { font-size: 0.9rem; }
+      .medallero-fila .zona-color { 
+        width: 22px; 
+        height: 22px; 
+        font-size: 0.6rem; 
+        display: none; /* OCULTAMOS CÍRCULOS EN MÓVIL */
+      }
+      .medallero-fila .zona-nombre { font-size: 0.8rem; }
+      .medallero-fila .medallas { 
+        font-size: 0.9rem; 
+        gap: 0.3rem;
+      }
+      .medallero-fila .medallas span { font-size: 0.7rem; }
+      .medallero-fila .medallas .count { font-size: 0.7rem; min-width: 12px; }
+      .medallero-fila .puntos { font-size: 0.8rem; }
+      
       .seccion h2 { font-size: 1.8rem; }
       .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
       .atleta-grid-item .atleta-img { height: 150px; }
@@ -1143,11 +1175,22 @@
       .seccion h2 { font-size: 1.5rem; }
       .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
       .atleta-grid-item .atleta-img { height: 120px; }
-      .medallero-header { grid-template-columns: 30px 1fr 80px 50px; font-size: 0.6rem; padding: 0.3rem 0.8rem; }
-      .medallero-fila { grid-template-columns: 30px 1fr 80px 50px; padding: 0.3rem 0.8rem; }
-      .medallero-fila .posicion { font-size: 0.8rem; }
-      .medallero-fila .medallas { font-size: 0.8rem; gap: 0.3rem; }
-      .medallero-fila .zona-circulo { width: 24px; height: 24px; font-size: 0.7rem; }
+      
+      .medallero-header { 
+        grid-template-columns: 28px 1fr 80px 40px; 
+        font-size: 0.55rem; 
+        padding: 0.3rem 0.5rem; 
+      }
+      .medallero-fila { 
+        grid-template-columns: 28px 1fr 80px 40px; 
+        padding: 0.3rem 0.5rem; 
+      }
+      .medallero-fila .posicion { font-size: 0.7rem; }
+      .medallero-fila .zona-nombre { font-size: 0.7rem; }
+      .medallero-fila .medallas { font-size: 0.75rem; gap: 0.2rem; }
+      .medallero-fila .medallas span { font-size: 0.6rem; }
+      .medallero-fila .medallas .count { font-size: 0.6rem; min-width: 10px; }
+      .medallero-fila .puntos { font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -1157,7 +1200,6 @@
   <!-- REPRODUCTOR DE MÚSICA (OCULTO) -->
   <audio id="musicaFondo" loop preload="auto">
     <source src="music.mp3" type="audio/mpeg">
-    <!-- URL alternativa desde GitHub -->
     <source src="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/musica-fondo.mp3" type="audio/mpeg">
   </audio>
 
@@ -1336,12 +1378,10 @@
 
           <div id="roleIndicator" class="login-role-indicator" style="display:none;"></div>
 
-          <!-- BOTÓN ACTUALIZAR EN TIEMPO REAL -->
           <button class="btn-actualizar" id="btnActualizar">
             🔄 Actualizar Datos en Tiempo Real
           </button>
 
-          <!-- EDITOR SLIDER -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🖼️ Editar Slider</h4>
             <div id="adminSliderList"></div>
@@ -1352,14 +1392,12 @@
             </div>
           </div>
 
-          <!-- EDITOR INICIO -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📝 Editar Inicio</h4>
             <textarea id="editInicioTexto" placeholder="Texto de inicio..."></textarea>
             <button class="btn-primary" id="guardarInicio">Guardar Inicio</button>
           </div>
 
-          <!-- FORMULARIO ATLETA -->
           <div style="background:#ffffff; border-radius:28px; padding:1.2rem; margin:1rem 0; border:2px solid #CDF22B;">
             <h4 style="color:#1E45FB;">📋 Registrar Atleta</h4>
             <form id="formAtleta" class="form-atleta">
@@ -1393,13 +1431,11 @@
             </form>
           </div>
 
-          <!-- GESTIÓN ATLETAS -->
           <div style="background:#ffffff; border-radius:28px; padding:1.2rem; margin:1rem 0; border:2px solid #1E45FB;">
             <h4 style="color:#1E45FB;">📸 Gestión de Atletas</h4>
             <div id="adminAtletasList"></div>
           </div>
 
-          <!-- ASIGNAR MEDALLAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🏅 Asignar Medallas</h4>
             <div id="adminMedallasList"></div>
@@ -1418,7 +1454,6 @@
             </div>
           </div>
 
-          <!-- EDITOR SEDE -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📍 Editar Sede</h4>
             <div id="adminSedeList"></div>
@@ -1431,7 +1466,6 @@
             </div>
           </div>
 
-          <!-- EDITOR DISCIPLINAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">⚡ Editar Disciplinas</h4>
             <div id="adminDisciplinasList"></div>
@@ -1441,7 +1475,6 @@
             </div>
           </div>
 
-          <!-- EDITOR CATEGORÍAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🏷️ Editar Categorías</h4>
             <div id="adminCategoriasList"></div>
@@ -1451,7 +1484,6 @@
             </div>
           </div>
 
-          <!-- EDITOR BASE BÍBLICA -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📖 Editar Base Bíblica</h4>
             <div id="adminBaseBiblicaList"></div>
@@ -1463,7 +1495,6 @@
             </div>
           </div>
 
-          <!-- EDITOR VIDEO -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🎬 Editar Video</h4>
             <input type="text" id="editVideoUrl" placeholder="URL del video" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
@@ -1471,7 +1502,6 @@
             <button class="btn-primary" id="guardarVideo">Guardar Video</button>
           </div>
 
-          <!-- EDITOR VIDEO PATROCINADORES -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🎬 Video Patrocinadores</h4>
             <input type="text" id="editPatrocinadoresVideo" placeholder="URL del video" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
@@ -1479,7 +1509,6 @@
             <button class="btn-primary" id="guardarPatrocinadoresVideo">Guardar</button>
           </div>
 
-          <!-- EDITOR NOTICIAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📰 Editar Noticias</h4>
             <div id="adminNoticiasList"></div>
@@ -1491,7 +1520,6 @@
             </div>
           </div>
 
-          <!-- EDITOR PATROCINADORES -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🤝 Editar Patrocinadores</h4>
             <div id="adminPatrocinadoresList"></div>
@@ -1536,12 +1564,8 @@
     });
   }
 
-  // Iniciar música al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
-    // Intentar reproducir automáticamente
     iniciarMusica();
-    
-    // Si falla el autoplay, iniciar con cualquier clic
     document.addEventListener('click', function() {
       const audio = document.getElementById('musicaFondo');
       if (audio.paused) {
@@ -1550,7 +1574,7 @@
     }, { once: true });
   });
 
-  // ============ FIREBASE CONFIG (SOLO DATABASE) ============
+  // ============ FIREBASE CONFIG ============
   const firebaseConfig = {
     apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
     authDomain: "generacionahimaas.firebaseapp.com",
@@ -1658,7 +1682,7 @@
     });
   }
 
-  // ============ FUNCIÓN ACTUALIZAR EN TIEMPO REAL ============
+  // ============ FUNCIÓN ACTUALIZAR ============
   function actualizarTodo() {
     const btn = document.getElementById('btnActualizar');
     btn.classList.add('rotating');
@@ -1865,7 +1889,7 @@
     });
   });
 
-  // ============ SLIDER ============
+  // ============ FUNCIONES DE CARGA ============
   let sliderImages = [];
   let currentSlide = 0;
   let sliderInterval;
@@ -1952,12 +1976,11 @@
     resetAutoSlide();
   });
 
-  // ============ SLIDER ADMIN (BASE64) ============
   function cargarSliderAdmin() {
     return obtenerData('slider').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminSliderList');
-      if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return; }
+      if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return true; }
       container.innerHTML = lista.map((img, i) => `
         <div class="slider-admin-item">
           <img src="${img}" alt="Slide ${i+1}" />
@@ -2024,13 +2047,12 @@
     }
   });
 
-  // ============ SEDE ADMIN (BASE64) ============
   function cargarSedeAdmin() {
     return obtenerData('sede').then(data => {
       const container = document.getElementById('adminSedeList');
       if (!data || !data.titulo) {
         container.innerHTML = '<p>No hay sede configurada.</p>';
-        return;
+        return true;
       }
       container.innerHTML = `
         <div class="sede-admin-item">
@@ -2126,7 +2148,6 @@
     });
   }
 
-  // ============ CARGAR INICIO ============
   function cargarInicio() {
     return obtenerData('inicio').then(data => {
       const d = data || {};
@@ -2136,7 +2157,6 @@
     });
   }
 
-  // ============ CARGAR SEDE ============
   function cargarSede() {
     return obtenerData('sede').then(data => {
       const d = data || {};
@@ -2152,7 +2172,6 @@
     });
   }
 
-  // ============ CARGAR DISCIPLINAS ============
   function cargarDisciplinas() {
     return obtenerData('disciplinas').then(data => {
       const lista = data || [];
@@ -2212,7 +2231,6 @@
     });
   });
 
-  // ============ CARGAR CATEGORÍAS ============
   function cargarCategorias() {
     return obtenerData('categorias').then(data => {
       const lista = data || [];
@@ -2274,7 +2292,6 @@
     });
   });
 
-  // ============ CARGAR BASE BÍBLICA ============
   function cargarBaseBiblica() {
     return obtenerData('basebiblica').then(data => {
       const lista = data || [];
@@ -2347,7 +2364,6 @@
     });
   });
 
-  // ============ CARGAR VIDEO ============
   function cargarVideo() {
     return obtenerData('video').then(data => {
       const d = data || {};
@@ -2360,7 +2376,6 @@
     });
   }
 
-  // ============ CARGAR VIDEO PATROCINADORES ============
   function cargarPatrocinadoresVideo() {
     return obtenerData('patrocinadoresVideo').then(data => {
       const d = data || {};
@@ -2373,7 +2388,6 @@
     });
   }
 
-  // ============ NOTICIAS ============
   function cargarNoticias() {
     return obtenerData('noticias').then(data => {
       const lista = data || [];
@@ -2424,7 +2438,6 @@
     });
   };
 
-  // ============ AGREGAR NOTICIA (BASE64) ============
   document.getElementById('agregarNoticia').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
     const titulo = document.getElementById('nuevaNoticiaTitulo').value.trim();
@@ -2461,7 +2474,6 @@
     }
   });
 
-  // ============ PATROCINADORES ============
   function cargarPatrocinadores() {
     return obtenerData('patrocinadores').then(data => {
       const lista = data || [];
@@ -2518,7 +2530,6 @@
     });
   };
 
-  // ============ AGREGAR PATROCINADOR (BASE64) ============
   document.getElementById('agregarPatrocinador').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
     const nombre = document.getElementById('nuevoPatrocinadorNombre').value.trim();
@@ -2565,9 +2576,10 @@
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
       const colores = { '1':'#2ecc71','2':'#e74c8b','3':'#f39c12','4':'#8e44ad','5':'#f1c40f' };
       
+      // Puntuación: Oro=15, Plata=10, Bronce=5
       const resultados = zonas.map(z => {
         const d = m[z] || { oro:0, plata:0, bronce:0 };
-        const total = (d.oro||0)*3 + (d.plata||0)*2 + (d.bronce||0)*1;
+        const total = (d.oro||0)*15 + (d.plata||0)*10 + (d.bronce||0)*5;
         return { zona: z, ...d, total };
       });
       resultados.sort((a,b) => b.total - a.total || b.oro - a.oro);
@@ -2576,7 +2588,6 @@
       const medallaEmoji = { oro:'🥇', plata:'🥈', bronce:'🥉' };
       const clasesPos = ['primero', 'segundo', 'tercero'];
 
-      // Header
       let html = `
         <div class="medallero-header">
           <span>#</span>
@@ -2586,12 +2597,11 @@
         </div>
       `;
 
-      // Filas
       html += resultados.map((r,i) => `
         <div class="medallero-fila ${clasesPos[i] || ''}" style="border-left: 4px solid ${colores[r.zona]};">
           <div class="posicion">${i+1}</div>
           <div class="zona-info">
-            <div class="zona-circulo" style="background:${colores[r.zona]};">${r.zona}</div>
+            <div class="zona-color" style="background:${colores[r.zona]};">${r.zona}</div>
             <div class="zona-nombre">${zonaNombres[r.zona]}</div>
           </div>
           <div class="medallas">
@@ -2608,7 +2618,6 @@
     });
   }
 
-  // ============ MEDALLAS ADMIN ============
   function cargarMedallasAdmin() {
     return obtenerData('medallas').then(data => {
       const m = data || {};
@@ -2757,7 +2766,6 @@
     }
   };
 
-  // ============ REGISTRAR ATLETA (BASE64 - SIN STORAGE) ============
   document.getElementById('formAtleta').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!adminAutenticado) { showToast('❌ Inicia sesión primero.'); return; }
@@ -2804,7 +2812,6 @@
     }
   });
 
-  // ============ GUARDAR EDICIONES ============
   document.getElementById('guardarInicio').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
     const texto = document.getElementById('editInicioTexto').value;
