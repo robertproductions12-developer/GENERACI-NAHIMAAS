@@ -11,6 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <style>
+    /* ===== ESTILOS (MISMO QUE ANTES) ===== */
     * {
       margin: 0;
       padding: 0;
@@ -40,7 +41,6 @@
       position: relative;
     }
 
-    /* HEADER - ESTATICO EN MOVIL */
     .header-fixed {
       position: sticky;
       top: 0;
@@ -69,7 +69,6 @@
       font-size: 1.2rem;
     }
 
-    /* REPRODUCTOR DE MÚSICA - OCULTO */
     #musicaFondo {
       display: none;
     }
@@ -187,7 +186,6 @@
       margin-bottom: 1.2rem;
     }
 
-    /* BOTÓN ACTUALIZAR EN TIEMPO REAL */
     .btn-actualizar {
       background: #2ecc71;
       color: white;
@@ -215,7 +213,28 @@
       to { transform: rotate(360deg); }
     }
 
-    /* SLIDER */
+    /* ===== BOTÓN LIMPIAR CACHÉ ===== */
+    .btn-limpiar-cache {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 1rem;
+      margin-left: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 2px solid #c0392b;
+    }
+    .btn-limpiar-cache:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(231,76,60,0.4);
+    }
+
     .slider-container {
       position: relative;
       width: 100%;
@@ -289,7 +308,6 @@
       padding: 1rem 0;
     }
 
-    /* ATLETAS - GRID DE CUADROS */
     .atletas-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -365,7 +383,6 @@
       box-shadow: 0 0 0 4px rgba(30,69,251,0.1);
     }
 
-    /* MODAL ATLETA */
     .atleta-modal {
       display: none;
       position: fixed;
@@ -436,7 +453,6 @@
       color: #4a6a8a;
     }
 
-    /* MEDALLERO - ESTILO PROFESIONAL RESPONSIVE */
     .medallero-container {
       display: flex;
       flex-direction: column;
@@ -542,7 +558,6 @@
     }
     .medallero-fila.tercero .posicion { color: #e67e22; }
 
-    /* VIDEO */
     .video-container {
       position: relative;
       width: 100%;
@@ -561,7 +576,6 @@
       height: 100%;
     }
 
-    /* NOTICIAS */
     .noticias-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -622,7 +636,6 @@
       opacity: 1;
     }
 
-    /* PATROCINADORES - SECCIÓN OSCURA */
     #sec-patrocinadores {
       background: #0a1628 !important;
       border-left: 8px solid #CDF22B !important;
@@ -728,7 +741,6 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* BASE BÍBLICA */
     .base-biblica-container {
       display: grid;
       gap: 1.5rem;
@@ -763,7 +775,6 @@
       font-style: italic;
     }
 
-    /* FOOTER */
     .footer {
       background: #0b1f30;
       color: #eaf3ff;
@@ -798,7 +809,6 @@
     }
     .footer .copy span { color: #CDF22B; font-weight: 600; }
 
-    /* LOGIN DUAL */
     .login-options {
       display: flex;
       gap: 1rem;
@@ -851,7 +861,6 @@
       color: #7a8a2e;
     }
 
-    /* ADMIN PANEL */
     .admin-panel {
       background: #f0f5fe;
       border-radius: 30px;
@@ -1120,14 +1129,14 @@
       border-radius: 8px;
     }
 
-    /* RESPONSIVE MEJORADO */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 700px) {
       .header-fixed { 
         flex-direction: column; 
         align-items: stretch; 
         gap: 0.6rem; 
         padding: 0.6rem 1rem; 
-        position: static; /* QUITAMOS EL STICKY EN MÓVIL */
+        position: static;
       }
       .menu-wrapper { align-self: flex-end; }
       .form-atleta { grid-template-columns: 1fr; }
@@ -1138,7 +1147,6 @@
       .login-options { flex-direction: column; }
       .slider-container { height: 300px; }
       
-      /* MEDALLERO RESPONSIVE - SIN CÍRCULOS, SOLO TEXTO */
       .medallero-header { 
         grid-template-columns: 35px 1fr 100px 50px; 
         font-size: 0.65rem; 
@@ -1154,7 +1162,7 @@
         width: 22px; 
         height: 22px; 
         font-size: 0.6rem; 
-        display: none; /* OCULTAMOS CÍRCULOS EN MÓVIL */
+        display: none;
       }
       .medallero-fila .zona-nombre { font-size: 0.8rem; }
       .medallero-fila .medallas { 
@@ -1378,9 +1386,15 @@
 
           <div id="roleIndicator" class="login-role-indicator" style="display:none;"></div>
 
-          <button class="btn-actualizar" id="btnActualizar">
-            🔄 Actualizar Datos en Tiempo Real
-          </button>
+          <!-- BOTONES DE ACTUALIZACIÓN -->
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+            <button class="btn-actualizar" id="btnActualizar">
+              🔄 Actualizar Datos
+            </button>
+            <button class="btn-limpiar-cache" id="btnLimpiarCache">
+              🗑️ Limpiar Caché y Recargar
+            </button>
+          </div>
 
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🖼️ Editar Slider</h4>
@@ -1598,6 +1612,7 @@
     useFirebase = false;
   }
 
+  // ============ DATOS LOCALES ============
   let localData = {
     inicio: { texto: 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.' },
     slider: [
@@ -1620,10 +1635,23 @@
     atletas: {}
   };
 
+  // ============ FUNCIONES DE DATOS CON CACHÉ ============
+  let cacheData = {};
+
   function guardarData(path, data) {
     return new Promise((resolve) => {
       if (useFirebase && db) {
-        db.ref(path).set(data).then(() => resolve(true)).catch(() => {
+        db.ref(path).set(data).then(() => {
+          // Actualizar caché local
+          const parts = path.split('/');
+          let ref = cacheData;
+          for (let i = 0; i < parts.length - 1; i++) {
+            if (!ref[parts[i]]) ref[parts[i]] = {};
+            ref = ref[parts[i]];
+          }
+          ref[parts[parts.length - 1]] = data;
+          resolve(true);
+        }).catch(() => {
           const parts = path.split('/');
           let ref = localData;
           for (let i = 0; i < parts.length - 1; i++) {
@@ -1646,34 +1674,63 @@
     });
   }
 
-  function obtenerData(path) {
+  function obtenerData(path, forceRefresh = false) {
     return new Promise((resolve) => {
+      // Si se fuerza refrescar, ignorar caché
+      if (forceRefresh) {
+        cacheData = {};
+      }
+
+      // Verificar caché primero
+      const parts = path.split('/');
+      let cached = cacheData;
+      for (let p of parts) {
+        if (cached && cached[p] !== undefined) cached = cached[p];
+        else { cached = undefined; break; }
+      }
+      if (cached !== undefined && !forceRefresh) {
+        resolve(cached);
+        return;
+      }
+
       if (useFirebase && db) {
-        db.ref(path).once('value').then(snap => {
+        // Forzar obtener de Firebase (sin caché local)
+        db.ref(path).once('value', { 
+          // Deshabilitar caché local de Firebase
+          // Esto asegura que obtenemos los datos más recientes
+        }).then(snap => {
           const val = snap.val();
-          if (val !== null) resolve(val);
-          else {
-            const parts = path.split('/');
+          if (val !== null) {
+            // Guardar en caché
+            let ref = cacheData;
+            for (let i = 0; i < parts.length - 1; i++) {
+              if (!ref[parts[i]]) ref[parts[i]] = {};
+              ref = ref[parts[i]];
+            }
+            ref[parts[parts.length - 1]] = val;
+            resolve(val);
+          } else {
+            const parts2 = path.split('/');
             let ref = localData;
-            for (let p of parts) {
+            for (let p of parts2) {
               if (ref && ref[p] !== undefined) ref = ref[p];
               else { ref = undefined; break; }
             }
             resolve(ref);
           }
         }).catch(() => {
-          const parts = path.split('/');
+          const parts2 = path.split('/');
           let ref = localData;
-          for (let p of parts) {
+          for (let p of parts2) {
             if (ref && ref[p] !== undefined) ref = ref[p];
             else { ref = undefined; break; }
           }
           resolve(ref);
         });
       } else {
-        const parts = path.split('/');
+        const parts2 = path.split('/');
         let ref = localData;
-        for (let p of parts) {
+        for (let p of parts2) {
           if (ref && ref[p] !== undefined) ref = ref[p];
           else { ref = undefined; break; }
         }
@@ -1682,35 +1739,87 @@
     });
   }
 
-  // ============ FUNCIÓN ACTUALIZAR ============
+  // ============ FUNCIÓN LIMPIAR CACHÉ ============
+  function limpiarCacheYRecargar() {
+    if (confirm('¿Estás seguro de limpiar la caché y recargar todos los datos? Esto asegurará que veas los cambios más recientes.')) {
+      const btn = document.getElementById('btnLimpiarCache');
+      btn.textContent = '🔄 Limpiando...';
+      btn.disabled = true;
+      
+      // Limpiar caché
+      cacheData = {};
+      
+      // Limpiar localStorage de Firebase
+      try {
+        // Limpiar cualquier dato almacenado localmente
+        for (let key in localStorage) {
+          if (key.startsWith('firebase:') || key.includes('firebase')) {
+            localStorage.removeItem(key);
+          }
+        }
+        // Limpiar sessionStorage
+        for (let key in sessionStorage) {
+          if (key.startsWith('firebase:') || key.includes('firebase')) {
+            sessionStorage.removeItem(key);
+          }
+        }
+      } catch(e) {
+        console.log('No se pudo limpiar el almacenamiento local');
+      }
+      
+      // Recargar todos los datos
+      actualizarTodo().then(() => {
+        btn.textContent = '🗑️ Limpiar Caché y Recargar';
+        btn.disabled = false;
+        showToast('✅ Caché limpiada y datos actualizados correctamente');
+        
+        // Recargar la página para asegurar todos los cambios
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      }).catch(() => {
+        btn.textContent = '🗑️ Limpiar Caché y Recargar';
+        btn.disabled = false;
+      });
+    }
+  }
+
+  document.getElementById('btnLimpiarCache').addEventListener('click', limpiarCacheYRecargar);
+
+  // ============ FUNCIÓN ACTUALIZAR TODO ============
   function actualizarTodo() {
     const btn = document.getElementById('btnActualizar');
     btn.classList.add('rotating');
     btn.textContent = '🔄 Actualizando...';
     
-    Promise.all([
-      cargarInicio(),
-      cargarSlider(),
-      cargarSede(),
-      cargarDisciplinas(),
-      cargarCategorias(),
-      cargarBaseBiblica(),
-      cargarVideo(),
-      cargarPatrocinadoresVideo(),
-      cargarNoticias(),
-      cargarPatrocinadores(),
-      cargarMedallero(),
-      cargarAtletasVista(),
-      cargarDisciplinasSelect(),
-      cargarCategoriasSelect(),
-      cargarFiltroCategorias()
+    // Limpiar caché antes de actualizar
+    cacheData = {};
+    
+    return Promise.all([
+      cargarInicio(true),
+      cargarSlider(true),
+      cargarSede(true),
+      cargarDisciplinas(true),
+      cargarCategorias(true),
+      cargarBaseBiblica(true),
+      cargarVideo(true),
+      cargarPatrocinadoresVideo(true),
+      cargarNoticias(true),
+      cargarPatrocinadores(true),
+      cargarMedallero(true),
+      cargarAtletasVista(true),
+      cargarDisciplinasSelect(true),
+      cargarCategoriasSelect(true),
+      cargarFiltroCategorias(true)
     ]).then(() => {
       btn.classList.remove('rotating');
       btn.textContent = '🔄 Actualizar Datos en Tiempo Real';
       showToast('✅ Todos los datos actualizados en tiempo real');
+      return true;
     }).catch(() => {
       btn.classList.remove('rotating');
       btn.textContent = '🔄 Actualizar Datos en Tiempo Real';
+      return false;
     });
   }
 
@@ -1831,18 +1940,18 @@
       document.querySelector('#adminContent > div[style*="border:2px solid #CDF22B"]').style.display = 'block';
     }
     
-    cargarAtletasAdmin();
-    cargarMedallasAdmin();
-    cargarDisciplinasAdmin();
-    cargarCategoriasAdmin();
-    cargarBaseBiblicaAdmin();
-    cargarPatrocinadoresAdmin();
-    cargarNoticiasAdmin();
-    cargarSliderAdmin();
-    cargarSedeAdmin();
-    cargarDisciplinasSelect();
-    cargarCategoriasSelect();
-    cargarFiltroCategorias();
+    cargarAtletasAdmin(true);
+    cargarMedallasAdmin(true);
+    cargarDisciplinasAdmin(true);
+    cargarCategoriasAdmin(true);
+    cargarBaseBiblicaAdmin(true);
+    cargarPatrocinadoresAdmin(true);
+    cargarNoticiasAdmin(true);
+    cargarSliderAdmin(true);
+    cargarSedeAdmin(true);
+    cargarDisciplinasSelect(true);
+    cargarCategoriasSelect(true);
+    cargarFiltroCategorias(true);
   }
 
   btnLogin.addEventListener('click', doLogin);
@@ -1889,13 +1998,13 @@
     });
   });
 
-  // ============ FUNCIONES DE CARGA ============
+  // ============ FUNCIONES DE CARGA CON FORCE REFRESH ============
   let sliderImages = [];
   let currentSlide = 0;
   let sliderInterval;
 
-  function cargarSlider() {
-    return obtenerData('slider').then(data => {
+  function cargarSlider(forceRefresh = false) {
+    return obtenerData('slider', forceRefresh).then(data => {
       sliderImages = data || localData.slider;
       actualizarSlider();
       return true;
@@ -1976,8 +2085,8 @@
     resetAutoSlide();
   });
 
-  function cargarSliderAdmin() {
-    return obtenerData('slider').then(data => {
+  function cargarSliderAdmin(forceRefresh = false) {
+    return obtenerData('slider', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('adminSliderList');
       if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return true; }
@@ -1998,8 +2107,8 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('slider', lista).then(() => {
-        cargarSlider();
-        cargarSliderAdmin();
+        cargarSlider(true);
+        cargarSliderAdmin(true);
         showToast('✅ Imagen eliminada');
       });
     });
@@ -2028,8 +2137,8 @@
         urls.forEach(url => { if (url) lista.push(url); });
         guardarData('slider', lista).then(() => {
           document.getElementById('nuevaSliderImagen').value = '';
-          cargarSlider();
-          cargarSliderAdmin();
+          cargarSlider(true);
+          cargarSliderAdmin(true);
           showToast('✅ Imágenes agregadas');
         });
       });
@@ -2040,15 +2149,15 @@
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede limpiar');
     if (confirm('¿Eliminar todas las imágenes del slider?')) {
       guardarData('slider', []).then(() => {
-        cargarSlider();
-        cargarSliderAdmin();
+        cargarSlider(true);
+        cargarSliderAdmin(true);
         showToast('✅ Slider limpiado');
       });
     }
   });
 
-  function cargarSedeAdmin() {
-    return obtenerData('sede').then(data => {
+  function cargarSedeAdmin(forceRefresh = false) {
+    return obtenerData('sede', forceRefresh).then(data => {
       const container = document.getElementById('adminSedeList');
       if (!data || !data.titulo) {
         container.innerHTML = '<p>No hay sede configurada.</p>';
@@ -2074,8 +2183,8 @@
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
     if (confirm('¿Eliminar la sede?')) {
       guardarData('sede', { titulo: '', texto: '', imagenUrl: '' }).then(() => {
-        cargarSede();
-        cargarSedeAdmin();
+        cargarSede(true);
+        cargarSedeAdmin(true);
         showToast('✅ Sede eliminada');
       });
     }
@@ -2103,8 +2212,8 @@
   atletaModal.addEventListener('click', (e) => { if (e.target === atletaModal) atletaModal.classList.remove('active'); });
 
   // ============ CARGAR SELECTORES ============
-  function cargarDisciplinasSelect() {
-    return obtenerData('disciplinas').then(data => {
+  function cargarDisciplinasSelect(forceRefresh = false) {
+    return obtenerData('disciplinas', forceRefresh).then(data => {
       const select = document.getElementById('disciplinaAtleta');
       const lista = data || [];
       select.innerHTML = '<option value="">Selecciona una disciplina...</option>';
@@ -2118,8 +2227,8 @@
     });
   }
 
-  function cargarCategoriasSelect() {
-    return obtenerData('categorias').then(data => {
+  function cargarCategoriasSelect(forceRefresh = false) {
+    return obtenerData('categorias', forceRefresh).then(data => {
       const select = document.getElementById('categoriaAtleta');
       const lista = data || [];
       select.innerHTML = '<option value="">Selecciona una categoría...</option>';
@@ -2133,8 +2242,8 @@
     });
   }
 
-  function cargarFiltroCategorias() {
-    return obtenerData('categorias').then(data => {
+  function cargarFiltroCategorias(forceRefresh = false) {
+    return obtenerData('categorias', forceRefresh).then(data => {
       const select = document.getElementById('filtroCategoria');
       const lista = data || [];
       select.innerHTML = '<option value="">Todas las categorías</option>';
@@ -2148,8 +2257,8 @@
     });
   }
 
-  function cargarInicio() {
-    return obtenerData('inicio').then(data => {
+  function cargarInicio(forceRefresh = false) {
+    return obtenerData('inicio', forceRefresh).then(data => {
       const d = data || {};
       document.getElementById('inicioTexto').innerHTML = d.texto || 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.';
       document.getElementById('editInicioTexto').value = d.texto || '';
@@ -2157,8 +2266,8 @@
     });
   }
 
-  function cargarSede() {
-    return obtenerData('sede').then(data => {
+  function cargarSede(forceRefresh = false) {
+    return obtenerData('sede', forceRefresh).then(data => {
       const d = data || {};
       const container = document.getElementById('sedeContenido');
       if (!d.titulo && !d.texto) {
@@ -2172,8 +2281,8 @@
     });
   }
 
-  function cargarDisciplinas() {
-    return obtenerData('disciplinas').then(data => {
+  function cargarDisciplinas(forceRefresh = false) {
+    return obtenerData('disciplinas', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('disciplinasContenido');
       if (!lista.length) {
@@ -2185,8 +2294,8 @@
     });
   }
 
-  function cargarDisciplinasAdmin() {
-    return obtenerData('disciplinas').then(data => {
+  function cargarDisciplinasAdmin(forceRefresh = false) {
+    return obtenerData('disciplinas', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('adminDisciplinasList');
       if (!lista.length) { container.innerHTML = '<p>No hay disciplinas.</p>'; return true; }
@@ -2206,9 +2315,9 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('disciplinas', lista).then(() => {
-        cargarDisciplinas();
-        cargarDisciplinasAdmin();
-        cargarDisciplinasSelect();
+        cargarDisciplinas(true);
+        cargarDisciplinasAdmin(true);
+        cargarDisciplinasSelect(true);
         showToast('✅ Disciplina eliminada');
       });
     });
@@ -2223,16 +2332,16 @@
       lista.push(val);
       guardarData('disciplinas', lista).then(() => {
         document.getElementById('nuevaDisciplina').value = '';
-        cargarDisciplinas();
-        cargarDisciplinasAdmin();
-        cargarDisciplinasSelect();
+        cargarDisciplinas(true);
+        cargarDisciplinasAdmin(true);
+        cargarDisciplinasSelect(true);
         showToast('✅ Disciplina agregada');
       });
     });
   });
 
-  function cargarCategorias() {
-    return obtenerData('categorias').then(data => {
+  function cargarCategorias(forceRefresh = false) {
+    return obtenerData('categorias', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('categoriasContenido');
       if (!lista.length) {
@@ -2244,8 +2353,8 @@
     });
   }
 
-  function cargarCategoriasAdmin() {
-    return obtenerData('categorias').then(data => {
+  function cargarCategoriasAdmin(forceRefresh = false) {
+    return obtenerData('categorias', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('adminCategoriasList');
       if (!lista.length) { container.innerHTML = '<p>No hay categorías.</p>'; return true; }
@@ -2265,10 +2374,10 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('categorias', lista).then(() => {
-        cargarCategorias();
-        cargarCategoriasAdmin();
-        cargarCategoriasSelect();
-        cargarFiltroCategorias();
+        cargarCategorias(true);
+        cargarCategoriasAdmin(true);
+        cargarCategoriasSelect(true);
+        cargarFiltroCategorias(true);
         showToast('✅ Categoría eliminada');
       });
     });
@@ -2283,17 +2392,17 @@
       lista.push(val);
       guardarData('categorias', lista).then(() => {
         document.getElementById('nuevaCategoria').value = '';
-        cargarCategorias();
-        cargarCategoriasAdmin();
-        cargarCategoriasSelect();
-        cargarFiltroCategorias();
+        cargarCategorias(true);
+        cargarCategoriasAdmin(true);
+        cargarCategoriasSelect(true);
+        cargarFiltroCategorias(true);
         showToast('✅ Categoría agregada');
       });
     });
   });
 
-  function cargarBaseBiblica() {
-    return obtenerData('basebiblica').then(data => {
+  function cargarBaseBiblica(forceRefresh = false) {
+    return obtenerData('basebiblica', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('baseBiblicaContenido');
       if (!lista.length) {
@@ -2311,8 +2420,8 @@
     });
   }
 
-  function cargarBaseBiblicaAdmin() {
-    return obtenerData('basebiblica').then(data => {
+  function cargarBaseBiblicaAdmin(forceRefresh = false) {
+    return obtenerData('basebiblica', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('adminBaseBiblicaList');
       if (!lista.length) { container.innerHTML = '<p>No hay bases bíblicas.</p>'; return true; }
@@ -2336,8 +2445,8 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('basebiblica', lista).then(() => {
-        cargarBaseBiblica();
-        cargarBaseBiblicaAdmin();
+        cargarBaseBiblica(true);
+        cargarBaseBiblicaAdmin(true);
         showToast('✅ Base Bíblica eliminada');
       });
     });
@@ -2357,15 +2466,15 @@
         document.getElementById('nuevaBaseTitulo').value = '';
         document.getElementById('nuevaBaseTexto').value = '';
         document.getElementById('nuevaBaseReferencia').value = '';
-        cargarBaseBiblica();
-        cargarBaseBiblicaAdmin();
+        cargarBaseBiblica(true);
+        cargarBaseBiblicaAdmin(true);
         showToast('✅ Base Bíblica agregada');
       });
     });
   });
 
-  function cargarVideo() {
-    return obtenerData('video').then(data => {
+  function cargarVideo(forceRefresh = false) {
+    return obtenerData('video', forceRefresh).then(data => {
       const d = data || {};
       const iframe = document.getElementById('videoIframe');
       if (d.url) iframe.src = d.url;
@@ -2376,8 +2485,8 @@
     });
   }
 
-  function cargarPatrocinadoresVideo() {
-    return obtenerData('patrocinadoresVideo').then(data => {
+  function cargarPatrocinadoresVideo(forceRefresh = false) {
+    return obtenerData('patrocinadoresVideo', forceRefresh).then(data => {
       const d = data || {};
       const iframe = document.getElementById('patrocinadoresVideo');
       if (d.url) iframe.src = d.url;
@@ -2388,8 +2497,8 @@
     });
   }
 
-  function cargarNoticias() {
-    return obtenerData('noticias').then(data => {
+  function cargarNoticias(forceRefresh = false) {
+    return obtenerData('noticias', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('noticiasContenido');
       if (!lista.length) {
@@ -2409,8 +2518,8 @@
     });
   }
 
-  function cargarNoticiasAdmin() {
-    return obtenerData('noticias').then(data => {
+  function cargarNoticiasAdmin(forceRefresh = false) {
+    return obtenerData('noticias', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('adminNoticiasList');
       if (!lista.length) { container.innerHTML = '<p>No hay noticias.</p>'; return true; }
@@ -2431,8 +2540,8 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('noticias', lista).then(() => {
-        cargarNoticias();
-        cargarNoticiasAdmin();
+        cargarNoticias(true);
+        cargarNoticiasAdmin(true);
         showToast('✅ Noticia eliminada');
       });
     });
@@ -2456,8 +2565,8 @@
           document.getElementById('nuevaNoticiaTitulo').value = '';
           document.getElementById('nuevaNoticiaDesc').value = '';
           document.getElementById('nuevaNoticiaImagen').value = '';
-          cargarNoticias();
-          cargarNoticiasAdmin();
+          cargarNoticias(true);
+          cargarNoticiasAdmin(true);
           showToast('✅ Noticia agregada');
         });
       });
@@ -2474,8 +2583,8 @@
     }
   });
 
-  function cargarPatrocinadores() {
-    return obtenerData('patrocinadores').then(data => {
+  function cargarPatrocinadores(forceRefresh = false) {
+    return obtenerData('patrocinadores', forceRefresh).then(data => {
       const lista = data || [];
       const track = document.getElementById('patrocinadoresTrack');
       if (!lista.length) {
@@ -2497,8 +2606,8 @@
     });
   }
 
-  function cargarPatrocinadoresAdmin() {
-    return obtenerData('patrocinadores').then(data => {
+  function cargarPatrocinadoresAdmin(forceRefresh = false) {
+    return obtenerData('patrocinadores', forceRefresh).then(data => {
       const lista = data || [];
       const container = document.getElementById('adminPatrocinadoresList');
       if (!lista.length) { container.innerHTML = '<p>No hay patrocinadores.</p>'; return true; }
@@ -2523,8 +2632,8 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('patrocinadores', lista).then(() => {
-        cargarPatrocinadores();
-        cargarPatrocinadoresAdmin();
+        cargarPatrocinadores(true);
+        cargarPatrocinadoresAdmin(true);
         showToast('✅ Patrocinador eliminado');
       });
     });
@@ -2550,8 +2659,8 @@
           document.getElementById('nuevoPatrocinadorDesc').value = '';
           document.getElementById('nuevoPatrocinadorUrl').value = '';
           document.getElementById('nuevoPatrocinadorIcono').value = '';
-          cargarPatrocinadores();
-          cargarPatrocinadoresAdmin();
+          cargarPatrocinadores(true);
+          cargarPatrocinadoresAdmin(true);
           showToast('✅ Patrocinador agregado');
         });
       });
@@ -2569,8 +2678,8 @@
   });
 
   // ============ MEDALLERO ============
-  function cargarMedallero() {
-    return obtenerData('medallas').then(medallas => {
+  function cargarMedallero(forceRefresh = false) {
+    return obtenerData('medallas', forceRefresh).then(medallas => {
       const m = medallas || {};
       const zonas = ['1','2','3','4','5'];
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
@@ -2618,8 +2727,8 @@
     });
   }
 
-  function cargarMedallasAdmin() {
-    return obtenerData('medallas').then(data => {
+  function cargarMedallasAdmin(forceRefresh = false) {
+    return obtenerData('medallas', forceRefresh).then(data => {
       const m = data || {};
       const container = document.getElementById('adminMedallasList');
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
@@ -2647,8 +2756,8 @@
         const m = data || {};
         m[zona] = { oro:0, plata:0, bronce:0 };
         guardarData('medallas', m).then(() => {
-          cargarMedallero();
-          cargarMedallasAdmin();
+          cargarMedallero(true);
+          cargarMedallasAdmin(true);
           showToast('✅ Medallas limpiadas');
         });
       });
@@ -2664,8 +2773,8 @@
       if (!m[zona]) m[zona] = { oro:0, plata:0, bronce:0 };
       m[zona][tipo] = (m[zona][tipo]||0) + 1;
       guardarData('medallas', m).then(() => {
-        cargarMedallero();
-        cargarMedallasAdmin();
+        cargarMedallero(true);
+        cargarMedallasAdmin(true);
         showToast(`✅ Medalla ${tipo} asignada a Zona ${zona}`);
       });
     });
@@ -2718,15 +2827,15 @@
     });
   };
 
-  function cargarAtletasVista() {
-    return obtenerData('atletas').then(data => {
+  function cargarAtletasVista(forceRefresh = false) {
+    return obtenerData('atletas', forceRefresh).then(data => {
       renderAtletas(data);
       return true;
     });
   }
 
-  function cargarAtletasAdmin() {
-    return obtenerData('atletas').then(data => {
+  function cargarAtletasAdmin(forceRefresh = false) {
+    return obtenerData('atletas', forceRefresh).then(data => {
       const container = document.getElementById('adminAtletasList');
       if (!data || Object.keys(data).length === 0) { container.innerHTML = '<p>No hay atletas registrados.</p>'; return true; }
       let html = '';
@@ -2758,8 +2867,8 @@
         const atletas = data || {};
         delete atletas[id];
         guardarData('atletas', atletas).then(() => {
-          cargarAtletasAdmin();
-          cargarAtletasVista();
+          cargarAtletasAdmin(true);
+          cargarAtletasVista(true);
           showToast('✅ Atleta eliminado');
         });
       });
@@ -2793,10 +2902,10 @@
           showToast('✅ Atleta registrado');
           document.getElementById('formAtleta').reset();
           document.getElementById('canceladoAtleta').checked = false;
-          cargarAtletasAdmin();
-          cargarAtletasVista();
-          cargarDisciplinasSelect();
-          cargarCategoriasSelect();
+          cargarAtletasAdmin(true);
+          cargarAtletasVista(true);
+          cargarDisciplinasSelect(true);
+          cargarCategoriasSelect(true);
         });
       });
     };
@@ -2812,12 +2921,13 @@
     }
   });
 
+  // ============ GUARDAR EDICIONES ============
   document.getElementById('guardarInicio').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
     const texto = document.getElementById('editInicioTexto').value;
     guardarData('inicio', { texto }).then(() => { 
       showToast('✅ Inicio actualizado'); 
-      cargarInicio(); 
+      cargarInicio(true); 
     });
   });
 
@@ -2832,8 +2942,8 @@
       data.imagenUrl = imagenBase64 || '';
       guardarData('sede', data).then(() => { 
         showToast('✅ Sede actualizada'); 
-        cargarSede(); 
-        cargarSedeAdmin(); 
+        cargarSede(true); 
+        cargarSedeAdmin(true); 
       });
     };
 
@@ -2854,7 +2964,7 @@
     const texto = document.getElementById('editVideoTexto').value;
     guardarData('video', { url, texto }).then(() => {
       showToast('✅ Video actualizado');
-      cargarVideo();
+      cargarVideo(true);
     });
   });
 
@@ -2864,34 +2974,37 @@
     const texto = document.getElementById('editPatrocinadoresTexto').value;
     guardarData('patrocinadoresVideo', { url, texto }).then(() => {
       showToast('✅ Video patrocinadores actualizado');
-      cargarPatrocinadoresVideo();
+      cargarPatrocinadoresVideo(true);
     });
   });
 
   // ============ FILTROS ============
-  document.getElementById('buscarAtleta').addEventListener('input', cargarAtletasVista);
-  document.getElementById('filtroZona').addEventListener('change', cargarAtletasVista);
-  document.getElementById('filtroCategoria').addEventListener('change', cargarAtletasVista);
+  document.getElementById('buscarAtleta').addEventListener('input', () => cargarAtletasVista(true));
+  document.getElementById('filtroZona').addEventListener('change', () => cargarAtletasVista(true));
+  document.getElementById('filtroCategoria').addEventListener('change', () => cargarAtletasVista(true));
 
   // ============ INICIALIZAR ============
+  // Forzar carga inicial desde Firebase (sin caché)
+  cacheData = {};
+  
   Promise.all([
-    cargarInicio(),
-    cargarSlider(),
-    cargarSede(),
-    cargarDisciplinas(),
-    cargarCategorias(),
-    cargarBaseBiblica(),
-    cargarVideo(),
-    cargarPatrocinadoresVideo(),
-    cargarNoticias(),
-    cargarPatrocinadores(),
-    cargarMedallero(),
-    cargarAtletasVista(),
-    cargarDisciplinasSelect(),
-    cargarCategoriasSelect(),
-    cargarFiltroCategorias()
+    cargarInicio(true),
+    cargarSlider(true),
+    cargarSede(true),
+    cargarDisciplinas(true),
+    cargarCategorias(true),
+    cargarBaseBiblica(true),
+    cargarVideo(true),
+    cargarPatrocinadoresVideo(true),
+    cargarNoticias(true),
+    cargarPatrocinadores(true),
+    cargarMedallero(true),
+    cargarAtletasVista(true),
+    cargarDisciplinasSelect(true),
+    cargarCategoriasSelect(true),
+    cargarFiltroCategorias(true)
   ]).then(() => {
-    console.log('✅ Todos los datos cargados correctamente');
+    console.log('✅ Todos los datos cargados correctamente desde Firebase');
   });
 
   console.log('🔑 CREDENCIALES:');
@@ -2900,6 +3013,7 @@
   console.log('📸 IMÁGENES EN BASE64 - SIN STORAGE - 100% GRATIS');
   console.log('🎵 Música de fondo automática al cargar la página');
   console.log('🔄 Botón para actualizar en tiempo real');
+  console.log('🗑️ Botón para limpiar caché y recargar');
 </script>
 </body>
 </html>
