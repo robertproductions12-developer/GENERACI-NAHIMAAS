@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>OLIMPIADAS 2026 AVCS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
@@ -68,37 +68,71 @@
             z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 16px;
         }
 
+        /* ===== NAVBAR HAMBURGUESA ===== */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            background: rgba(10, 22, 40, 0.6);
+            background: rgba(10, 22, 40, 0.85);
             backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 12px 24px;
-            margin-top: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 10px 18px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            flex-wrap: wrap;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 800;
             background: linear-gradient(135deg, #4ade80, #22d3ee);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            flex-shrink: 0;
+        }
+
+        /* Botón hamburguesa */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+            z-index: 100;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: #b0c4de;
+            border-radius: 4px;
+            transition: 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
         }
 
         .nav-menu {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
+            transition: all 0.3s ease;
         }
 
         .nav-menu a {
@@ -109,7 +143,8 @@
             border-radius: 40px;
             transition: 0.3s;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .nav-menu a:hover,
@@ -121,12 +156,13 @@
         .nav-menu .btn-login {
             background: linear-gradient(135deg, #4ade80, #22d3ee);
             color: #0a1628;
-            padding: 8px 24px;
+            padding: 6px 18px;
             border-radius: 40px;
             border: none;
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 0.9rem;
         }
 
         .nav-menu .btn-login:hover {
@@ -134,6 +170,208 @@
             box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
         }
 
+        /* ===== RESPONSIVE MÓVIL ===== */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+                padding-top: 12px;
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
+                margin-top: 8px;
+            }
+
+            .nav-menu.open {
+                display: flex;
+            }
+
+            .nav-menu a,
+            .nav-menu .btn-login {
+                width: 100%;
+                text-align: center;
+                padding: 10px 14px;
+                font-size: 1rem;
+            }
+
+            .nav-menu .btn-login {
+                background: linear-gradient(135deg, #4ade80, #22d3ee);
+                color: #0a1628;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .hero-slider {
+                height: 220px !important;
+                border-radius: 16px;
+                margin-top: 12px;
+            }
+
+            .slide-content h1 {
+                font-size: 1.8rem !important;
+            }
+            .slide-content p {
+                font-size: 0.9rem !important;
+            }
+
+            .section {
+                padding: 16px !important;
+                margin: 16px 0 !important;
+                border-radius: 16px !important;
+            }
+
+            .section-title {
+                font-size: 1.4rem !important;
+            }
+
+            .grid-2col {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+
+            .card {
+                padding: 16px !important;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+
+            .slider-controls {
+                bottom: 12px !important;
+                right: 12px !important;
+            }
+            .slider-btn {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.8rem !important;
+            }
+            .slider-dots {
+                bottom: 14px !important;
+                left: 16px !important;
+            }
+            .dot {
+                width: 8px !important;
+                height: 8px !important;
+            }
+            .dot.active {
+                width: 20px !important;
+            }
+
+            .slider-images-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .video-wrapper {
+                padding-bottom: 50% !important;
+            }
+
+            .admin-tabs {
+                gap: 6px !important;
+            }
+            .admin-tabs button {
+                padding: 6px 12px !important;
+                font-size: 0.75rem !important;
+            }
+
+            .filter-bar select {
+                min-width: 120px !important;
+                font-size: 0.85rem !important;
+                padding: 8px 12px !important;
+            }
+
+            .athlete-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+                gap: 12px !important;
+            }
+
+            .athlete-card img {
+                height: 140px !important;
+            }
+
+            .athlete-card .athlete-name {
+                font-size: 0.9rem !important;
+                padding: 10px !important;
+            }
+
+            .btn-primary,
+            .btn-secondary,
+            .btn-success {
+                padding: 10px 18px !important;
+                font-size: 0.85rem !important;
+            }
+
+            .report-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .report-section select {
+                min-width: 100% !important;
+            }
+
+            .modal {
+                padding: 24px !important;
+                margin: 10px !important;
+            }
+
+            .footer {
+                padding: 16px 0 !important;
+                font-size: 0.8rem !important;
+                border-radius: 16px 16px 0 0 !important;
+            }
+
+            .info-card img {
+                height: 180px !important;
+            }
+
+            .info-card .info-body {
+                padding: 16px !important;
+            }
+            .info-card .info-body h3 {
+                font-size: 1.2rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-slider {
+                height: 180px !important;
+            }
+            .slide-content h1 {
+                font-size: 1.4rem !important;
+            }
+            .slide-content p {
+                font-size: 0.75rem !important;
+            }
+            .slide {
+                padding: 0 20px !important;
+            }
+            .container {
+                padding: 0 10px !important;
+            }
+            .navbar {
+                padding: 8px 12px !important;
+            }
+            .logo {
+                font-size: 1rem !important;
+            }
+            .athlete-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+            }
+            .athlete-card img {
+                height: 110px !important;
+            }
+        }
+
+        /* ===== RESTO DE ESTILOS (sin cambios) ===== */
         .hero-slider {
             position: relative;
             width: 100%;
@@ -830,6 +1068,63 @@
             min-width: 180px;
         }
 
+        /* ===== NOTICIAS ===== */
+        .news-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-left: 3px solid #4ade80;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .news-item .news-content {
+            flex: 1;
+        }
+
+        .news-item .news-content h4 {
+            font-size: 1.1rem;
+            color: #e8edf5;
+            margin-bottom: 4px;
+        }
+
+        .news-item .news-content p {
+            color: #b0c4de;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .news-item .news-content .news-date {
+            font-size: 0.7rem;
+            color: #5a7a9a;
+        }
+
+        .news-item .news-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .news-item .news-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: #b0c4de;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+
+        .news-item .news-actions .delete-news:hover {
+            background: rgba(220, 50, 50, 0.3);
+            color: #dc3232;
+        }
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -844,35 +1139,45 @@
             to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .grid-2col {
-                grid-template-columns: 1fr;
-            }
-            .hero-slider {
-                height: 280px;
-            }
-            .slide-content h1 {
-                font-size: 2.4rem;
-            }
-            .navbar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .nav-menu {
-                justify-content: center;
-            }
-            .video-wrapper {
-                padding-bottom: 50%;
-            }
-            .slider-images-grid {
-                grid-template-columns: 1fr;
-            }
-            .section {
-                padding: 16px;
-            }
+        /* Reproductor de música flotante */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(10, 22, 40, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .music-player button {
+            background: none;
+            border: none;
+            color: #4ade80;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: 0.2s;
+        }
+
+        .music-player button:hover {
+            color: #22d3ee;
+            transform: scale(1.1);
+        }
+
+        .music-player .music-label {
+            font-size: 0.7rem;
+            color: #8aa4c8;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -886,6 +1191,14 @@
         <div class="wave-line"></div>
         <div class="wave-line"></div>
         <div class="wave-line"></div>
+    </div>
+
+    <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
+    <div class="music-player" id="musicPlayer">
+        <button id="musicToggle" title="Reproducir/Pausar música">
+            <i class="fas fa-play"></i>
+        </button>
+        <span class="music-label">🎵 Himno AVCS</span>
     </div>
 
     <!-- MODAL LOGIN -->
@@ -963,8 +1276,13 @@
 
         <!-- NAVBAR -->
         <nav class="navbar">
-            <div class="logo">OLIMPIADAS 2026 AVCS</div>
-            <div class="nav-menu">
+            <div class="logo">🏅 OLIMPIADAS 2026</div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-menu" id="navMenu">
                 <a class="active" data-section="home">Inicio</a>
                 <a data-section="info">Información</a>
                 <a data-section="athletes">Atletas</a>
@@ -1070,6 +1388,7 @@
                 <button data-tab="tabRegistrar">Registrar Atleta</button>
                 <button data-tab="tabAtletas" id="tabAtletasBtn" class="hidden-tab">Gestionar Atletas</button>
                 <button data-tab="tabReportes" id="tabReportesBtn" class="hidden-tab">Descargar Reportes</button>
+                <button data-tab="tabNoticias" id="tabNoticiasBtn" class="hidden-tab">Noticias</button>
             </div>
 
             <!-- Tab Inicio -->
@@ -1221,6 +1540,25 @@
                     <div id="reportFeedback" style="margin-top:16px; color:#8aa4c8;"></div>
                 </div>
             </div>
+
+            <!-- NOTICIAS (Solo Oficial) -->
+            <div id="tabNoticias" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-newspaper"></i> Gestionar Noticias</h3>
+                    <p style="color:#8aa4c8; margin-bottom:16px;">Agrega nuevas noticias que se mostrarán en la sección de información.</p>
+
+                    <form id="newsForm">
+                        <div class="form-group"><label>Título de la Noticia</label><input type="text" id="newsTitle" required placeholder="Ej: Inauguración de las Olimpiadas" /></div>
+                        <div class="form-group"><label>Contenido</label><textarea id="newsContent" required placeholder="Escribe el contenido de la noticia..."></textarea></div>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus-circle"></i> Agregar Noticia</button>
+                    </form>
+
+                    <div style="margin-top:24px;">
+                        <h4 style="color:#b0c4de; margin-bottom:12px;">Noticias Publicadas</h4>
+                        <div id="newsList"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- FOOTER -->
@@ -1244,7 +1582,6 @@
             appId: "1:1234567890:web:abcdef123456"
         };
 
-        // Inicializar Firebase
         let firebaseApp, database;
         let firebaseReady = false;
 
@@ -1252,19 +1589,20 @@
             firebaseApp = firebase.initializeApp(firebaseConfig);
             database = firebase.database();
             firebaseReady = true;
-            console.log('🔥 Firebase conectado correctamente');
+            console.log('🔥 Firebase conectado');
         } catch (e) {
-            console.warn('⚠️ Firebase no se pudo inicializar. Usando localStorage como fallback.', e);
+            console.warn('⚠️ Firebase no disponible, usando localStorage', e);
             firebaseReady = false;
         }
 
         // ============================================================
-        // 2. DATA Y FUNCIONES PRINCIPALES
+        // 2. DATA PRINCIPAL
         // ============================================================
         let data = {
             disciplinas: ['Atletismo', 'Natación', 'Fútbol', 'Baloncesto'],
             categorias: ['Infantil', 'Juvenil', 'Adulto', 'Máster'],
             atletas: [],
+            noticias: [],
             homeContent: {
                 title: 'OLIMPIADAS 2026',
                 subtitle: 'AVCS · El espíritu de la competencia',
@@ -1296,7 +1634,7 @@
         let isFirebaseListenerActive = false;
 
         // ============================================================
-        // 3. FUNCIONES DE PERSISTENCIA (Firebase + LocalStorage)
+        // 3. PERSISTENCIA (Firebase + LocalStorage)
         // ============================================================
         function saveDataToFirebase() {
             if (!firebaseReady || !database) return;
@@ -1306,11 +1644,12 @@
                     disciplinas: data.disciplinas,
                     categorias: data.categorias,
                     atletas: data.atletas,
+                    noticias: data.noticias,
                     homeContent: data.homeContent,
                     infoContent: data.infoContent,
                     sliderImages: data.sliderImages
-                }).catch(err => console.warn('Error al guardar en Firebase:', err));
-            } catch (e) { console.warn('Error en saveDataToFirebase:', e); }
+                }).catch(err => console.warn('Error Firebase:', err));
+            } catch (e) { console.warn('Error saveDataToFirebase:', e); }
         }
 
         function loadDataFromFirebase(callback) {
@@ -1327,10 +1666,10 @@
                         data.disciplinas = val.disciplinas || data.disciplinas;
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
+                        data.noticias = val.noticias || [];
                         data.homeContent = val.homeContent || data.homeContent;
                         data.infoContent = val.infoContent || null;
                         data.sliderImages = val.sliderImages || data.sliderImages;
-                        // Actualizar nextId
                         if (data.atletas.length > 0) {
                             const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                             nextId = maxId + 1;
@@ -1338,25 +1677,22 @@
                         saveDataToLocalStorage();
                         if (callback) callback();
                     } else {
-                        // No hay datos en Firebase, usar localStorage
                         loadDataFromLocalStorage();
-                        // Guardar en Firebase
                         saveDataToFirebase();
                         if (callback) callback();
                     }
                 }).catch((err) => {
-                    console.warn('Error al cargar desde Firebase:', err);
+                    console.warn('Error Firebase:', err);
                     loadDataFromLocalStorage();
                     if (callback) callback();
                 });
             } catch (e) {
-                console.warn('Error en loadDataFromFirebase:', e);
+                console.warn('Error loadDataFromFirebase:', e);
                 loadDataFromLocalStorage();
                 if (callback) callback();
             }
         }
 
-        // Escuchar cambios en tiempo real desde Firebase
         function listenFirebaseChanges() {
             if (!firebaseReady || !database || isFirebaseListenerActive) return;
             try {
@@ -1364,54 +1700,49 @@
                 ref.on('value', (snapshot) => {
                     const val = snapshot.val();
                     if (val) {
-                        const oldAtletas = JSON.stringify(data.atletas);
-                        const oldSlider = JSON.stringify(data.sliderImages);
-                        const oldHome = JSON.stringify(data.homeContent);
-                        const oldInfo = JSON.stringify(data.infoContent);
-
                         data.disciplinas = val.disciplinas || data.disciplinas;
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
+                        data.noticias = val.noticias || [];
                         data.homeContent = val.homeContent || data.homeContent;
                         data.infoContent = val.infoContent || null;
                         data.sliderImages = val.sliderImages || data.sliderImages;
-
                         if (data.atletas.length > 0) {
                             const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                             nextId = maxId + 1;
                         }
-
                         saveDataToLocalStorage();
-                        // Actualizar UI
                         applyHomeContent();
                         renderInfo();
                         renderAthletes();
                         renderAdminAthletes();
+                        renderNoticias();
                         updateSliderImages();
                         populateSelectors();
-                        console.log('🔄 Datos actualizados en tiempo real desde Firebase');
+                        console.log('🔄 Datos actualizados en tiempo real');
                     }
                 });
                 isFirebaseListenerActive = true;
             } catch (e) {
-                console.warn('Error al escuchar Firebase:', e);
+                console.warn('Error listenFirebaseChanges:', e);
             }
         }
 
         function saveDataToLocalStorage() {
             try {
-                localStorage.setItem('olimpiadas2026_data_v5', JSON.stringify(data));
+                localStorage.setItem('olimpiadas2026_data_v6', JSON.stringify(data));
             } catch (e) {}
         }
 
         function loadDataFromLocalStorage() {
             try {
-                const stored = localStorage.getItem('olimpiadas2026_data_v5');
+                const stored = localStorage.getItem('olimpiadas2026_data_v6');
                 if (stored) {
                     const parsed = JSON.parse(stored);
                     data.disciplinas = parsed.disciplinas || data.disciplinas;
                     data.categorias = parsed.categorias || data.categorias;
                     data.atletas = parsed.atletas || [];
+                    data.noticias = parsed.noticias || [];
                     data.homeContent = parsed.homeContent || data.homeContent;
                     data.infoContent = parsed.infoContent || null;
                     data.sliderImages = parsed.sliderImages || data.sliderImages;
@@ -1420,7 +1751,6 @@
                         nextId = maxId + 1;
                     }
                 } else {
-                    // Datos por defecto
                     data.atletas = [{
                         id: 1,
                         nombre: 'Carlos',
@@ -1442,6 +1772,12 @@
                         zona: 'Zona 2',
                         foto: ''
                     }];
+                    data.noticias = [{
+                        id: 1,
+                        title: 'Inauguración de las Olimpiadas AVCS 2026',
+                        content: 'El próximo 15 de agosto daremos inicio al evento deportivo más importante del año.',
+                        date: new Date().toLocaleDateString()
+                    }];
                     data.infoContent = {
                         title: 'Bienvenidos a las Olimpiadas AVCS 2026',
                         desc: 'Las Olimpiadas AVCS son el evento deportivo más importante de la región.',
@@ -1460,7 +1796,27 @@
         }
 
         // ============================================================
-        // 4. NAVEGACIÓN
+        // 4. MENÚ HAMBURGUESA
+        // ============================================================
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            navMenu.classList.toggle('open');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        document.querySelectorAll('.nav-menu a, .nav-menu .btn-login').forEach(item => {
+            item.addEventListener('click', function() {
+                hamburgerBtn.classList.remove('active');
+                navMenu.classList.remove('open');
+            });
+        });
+
+        // ============================================================
+        // 5. NAVEGACIÓN
         // ============================================================
         const sections = {
             home: document.getElementById('section-home'),
@@ -1479,8 +1835,12 @@
                 link.classList.toggle('active', link.dataset.section === sectionId);
             });
             if (sectionId === 'athletes') renderAthletes();
-            if (sectionId === 'info') renderInfo();
+            if (sectionId === 'info') { renderInfo();
+                renderNoticiasPublicas(); }
             if (sectionId === 'home') applyHomeContent();
+            // Cerrar menú móvil
+            hamburgerBtn.classList.remove('active');
+            navMenu.classList.remove('open');
         }
 
         navLinks.forEach(link => {
@@ -1491,7 +1851,7 @@
         });
 
         // ============================================================
-        // 5. LOGIN
+        // 6. LOGIN
         // ============================================================
         const loginModal = document.getElementById('loginModal');
         const loginBtn = document.getElementById('loginBtn');
@@ -1528,7 +1888,7 @@
         });
 
         // ============================================================
-        // 6. SLIDER
+        // 7. SLIDER
         // ============================================================
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
@@ -1565,7 +1925,7 @@
         });
 
         // ============================================================
-        // 7. HOME CONTENT
+        // 8. HOME CONTENT
         // ============================================================
         function applyHomeContent() {
             const hc = data.homeContent;
@@ -1587,16 +1947,14 @@
         }
 
         // ============================================================
-        // 8. INFO
+        // 9. INFO + NOTICIAS PÚBLICAS
         // ============================================================
         function renderInfo() {
             const container = document.getElementById('infoContainer');
             const info = data.infoContent;
-            if (!info) {
-                container.innerHTML = '<div class="empty-message">No hay información disponible.</div>';
-                return;
-            }
-            container.innerHTML = `
+            let html = '';
+            if (info) {
+                html += `
                     <div class="info-card">
                         ${info.image ? `<img src="${info.image}" alt="${info.title}" />` : ''}
                         <div class="info-body">
@@ -1606,10 +1964,34 @@
                         </div>
                     </div>
                 `;
+            }
+
+            // Noticias públicas
+            if (data.noticias && data.noticias.length > 0) {
+                html += `<div style="margin-top:24px;"><h3 style="color:#4ade80; margin-bottom:16px;">📰 Últimas Noticias</h3>`;
+                data.noticias.forEach(n => {
+                    html += `
+                        <div class="news-item" style="border-left-color: #22d3ee;">
+                            <div class="news-content">
+                                <h4>${n.title}</h4>
+                                <p>${n.content}</p>
+                                <span class="news-date">${n.date || ''}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            container.innerHTML = html || '<div class="empty-message">No hay información disponible.</div>';
+        }
+
+        function renderNoticiasPublicas() {
+            // Ya se renderiza en renderInfo()
         }
 
         // ============================================================
-        // 9. ADMIN TABS
+        // 10. ADMIN TABS
         // ============================================================
         const tabBtns = document.querySelectorAll('#adminTabs button');
         const tabContents = {
@@ -1620,7 +2002,8 @@
             tabCategorias: document.getElementById('tabCategorias'),
             tabRegistrar: document.getElementById('tabRegistrar'),
             tabAtletas: document.getElementById('tabAtletas'),
-            tabReportes: document.getElementById('tabReportes')
+            tabReportes: document.getElementById('tabReportes'),
+            tabNoticias: document.getElementById('tabNoticias')
         };
 
         tabBtns.forEach(btn => {
@@ -1636,11 +2019,12 @@
                 if (this.dataset.tab === 'tabInfo') loadInfoForm();
                 if (this.dataset.tab === 'tabSlider') loadSliderForm();
                 if (this.dataset.tab === 'tabAtletas') renderAdminAthletes();
+                if (this.dataset.tab === 'tabNoticias') renderNoticias();
             });
         });
 
         // ============================================================
-        // 10. SLIDER FORM
+        // 11. SLIDER FORM
         // ============================================================
         function loadSliderForm() {
             const grid = document.getElementById('sliderImagesGrid');
@@ -1674,7 +2058,7 @@
                         if (loaded === totalInputs) {
                             saveData();
                             updateSliderImages();
-                            document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas correctamente.';
+                            document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas.';
                             loadSliderForm();
                         }
                     };
@@ -1684,11 +2068,11 @@
                     loaded++;
                     if (loaded === totalInputs) {
                         if (!hasChanges) {
-                            document.getElementById('sliderFeedback').textContent = '⚠️ No se seleccionaron nuevas imágenes.';
+                            document.getElementById('sliderFeedback').textContent = '⚠️ No se seleccionaron imágenes.';
                         } else {
                             saveData();
                             updateSliderImages();
-                            document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas correctamente.';
+                            document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas.';
                             loadSliderForm();
                         }
                     }
@@ -1697,7 +2081,7 @@
         });
 
         // ============================================================
-        // 11. ADMIN DATA
+        // 12. ADMIN DATA
         // ============================================================
         function loadAdminData() {
             renderDisciplinas();
@@ -1707,19 +2091,18 @@
             loadInfoForm();
             loadSliderForm();
             renderAdminAthletes();
+            renderNoticias();
             updateAdminTabs();
         }
 
         function updateAdminTabs() {
-            const tabAtletas = document.getElementById('tabAtletasBtn');
-            const tabReportes = document.getElementById('tabReportesBtn');
             const allTabs = document.querySelectorAll('#adminTabs button');
 
             if (currentRole === 'coordinator') {
-                // Coordinador: solo ver "Registrar Atleta" e "Inicio"
+                // Coordinador: solo ver "Registrar Atleta"
                 allTabs.forEach(tab => {
                     const tabId = tab.dataset.tab;
-                    if (tabId === 'tabRegistrar' || tabId === 'tabInicio') {
+                    if (tabId === 'tabRegistrar') {
                         tab.classList.remove('hidden-tab');
                     } else {
                         tab.classList.add('hidden-tab');
@@ -1732,7 +2115,6 @@
                 });
             }
 
-            // Activar primera pestaña visible
             const visibleTabs = document.querySelectorAll('#adminTabs button:not(.hidden-tab)');
             if (visibleTabs.length > 0) {
                 visibleTabs.forEach(t => t.classList.remove('active'));
@@ -1745,13 +2127,13 @@
         }
 
         // ============================================================
-        // 12. DISCIPLINAS Y CATEGORÍAS
+        // 13. DISCIPLINAS Y CATEGORÍAS
         // ============================================================
         function renderDisciplinas() {
             const container = document.getElementById('disciplinaList');
             if (!container) return;
             if (data.disciplinas.length === 0) {
-                container.innerHTML = '<span class="empty-message">No hay disciplinas registradas.</span>';
+                container.innerHTML = '<span class="empty-message">No hay disciplinas.</span>';
                 return;
             }
             container.innerHTML = data.disciplinas.map((d, i) =>
@@ -1772,7 +2154,7 @@
             const container = document.getElementById('categoriaList');
             if (!container) return;
             if (data.categorias.length === 0) {
-                container.innerHTML = '<span class="empty-message">No hay categorías registradas.</span>';
+                container.innerHTML = '<span class="empty-message">No hay categorías.</span>';
                 return;
             }
             container.innerHTML = data.categorias.map((c, i) =>
@@ -1822,7 +2204,7 @@
         });
 
         // ============================================================
-        // 13. SELECTORES
+        // 14. SELECTORES
         // ============================================================
         function populateSelectors() {
             const catSelect = document.getElementById('athleteCategoria');
@@ -1869,7 +2251,7 @@
         }
 
         // ============================================================
-        // 14. HOME FORM
+        // 15. HOME FORM
         // ============================================================
         function loadHomeForm() {
             const hc = data.homeContent;
@@ -1914,7 +2296,7 @@
         });
 
         // ============================================================
-        // 15. INFO FORM
+        // 16. INFO FORM
         // ============================================================
         function loadInfoForm() {
             const info = data.infoContent;
@@ -1970,7 +2352,7 @@
         });
 
         // ============================================================
-        // 16. REGISTRAR ATLETA
+        // 17. REGISTRAR ATLETA
         // ============================================================
         document.getElementById('athleteForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -2021,7 +2403,7 @@
         }
 
         // ============================================================
-        // 17. RENDER ATLETAS (PÚBLICO)
+        // 18. RENDER ATLETAS
         // ============================================================
         function getZonaClass(zona) {
             const map = {
@@ -2069,7 +2451,7 @@
         }
 
         // ============================================================
-        // 18. ADMIN ATHLETES
+        // 19. ADMIN ATHLETES
         // ============================================================
         function renderAdminAthletes() {
             const container = document.getElementById('adminAthleteList');
@@ -2095,7 +2477,7 @@
         }
 
         // ============================================================
-        // 19. EDITAR ATLETA
+        // 20. EDITAR ATLETA
         // ============================================================
         window.editAthlete = function(id) {
             if (currentRole === 'coordinator') {
@@ -2171,7 +2553,7 @@
         });
 
         // ============================================================
-        // 20. ELIMINAR ATLETA
+        // 21. ELIMINAR ATLETA
         // ============================================================
         window.deleteAthlete = function(id) {
             if (currentRole === 'coordinator') {
@@ -2188,7 +2570,7 @@
         };
 
         // ============================================================
-        // 21. ATHLETE DETAIL MODAL
+        // 22. ATHLETE DETAIL MODAL
         // ============================================================
         function showAthleteDetail(athlete) {
             const modal = document.getElementById('athleteModal');
@@ -2213,7 +2595,7 @@
         });
 
         // ============================================================
-        // 22. FILTROS
+        // 23. FILTROS
         // ============================================================
         document.getElementById('filterZona').addEventListener('change', renderAthletes);
         document.getElementById('filterDisciplina').addEventListener('change', renderAthletes);
@@ -2224,7 +2606,7 @@
         });
 
         // ============================================================
-        // 23. DESCARGAR REPORTES (Excel y PDF)
+        // 24. REPORTES
         // ============================================================
         function getAthletesByZona(zona) {
             if (!zona) return data.atletas || [];
@@ -2247,21 +2629,21 @@
         document.getElementById('downloadExcel').addEventListener('click', function() {
             const zona = document.getElementById('reportZona').value;
             const zonaLabel = zona || 'Todas';
-            const data = generateReportData(zona);
+            const dataExcel = generateReportData(zona);
 
-            if (data.length === 0) {
+            if (dataExcel.length === 0) {
                 document.getElementById('reportFeedback').textContent = `⚠️ No hay atletas en ${zonaLabel}.`;
                 return;
             }
 
             try {
                 const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.json_to_sheet(data);
+                const ws = XLSX.utils.json_to_sheet(dataExcel);
                 XLSX.utils.book_append_sheet(wb, ws, 'Atletas');
                 XLSX.writeFile(wb, `Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.xlsx`);
-                document.getElementById('reportFeedback').textContent = `✅ Excel de ${zonaLabel} descargado correctamente.`;
+                document.getElementById('reportFeedback').textContent = `✅ Excel de ${zonaLabel} descargado.`;
             } catch (e) {
-                document.getElementById('reportFeedback').textContent = '❌ Error al generar Excel: ' + e.message;
+                document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
             }
         });
 
@@ -2281,7 +2663,6 @@
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
 
-                // Título
                 doc.setFontSize(18);
                 doc.setTextColor(74, 222, 128);
                 doc.text(`Reporte de Atletas - ${zonaLabel}`, pageWidth / 2, 20, { align: 'center' });
@@ -2289,7 +2670,6 @@
                 doc.setFontSize(10);
                 doc.text(`Generado: ${new Date().toLocaleString()}`, pageWidth / 2, 28, { align: 'center' });
 
-                // Cabeceras
                 const headers = ['Nombre', 'Apellido', 'Edad', 'Cédula', 'Categoría', 'Disciplina', 'Zona'];
                 const colWidths = [30, 30, 15, 30, 25, 30, 25];
                 let y = 38;
@@ -2305,7 +2685,7 @@
                 doc.setTextColor(200, 200, 200);
                 y += 6;
 
-                athletes.forEach((a, rowIndex) => {
+                athletes.forEach((a) => {
                     if (y > pageHeight - 20) {
                         doc.addPage();
                         y = 20;
@@ -2322,20 +2702,146 @@
                 });
 
                 doc.save(`Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.pdf`);
-                document.getElementById('reportFeedback').textContent = `✅ PDF de ${zonaLabel} descargado correctamente.`;
+                document.getElementById('reportFeedback').textContent = `✅ PDF de ${zonaLabel} descargado.`;
             } catch (e) {
-                document.getElementById('reportFeedback').textContent = '❌ Error al generar PDF: ' + e.message;
+                document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
             }
         });
 
         // ============================================================
-        // 24. INICIALIZAR
+        // 25. NOTICIAS (ADMIN)
+        // ============================================================
+        let nextNewsId = 100;
+
+        function renderNoticias() {
+            const container = document.getElementById('newsList');
+            if (!container) return;
+
+            if (!data.noticias || data.noticias.length === 0) {
+                container.innerHTML = '<div class="empty-message">No hay noticias publicadas.</div>';
+                return;
+            }
+
+            container.innerHTML = data.noticias.map(n => `
+                    <div class="news-item">
+                        <div class="news-content">
+                            <h4>${n.title}</h4>
+                            <p>${n.content}</p>
+                            <span class="news-date">${n.date || ''}</span>
+                        </div>
+                        <div class="news-actions">
+                            <button class="delete-news" onclick="deleteNews(${n.id})" title="Eliminar noticia">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        window.deleteNews = function(id) {
+            if (currentRole === 'coordinator') {
+                alert('⚠️ Los coordinadores no pueden eliminar noticias.');
+                return;
+            }
+            if (confirm('¿Eliminar esta noticia?')) {
+                data.noticias = data.noticias.filter(n => n.id !== id);
+                saveData();
+                renderNoticias();
+                renderInfo();
+                alert('✅ Noticia eliminada.');
+            }
+        };
+
+        document.getElementById('newsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (currentRole === 'coordinator') {
+                alert('⚠️ Los coordinadores no pueden agregar noticias.');
+                return;
+            }
+
+            const title = document.getElementById('newsTitle').value.trim();
+            const content = document.getElementById('newsContent').value.trim();
+
+            if (!title || !content) {
+                alert('Completa todos los campos.');
+                return;
+            }
+
+            const newNews = {
+                id: nextNewsId++,
+                title: title,
+                content: content,
+                date: new Date().toLocaleDateString()
+            };
+
+            data.noticias.push(newNews);
+            saveData();
+            renderNoticias();
+            renderInfo();
+            document.getElementById('newsForm').reset();
+            alert('✅ Noticia agregada correctamente.');
+        });
+
+        // ============================================================
+        // 26. MÚSICA DE FONDO
+        // ============================================================
+        let audio = null;
+        let isMusicPlaying = false;
+
+        function initMusic() {
+            try {
+                // URL de la música en GitHub (reemplazar con tu archivo)
+                const musicUrl = 'https://github.com/tu-usuario/tu-repo/raw/main/himno-avcs.mp3';
+                audio = new Audio(musicUrl);
+                audio.loop = true;
+                audio.volume = 0.5;
+
+                const toggleBtn = document.getElementById('musicToggle');
+
+                toggleBtn.addEventListener('click', function() {
+                    if (!audio) return;
+                    if (isMusicPlaying) {
+                        audio.pause();
+                        this.innerHTML = '<i class="fas fa-play"></i>';
+                        isMusicPlaying = false;
+                    } else {
+                        audio.play().catch(e => console.warn('Error al reproducir música:', e));
+                        this.innerHTML = '<i class="fas fa-pause"></i>';
+                        isMusicPlaying = true;
+                    }
+                });
+
+                // Intentar reproducir automáticamente al cargar
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                    toggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(() => {
+                    console.log('Autoplay bloqueado, esperando interacción del usuario');
+                });
+
+                // Reproducir cuando el usuario haga clic en cualquier parte (para móviles)
+                document.addEventListener('click', function playOnInteraction() {
+                    if (audio && !isMusicPlaying) {
+                        audio.play().then(() => {
+                            isMusicPlaying = true;
+                            document.getElementById('musicToggle').innerHTML = '<i class="fas fa-pause"></i>';
+                        }).catch(() => {});
+                    }
+                    document.removeEventListener('click', playOnInteraction);
+                }, { once: true });
+
+            } catch (e) {
+                console.warn('Error al inicializar música:', e);
+            }
+        }
+
+        // ============================================================
+        // 27. INICIALIZAR
         // ============================================================
         function initializeApp() {
             loadDataFromLocalStorage();
 
             if (firebaseReady) {
-                // Cargar desde Firebase y luego escuchar cambios
                 loadDataFromFirebase(() => {
                     applyHomeContent();
                     renderInfo();
@@ -2346,7 +2852,6 @@
                     listenFirebaseChanges();
                 });
             } else {
-                // Fallback a localStorage
                 applyHomeContent();
                 renderInfo();
                 renderAthletes();
@@ -2355,7 +2860,6 @@
                 updateSliderImages();
             }
 
-            // Evento para el enlace Admin
             document.querySelector('a[data-section="admin"]').addEventListener('click', function(e) {
                 e.preventDefault();
                 if (!isAdmin) {
@@ -2365,9 +2869,11 @@
                 showSection('admin');
                 loadAdminData();
             });
+
+            // Iniciar música
+            initMusic();
         }
 
-        // Iniciar la aplicación
         initializeApp();
     </script>
 
