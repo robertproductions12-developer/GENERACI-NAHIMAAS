@@ -4,14 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
   <title>Olimpiadas 2026 · AVCS</title>
-  <!-- ICONO DE LA PÁGINA (FAVICON) -->
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/favicon.png" />
-  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/favicon.png" />
   <!-- Firebase SOLO DATABASE (sin Storage) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <style>
-    /* ===== ESTILOS (MISMO QUE ANTES) ===== */
     * {
       margin: 0;
       padding: 0;
@@ -41,6 +37,7 @@
       position: relative;
     }
 
+    /* HEADER */
     .header-fixed {
       position: sticky;
       top: 0;
@@ -69,6 +66,7 @@
       font-size: 1.2rem;
     }
 
+    /* REPRODUCTOR DE MÚSICA - OCULTO */
     #musicaFondo {
       display: none;
     }
@@ -186,6 +184,7 @@
       margin-bottom: 1.2rem;
     }
 
+    /* BOTÓN ACTUALIZAR EN TIEMPO REAL */
     .btn-actualizar {
       background: #2ecc71;
       color: white;
@@ -213,28 +212,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* ===== BOTÓN LIMPIAR CACHÉ ===== */
-    .btn-limpiar-cache {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 0.5rem 1.5rem;
-      border-radius: 40px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-bottom: 1rem;
-      margin-left: 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      border: 2px solid #c0392b;
-    }
-    .btn-limpiar-cache:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 20px rgba(231,76,60,0.4);
-    }
-
+    /* SLIDER */
     .slider-container {
       position: relative;
       width: 100%;
@@ -308,6 +286,7 @@
       padding: 1rem 0;
     }
 
+    /* ATLETAS - GRID DE CUADROS */
     .atletas-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -383,6 +362,7 @@
       box-shadow: 0 0 0 4px rgba(30,69,251,0.1);
     }
 
+    /* MODAL ATLETA */
     .atleta-modal {
       display: none;
       position: fixed;
@@ -453,32 +433,33 @@
       color: #4a6a8a;
     }
 
+    /* MEDALLERO - ESTILO IMAGEN */
     .medallero-container {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.3rem;
       margin-top: 1.5rem;
       background: #ffffff;
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
       border: 2px solid #dde6f0;
     }
     .medallero-header {
       display: grid;
-      grid-template-columns: 50px 1fr 110px 70px;
-      padding: 0.7rem 1.2rem;
+      grid-template-columns: 60px 1fr 120px 80px;
+      padding: 0.8rem 1.5rem;
       background: #1a2e42;
       color: #CDF22B;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
     .medallero-header span:last-child { text-align: right; }
     .medallero-fila {
       display: grid;
-      grid-template-columns: 50px 1fr 110px 70px;
-      padding: 0.6rem 1.2rem;
+      grid-template-columns: 60px 1fr 120px 80px;
+      padding: 0.7rem 1.5rem;
       background: #f8faff;
       border-bottom: 1px solid #eef2f6;
       transition: 0.3s;
@@ -486,53 +467,54 @@
     }
     .medallero-fila:hover {
       background: #eef4fc;
+      transform: translateX(5px);
     }
     .medallero-fila .posicion {
       font-weight: 900;
       color: #1E45FB;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-family: 'Segoe UI', sans-serif;
     }
     .medallero-fila .zona-info {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.8rem;
     }
-    .medallero-fila .zona-color {
-      width: 28px;
-      height: 28px;
+    .medallero-fila .zona-circulo {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
       color: white;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       border: 2px solid rgba(26,46,66,0.2);
       flex-shrink: 0;
     }
     .medallero-fila .zona-nombre {
       font-weight: 600;
       color: #1a2e42;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
     .medallero-fila .medallas {
       display: flex;
-      gap: 0.6rem;
-      font-size: 1.1rem;
+      gap: 0.8rem;
+      font-size: 1.2rem;
       justify-content: center;
     }
     .medallero-fila .medallas span {
       display: flex;
       align-items: center;
-      gap: 0.1rem;
+      gap: 0.2rem;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #1a2e42;
     }
     .medallero-fila .medallas .count {
-      font-size: 0.85rem;
-      min-width: 16px;
+      font-size: 0.95rem;
+      min-width: 18px;
       font-weight: 800;
     }
     .medallero-fila .medalla-oro .count { color: #f1c40f; }
@@ -542,7 +524,7 @@
       font-weight: 700;
       color: #1E45FB;
       text-align: right;
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
     .medallero-fila.primero {
       background: linear-gradient(90deg, #fef9e7, #fdf2d0);
@@ -558,6 +540,7 @@
     }
     .medallero-fila.tercero .posicion { color: #e67e22; }
 
+    /* VIDEO */
     .video-container {
       position: relative;
       width: 100%;
@@ -576,6 +559,7 @@
       height: 100%;
     }
 
+    /* NOTICIAS */
     .noticias-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -636,6 +620,7 @@
       opacity: 1;
     }
 
+    /* PATROCINADORES - SECCIÓN OSCURA */
     #sec-patrocinadores {
       background: #0a1628 !important;
       border-left: 8px solid #CDF22B !important;
@@ -741,6 +726,7 @@
       100% { transform: translateX(-50%); }
     }
 
+    /* BASE BÍBLICA */
     .base-biblica-container {
       display: grid;
       gap: 1.5rem;
@@ -775,6 +761,7 @@
       font-style: italic;
     }
 
+    /* FOOTER */
     .footer {
       background: #0b1f30;
       color: #eaf3ff;
@@ -809,6 +796,7 @@
     }
     .footer .copy span { color: #CDF22B; font-weight: 600; }
 
+    /* LOGIN DUAL */
     .login-options {
       display: flex;
       gap: 1rem;
@@ -861,6 +849,7 @@
       color: #7a8a2e;
     }
 
+    /* ADMIN PANEL */
     .admin-panel {
       background: #f0f5fe;
       border-radius: 30px;
@@ -1129,15 +1118,8 @@
       border-radius: 8px;
     }
 
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 700px) {
-      .header-fixed { 
-        flex-direction: column; 
-        align-items: stretch; 
-        gap: 0.6rem; 
-        padding: 0.6rem 1rem; 
-        position: static;
-      }
+      .header-fixed { flex-direction: column; align-items: stretch; gap: 0.6rem; padding: 0.6rem 1rem; }
       .menu-wrapper { align-self: flex-end; }
       .form-atleta { grid-template-columns: 1fr; }
       .filtros-atletas { border-radius: 30px; flex-direction: column; align-items: stretch; }
@@ -1146,33 +1128,11 @@
       .footer .social { gap: 1rem; }
       .login-options { flex-direction: column; }
       .slider-container { height: 300px; }
-      
-      .medallero-header { 
-        grid-template-columns: 35px 1fr 100px 50px; 
-        font-size: 0.65rem; 
-        padding: 0.4rem 0.8rem; 
-      }
-      .medallero-fila { 
-        grid-template-columns: 35px 1fr 100px 50px; 
-        padding: 0.4rem 0.8rem; 
-        gap: 0.2rem;
-      }
-      .medallero-fila .posicion { font-size: 0.9rem; }
-      .medallero-fila .zona-color { 
-        width: 22px; 
-        height: 22px; 
-        font-size: 0.6rem; 
-        display: none;
-      }
-      .medallero-fila .zona-nombre { font-size: 0.8rem; }
-      .medallero-fila .medallas { 
-        font-size: 0.9rem; 
-        gap: 0.3rem;
-      }
-      .medallero-fila .medallas span { font-size: 0.7rem; }
-      .medallero-fila .medallas .count { font-size: 0.7rem; min-width: 12px; }
-      .medallero-fila .puntos { font-size: 0.8rem; }
-      
+      .medallero-header { grid-template-columns: 40px 1fr 100px 60px; font-size: 0.7rem; padding: 0.5rem 1rem; }
+      .medallero-fila { grid-template-columns: 40px 1fr 100px 60px; padding: 0.5rem 1rem; gap: 0.3rem; }
+      .medallero-fila .posicion { font-size: 1rem; }
+      .medallero-fila .medallas { font-size: 1rem; gap: 0.4rem; }
+      .medallero-fila .zona-circulo { width: 28px; height: 28px; font-size: 0.8rem; }
       .seccion h2 { font-size: 1.8rem; }
       .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
       .atleta-grid-item .atleta-img { height: 150px; }
@@ -1183,22 +1143,11 @@
       .seccion h2 { font-size: 1.5rem; }
       .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
       .atleta-grid-item .atleta-img { height: 120px; }
-      
-      .medallero-header { 
-        grid-template-columns: 28px 1fr 80px 40px; 
-        font-size: 0.55rem; 
-        padding: 0.3rem 0.5rem; 
-      }
-      .medallero-fila { 
-        grid-template-columns: 28px 1fr 80px 40px; 
-        padding: 0.3rem 0.5rem; 
-      }
-      .medallero-fila .posicion { font-size: 0.7rem; }
-      .medallero-fila .zona-nombre { font-size: 0.7rem; }
-      .medallero-fila .medallas { font-size: 0.75rem; gap: 0.2rem; }
-      .medallero-fila .medallas span { font-size: 0.6rem; }
-      .medallero-fila .medallas .count { font-size: 0.6rem; min-width: 10px; }
-      .medallero-fila .puntos { font-size: 0.7rem; }
+      .medallero-header { grid-template-columns: 30px 1fr 80px 50px; font-size: 0.6rem; padding: 0.3rem 0.8rem; }
+      .medallero-fila { grid-template-columns: 30px 1fr 80px 50px; padding: 0.3rem 0.8rem; }
+      .medallero-fila .posicion { font-size: 0.8rem; }
+      .medallero-fila .medallas { font-size: 0.8rem; gap: 0.3rem; }
+      .medallero-fila .zona-circulo { width: 24px; height: 24px; font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -1207,7 +1156,8 @@
 
   <!-- REPRODUCTOR DE MÚSICA (OCULTO) -->
   <audio id="musicaFondo" loop preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
+    <source src="tu-musica.mp3" type="audio/mpeg">
+    <!-- URL alternativa desde GitHub -->
     <source src="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/musica-fondo.mp3" type="audio/mpeg">
   </audio>
 
@@ -1386,16 +1336,12 @@
 
           <div id="roleIndicator" class="login-role-indicator" style="display:none;"></div>
 
-          <!-- BOTONES DE ACTUALIZACIÓN -->
-          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
-            <button class="btn-actualizar" id="btnActualizar">
-              🔄 Actualizar Datos
-            </button>
-            <button class="btn-limpiar-cache" id="btnLimpiarCache">
-              🗑️ Limpiar Caché y Recargar
-            </button>
-          </div>
+          <!-- BOTÓN ACTUALIZAR EN TIEMPO REAL -->
+          <button class="btn-actualizar" id="btnActualizar">
+            🔄 Actualizar Datos en Tiempo Real
+          </button>
 
+          <!-- EDITOR SLIDER -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🖼️ Editar Slider</h4>
             <div id="adminSliderList"></div>
@@ -1406,12 +1352,14 @@
             </div>
           </div>
 
+          <!-- EDITOR INICIO -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📝 Editar Inicio</h4>
             <textarea id="editInicioTexto" placeholder="Texto de inicio..."></textarea>
             <button class="btn-primary" id="guardarInicio">Guardar Inicio</button>
           </div>
 
+          <!-- FORMULARIO ATLETA -->
           <div style="background:#ffffff; border-radius:28px; padding:1.2rem; margin:1rem 0; border:2px solid #CDF22B;">
             <h4 style="color:#1E45FB;">📋 Registrar Atleta</h4>
             <form id="formAtleta" class="form-atleta">
@@ -1445,11 +1393,13 @@
             </form>
           </div>
 
+          <!-- GESTIÓN ATLETAS -->
           <div style="background:#ffffff; border-radius:28px; padding:1.2rem; margin:1rem 0; border:2px solid #1E45FB;">
             <h4 style="color:#1E45FB;">📸 Gestión de Atletas</h4>
             <div id="adminAtletasList"></div>
           </div>
 
+          <!-- ASIGNAR MEDALLAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🏅 Asignar Medallas</h4>
             <div id="adminMedallasList"></div>
@@ -1468,6 +1418,7 @@
             </div>
           </div>
 
+          <!-- EDITOR SEDE -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📍 Editar Sede</h4>
             <div id="adminSedeList"></div>
@@ -1480,6 +1431,7 @@
             </div>
           </div>
 
+          <!-- EDITOR DISCIPLINAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">⚡ Editar Disciplinas</h4>
             <div id="adminDisciplinasList"></div>
@@ -1489,6 +1441,7 @@
             </div>
           </div>
 
+          <!-- EDITOR CATEGORÍAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🏷️ Editar Categorías</h4>
             <div id="adminCategoriasList"></div>
@@ -1498,6 +1451,7 @@
             </div>
           </div>
 
+          <!-- EDITOR BASE BÍBLICA -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📖 Editar Base Bíblica</h4>
             <div id="adminBaseBiblicaList"></div>
@@ -1509,6 +1463,7 @@
             </div>
           </div>
 
+          <!-- EDITOR VIDEO -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🎬 Editar Video</h4>
             <input type="text" id="editVideoUrl" placeholder="URL del video" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
@@ -1516,6 +1471,7 @@
             <button class="btn-primary" id="guardarVideo">Guardar Video</button>
           </div>
 
+          <!-- EDITOR VIDEO PATROCINADORES -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🎬 Video Patrocinadores</h4>
             <input type="text" id="editPatrocinadoresVideo" placeholder="URL del video" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
@@ -1523,6 +1479,7 @@
             <button class="btn-primary" id="guardarPatrocinadoresVideo">Guardar</button>
           </div>
 
+          <!-- EDITOR NOTICIAS -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">📰 Editar Noticias</h4>
             <div id="adminNoticiasList"></div>
@@ -1534,6 +1491,7 @@
             </div>
           </div>
 
+          <!-- EDITOR PATROCINADORES -->
           <div class="admin-editor">
             <h4 style="color:#1E45FB;">🤝 Editar Patrocinadores</h4>
             <div id="adminPatrocinadoresList"></div>
@@ -1578,8 +1536,12 @@
     });
   }
 
+  // Iniciar música al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
+    // Intentar reproducir automáticamente
     iniciarMusica();
+    
+    // Si falla el autoplay, iniciar con cualquier clic
     document.addEventListener('click', function() {
       const audio = document.getElementById('musicaFondo');
       if (audio.paused) {
@@ -1588,7 +1550,7 @@
     }, { once: true });
   });
 
-  // ============ FIREBASE CONFIG ============
+  // ============ FIREBASE CONFIG (SOLO DATABASE) ============
   const firebaseConfig = {
     apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
     authDomain: "generacionahimaas.firebaseapp.com",
@@ -1612,7 +1574,6 @@
     useFirebase = false;
   }
 
-  // ============ DATOS LOCALES ============
   let localData = {
     inicio: { texto: 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.' },
     slider: [
@@ -1635,23 +1596,10 @@
     atletas: {}
   };
 
-  // ============ FUNCIONES DE DATOS CON CACHÉ ============
-  let cacheData = {};
-
   function guardarData(path, data) {
     return new Promise((resolve) => {
       if (useFirebase && db) {
-        db.ref(path).set(data).then(() => {
-          // Actualizar caché local
-          const parts = path.split('/');
-          let ref = cacheData;
-          for (let i = 0; i < parts.length - 1; i++) {
-            if (!ref[parts[i]]) ref[parts[i]] = {};
-            ref = ref[parts[i]];
-          }
-          ref[parts[parts.length - 1]] = data;
-          resolve(true);
-        }).catch(() => {
+        db.ref(path).set(data).then(() => resolve(true)).catch(() => {
           const parts = path.split('/');
           let ref = localData;
           for (let i = 0; i < parts.length - 1; i++) {
@@ -1674,63 +1622,34 @@
     });
   }
 
-  function obtenerData(path, forceRefresh = false) {
+  function obtenerData(path) {
     return new Promise((resolve) => {
-      // Si se fuerza refrescar, ignorar caché
-      if (forceRefresh) {
-        cacheData = {};
-      }
-
-      // Verificar caché primero
-      const parts = path.split('/');
-      let cached = cacheData;
-      for (let p of parts) {
-        if (cached && cached[p] !== undefined) cached = cached[p];
-        else { cached = undefined; break; }
-      }
-      if (cached !== undefined && !forceRefresh) {
-        resolve(cached);
-        return;
-      }
-
       if (useFirebase && db) {
-        // Forzar obtener de Firebase (sin caché local)
-        db.ref(path).once('value', { 
-          // Deshabilitar caché local de Firebase
-          // Esto asegura que obtenemos los datos más recientes
-        }).then(snap => {
+        db.ref(path).once('value').then(snap => {
           const val = snap.val();
-          if (val !== null) {
-            // Guardar en caché
-            let ref = cacheData;
-            for (let i = 0; i < parts.length - 1; i++) {
-              if (!ref[parts[i]]) ref[parts[i]] = {};
-              ref = ref[parts[i]];
-            }
-            ref[parts[parts.length - 1]] = val;
-            resolve(val);
-          } else {
-            const parts2 = path.split('/');
+          if (val !== null) resolve(val);
+          else {
+            const parts = path.split('/');
             let ref = localData;
-            for (let p of parts2) {
+            for (let p of parts) {
               if (ref && ref[p] !== undefined) ref = ref[p];
               else { ref = undefined; break; }
             }
             resolve(ref);
           }
         }).catch(() => {
-          const parts2 = path.split('/');
+          const parts = path.split('/');
           let ref = localData;
-          for (let p of parts2) {
+          for (let p of parts) {
             if (ref && ref[p] !== undefined) ref = ref[p];
             else { ref = undefined; break; }
           }
           resolve(ref);
         });
       } else {
-        const parts2 = path.split('/');
+        const parts = path.split('/');
         let ref = localData;
-        for (let p of parts2) {
+        for (let p of parts) {
           if (ref && ref[p] !== undefined) ref = ref[p];
           else { ref = undefined; break; }
         }
@@ -1739,87 +1658,35 @@
     });
   }
 
-  // ============ FUNCIÓN LIMPIAR CACHÉ ============
-  function limpiarCacheYRecargar() {
-    if (confirm('¿Estás seguro de limpiar la caché y recargar todos los datos? Esto asegurará que veas los cambios más recientes.')) {
-      const btn = document.getElementById('btnLimpiarCache');
-      btn.textContent = '🔄 Limpiando...';
-      btn.disabled = true;
-      
-      // Limpiar caché
-      cacheData = {};
-      
-      // Limpiar localStorage de Firebase
-      try {
-        // Limpiar cualquier dato almacenado localmente
-        for (let key in localStorage) {
-          if (key.startsWith('firebase:') || key.includes('firebase')) {
-            localStorage.removeItem(key);
-          }
-        }
-        // Limpiar sessionStorage
-        for (let key in sessionStorage) {
-          if (key.startsWith('firebase:') || key.includes('firebase')) {
-            sessionStorage.removeItem(key);
-          }
-        }
-      } catch(e) {
-        console.log('No se pudo limpiar el almacenamiento local');
-      }
-      
-      // Recargar todos los datos
-      actualizarTodo().then(() => {
-        btn.textContent = '🗑️ Limpiar Caché y Recargar';
-        btn.disabled = false;
-        showToast('✅ Caché limpiada y datos actualizados correctamente');
-        
-        // Recargar la página para asegurar todos los cambios
-        setTimeout(() => {
-          location.reload();
-        }, 1500);
-      }).catch(() => {
-        btn.textContent = '🗑️ Limpiar Caché y Recargar';
-        btn.disabled = false;
-      });
-    }
-  }
-
-  document.getElementById('btnLimpiarCache').addEventListener('click', limpiarCacheYRecargar);
-
-  // ============ FUNCIÓN ACTUALIZAR TODO ============
+  // ============ FUNCIÓN ACTUALIZAR EN TIEMPO REAL ============
   function actualizarTodo() {
     const btn = document.getElementById('btnActualizar');
     btn.classList.add('rotating');
     btn.textContent = '🔄 Actualizando...';
     
-    // Limpiar caché antes de actualizar
-    cacheData = {};
-    
-    return Promise.all([
-      cargarInicio(true),
-      cargarSlider(true),
-      cargarSede(true),
-      cargarDisciplinas(true),
-      cargarCategorias(true),
-      cargarBaseBiblica(true),
-      cargarVideo(true),
-      cargarPatrocinadoresVideo(true),
-      cargarNoticias(true),
-      cargarPatrocinadores(true),
-      cargarMedallero(true),
-      cargarAtletasVista(true),
-      cargarDisciplinasSelect(true),
-      cargarCategoriasSelect(true),
-      cargarFiltroCategorias(true)
+    Promise.all([
+      cargarInicio(),
+      cargarSlider(),
+      cargarSede(),
+      cargarDisciplinas(),
+      cargarCategorias(),
+      cargarBaseBiblica(),
+      cargarVideo(),
+      cargarPatrocinadoresVideo(),
+      cargarNoticias(),
+      cargarPatrocinadores(),
+      cargarMedallero(),
+      cargarAtletasVista(),
+      cargarDisciplinasSelect(),
+      cargarCategoriasSelect(),
+      cargarFiltroCategorias()
     ]).then(() => {
       btn.classList.remove('rotating');
       btn.textContent = '🔄 Actualizar Datos en Tiempo Real';
       showToast('✅ Todos los datos actualizados en tiempo real');
-      return true;
     }).catch(() => {
       btn.classList.remove('rotating');
       btn.textContent = '🔄 Actualizar Datos en Tiempo Real';
-      return false;
     });
   }
 
@@ -1940,18 +1807,18 @@
       document.querySelector('#adminContent > div[style*="border:2px solid #CDF22B"]').style.display = 'block';
     }
     
-    cargarAtletasAdmin(true);
-    cargarMedallasAdmin(true);
-    cargarDisciplinasAdmin(true);
-    cargarCategoriasAdmin(true);
-    cargarBaseBiblicaAdmin(true);
-    cargarPatrocinadoresAdmin(true);
-    cargarNoticiasAdmin(true);
-    cargarSliderAdmin(true);
-    cargarSedeAdmin(true);
-    cargarDisciplinasSelect(true);
-    cargarCategoriasSelect(true);
-    cargarFiltroCategorias(true);
+    cargarAtletasAdmin();
+    cargarMedallasAdmin();
+    cargarDisciplinasAdmin();
+    cargarCategoriasAdmin();
+    cargarBaseBiblicaAdmin();
+    cargarPatrocinadoresAdmin();
+    cargarNoticiasAdmin();
+    cargarSliderAdmin();
+    cargarSedeAdmin();
+    cargarDisciplinasSelect();
+    cargarCategoriasSelect();
+    cargarFiltroCategorias();
   }
 
   btnLogin.addEventListener('click', doLogin);
@@ -1998,13 +1865,13 @@
     });
   });
 
-  // ============ FUNCIONES DE CARGA CON FORCE REFRESH ============
+  // ============ SLIDER ============
   let sliderImages = [];
   let currentSlide = 0;
   let sliderInterval;
 
-  function cargarSlider(forceRefresh = false) {
-    return obtenerData('slider', forceRefresh).then(data => {
+  function cargarSlider() {
+    return obtenerData('slider').then(data => {
       sliderImages = data || localData.slider;
       actualizarSlider();
       return true;
@@ -2085,11 +1952,12 @@
     resetAutoSlide();
   });
 
-  function cargarSliderAdmin(forceRefresh = false) {
-    return obtenerData('slider', forceRefresh).then(data => {
+  // ============ SLIDER ADMIN (BASE64) ============
+  function cargarSliderAdmin() {
+    return obtenerData('slider').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminSliderList');
-      if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return true; }
+      if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return; }
       container.innerHTML = lista.map((img, i) => `
         <div class="slider-admin-item">
           <img src="${img}" alt="Slide ${i+1}" />
@@ -2107,8 +1975,8 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('slider', lista).then(() => {
-        cargarSlider(true);
-        cargarSliderAdmin(true);
+        cargarSlider();
+        cargarSliderAdmin();
         showToast('✅ Imagen eliminada');
       });
     });
@@ -2137,8 +2005,8 @@
         urls.forEach(url => { if (url) lista.push(url); });
         guardarData('slider', lista).then(() => {
           document.getElementById('nuevaSliderImagen').value = '';
-          cargarSlider(true);
-          cargarSliderAdmin(true);
+          cargarSlider();
+          cargarSliderAdmin();
           showToast('✅ Imágenes agregadas');
         });
       });
@@ -2149,19 +2017,20 @@
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede limpiar');
     if (confirm('¿Eliminar todas las imágenes del slider?')) {
       guardarData('slider', []).then(() => {
-        cargarSlider(true);
-        cargarSliderAdmin(true);
+        cargarSlider();
+        cargarSliderAdmin();
         showToast('✅ Slider limpiado');
       });
     }
   });
 
-  function cargarSedeAdmin(forceRefresh = false) {
-    return obtenerData('sede', forceRefresh).then(data => {
+  // ============ SEDE ADMIN (BASE64) ============
+  function cargarSedeAdmin() {
+    return obtenerData('sede').then(data => {
       const container = document.getElementById('adminSedeList');
       if (!data || !data.titulo) {
         container.innerHTML = '<p>No hay sede configurada.</p>';
-        return true;
+        return;
       }
       container.innerHTML = `
         <div class="sede-admin-item">
@@ -2183,8 +2052,8 @@
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
     if (confirm('¿Eliminar la sede?')) {
       guardarData('sede', { titulo: '', texto: '', imagenUrl: '' }).then(() => {
-        cargarSede(true);
-        cargarSedeAdmin(true);
+        cargarSede();
+        cargarSedeAdmin();
         showToast('✅ Sede eliminada');
       });
     }
@@ -2212,8 +2081,8 @@
   atletaModal.addEventListener('click', (e) => { if (e.target === atletaModal) atletaModal.classList.remove('active'); });
 
   // ============ CARGAR SELECTORES ============
-  function cargarDisciplinasSelect(forceRefresh = false) {
-    return obtenerData('disciplinas', forceRefresh).then(data => {
+  function cargarDisciplinasSelect() {
+    return obtenerData('disciplinas').then(data => {
       const select = document.getElementById('disciplinaAtleta');
       const lista = data || [];
       select.innerHTML = '<option value="">Selecciona una disciplina...</option>';
@@ -2227,8 +2096,8 @@
     });
   }
 
-  function cargarCategoriasSelect(forceRefresh = false) {
-    return obtenerData('categorias', forceRefresh).then(data => {
+  function cargarCategoriasSelect() {
+    return obtenerData('categorias').then(data => {
       const select = document.getElementById('categoriaAtleta');
       const lista = data || [];
       select.innerHTML = '<option value="">Selecciona una categoría...</option>';
@@ -2242,8 +2111,8 @@
     });
   }
 
-  function cargarFiltroCategorias(forceRefresh = false) {
-    return obtenerData('categorias', forceRefresh).then(data => {
+  function cargarFiltroCategorias() {
+    return obtenerData('categorias').then(data => {
       const select = document.getElementById('filtroCategoria');
       const lista = data || [];
       select.innerHTML = '<option value="">Todas las categorías</option>';
@@ -2257,8 +2126,9 @@
     });
   }
 
-  function cargarInicio(forceRefresh = false) {
-    return obtenerData('inicio', forceRefresh).then(data => {
+  // ============ CARGAR INICIO ============
+  function cargarInicio() {
+    return obtenerData('inicio').then(data => {
       const d = data || {};
       document.getElementById('inicioTexto').innerHTML = d.texto || 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.';
       document.getElementById('editInicioTexto').value = d.texto || '';
@@ -2266,8 +2136,9 @@
     });
   }
 
-  function cargarSede(forceRefresh = false) {
-    return obtenerData('sede', forceRefresh).then(data => {
+  // ============ CARGAR SEDE ============
+  function cargarSede() {
+    return obtenerData('sede').then(data => {
       const d = data || {};
       const container = document.getElementById('sedeContenido');
       if (!d.titulo && !d.texto) {
@@ -2281,8 +2152,9 @@
     });
   }
 
-  function cargarDisciplinas(forceRefresh = false) {
-    return obtenerData('disciplinas', forceRefresh).then(data => {
+  // ============ CARGAR DISCIPLINAS ============
+  function cargarDisciplinas() {
+    return obtenerData('disciplinas').then(data => {
       const lista = data || [];
       const container = document.getElementById('disciplinasContenido');
       if (!lista.length) {
@@ -2294,8 +2166,8 @@
     });
   }
 
-  function cargarDisciplinasAdmin(forceRefresh = false) {
-    return obtenerData('disciplinas', forceRefresh).then(data => {
+  function cargarDisciplinasAdmin() {
+    return obtenerData('disciplinas').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminDisciplinasList');
       if (!lista.length) { container.innerHTML = '<p>No hay disciplinas.</p>'; return true; }
@@ -2315,9 +2187,9 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('disciplinas', lista).then(() => {
-        cargarDisciplinas(true);
-        cargarDisciplinasAdmin(true);
-        cargarDisciplinasSelect(true);
+        cargarDisciplinas();
+        cargarDisciplinasAdmin();
+        cargarDisciplinasSelect();
         showToast('✅ Disciplina eliminada');
       });
     });
@@ -2332,16 +2204,17 @@
       lista.push(val);
       guardarData('disciplinas', lista).then(() => {
         document.getElementById('nuevaDisciplina').value = '';
-        cargarDisciplinas(true);
-        cargarDisciplinasAdmin(true);
-        cargarDisciplinasSelect(true);
+        cargarDisciplinas();
+        cargarDisciplinasAdmin();
+        cargarDisciplinasSelect();
         showToast('✅ Disciplina agregada');
       });
     });
   });
 
-  function cargarCategorias(forceRefresh = false) {
-    return obtenerData('categorias', forceRefresh).then(data => {
+  // ============ CARGAR CATEGORÍAS ============
+  function cargarCategorias() {
+    return obtenerData('categorias').then(data => {
       const lista = data || [];
       const container = document.getElementById('categoriasContenido');
       if (!lista.length) {
@@ -2353,8 +2226,8 @@
     });
   }
 
-  function cargarCategoriasAdmin(forceRefresh = false) {
-    return obtenerData('categorias', forceRefresh).then(data => {
+  function cargarCategoriasAdmin() {
+    return obtenerData('categorias').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminCategoriasList');
       if (!lista.length) { container.innerHTML = '<p>No hay categorías.</p>'; return true; }
@@ -2374,10 +2247,10 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('categorias', lista).then(() => {
-        cargarCategorias(true);
-        cargarCategoriasAdmin(true);
-        cargarCategoriasSelect(true);
-        cargarFiltroCategorias(true);
+        cargarCategorias();
+        cargarCategoriasAdmin();
+        cargarCategoriasSelect();
+        cargarFiltroCategorias();
         showToast('✅ Categoría eliminada');
       });
     });
@@ -2392,17 +2265,18 @@
       lista.push(val);
       guardarData('categorias', lista).then(() => {
         document.getElementById('nuevaCategoria').value = '';
-        cargarCategorias(true);
-        cargarCategoriasAdmin(true);
-        cargarCategoriasSelect(true);
-        cargarFiltroCategorias(true);
+        cargarCategorias();
+        cargarCategoriasAdmin();
+        cargarCategoriasSelect();
+        cargarFiltroCategorias();
         showToast('✅ Categoría agregada');
       });
     });
   });
 
-  function cargarBaseBiblica(forceRefresh = false) {
-    return obtenerData('basebiblica', forceRefresh).then(data => {
+  // ============ CARGAR BASE BÍBLICA ============
+  function cargarBaseBiblica() {
+    return obtenerData('basebiblica').then(data => {
       const lista = data || [];
       const container = document.getElementById('baseBiblicaContenido');
       if (!lista.length) {
@@ -2420,8 +2294,8 @@
     });
   }
 
-  function cargarBaseBiblicaAdmin(forceRefresh = false) {
-    return obtenerData('basebiblica', forceRefresh).then(data => {
+  function cargarBaseBiblicaAdmin() {
+    return obtenerData('basebiblica').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminBaseBiblicaList');
       if (!lista.length) { container.innerHTML = '<p>No hay bases bíblicas.</p>'; return true; }
@@ -2445,8 +2319,8 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('basebiblica', lista).then(() => {
-        cargarBaseBiblica(true);
-        cargarBaseBiblicaAdmin(true);
+        cargarBaseBiblica();
+        cargarBaseBiblicaAdmin();
         showToast('✅ Base Bíblica eliminada');
       });
     });
@@ -2466,15 +2340,16 @@
         document.getElementById('nuevaBaseTitulo').value = '';
         document.getElementById('nuevaBaseTexto').value = '';
         document.getElementById('nuevaBaseReferencia').value = '';
-        cargarBaseBiblica(true);
-        cargarBaseBiblicaAdmin(true);
+        cargarBaseBiblica();
+        cargarBaseBiblicaAdmin();
         showToast('✅ Base Bíblica agregada');
       });
     });
   });
 
-  function cargarVideo(forceRefresh = false) {
-    return obtenerData('video', forceRefresh).then(data => {
+  // ============ CARGAR VIDEO ============
+  function cargarVideo() {
+    return obtenerData('video').then(data => {
       const d = data || {};
       const iframe = document.getElementById('videoIframe');
       if (d.url) iframe.src = d.url;
@@ -2485,8 +2360,9 @@
     });
   }
 
-  function cargarPatrocinadoresVideo(forceRefresh = false) {
-    return obtenerData('patrocinadoresVideo', forceRefresh).then(data => {
+  // ============ CARGAR VIDEO PATROCINADORES ============
+  function cargarPatrocinadoresVideo() {
+    return obtenerData('patrocinadoresVideo').then(data => {
       const d = data || {};
       const iframe = document.getElementById('patrocinadoresVideo');
       if (d.url) iframe.src = d.url;
@@ -2497,8 +2373,9 @@
     });
   }
 
-  function cargarNoticias(forceRefresh = false) {
-    return obtenerData('noticias', forceRefresh).then(data => {
+  // ============ NOTICIAS ============
+  function cargarNoticias() {
+    return obtenerData('noticias').then(data => {
       const lista = data || [];
       const container = document.getElementById('noticiasContenido');
       if (!lista.length) {
@@ -2518,8 +2395,8 @@
     });
   }
 
-  function cargarNoticiasAdmin(forceRefresh = false) {
-    return obtenerData('noticias', forceRefresh).then(data => {
+  function cargarNoticiasAdmin() {
+    return obtenerData('noticias').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminNoticiasList');
       if (!lista.length) { container.innerHTML = '<p>No hay noticias.</p>'; return true; }
@@ -2540,13 +2417,14 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('noticias', lista).then(() => {
-        cargarNoticias(true);
-        cargarNoticiasAdmin(true);
+        cargarNoticias();
+        cargarNoticiasAdmin();
         showToast('✅ Noticia eliminada');
       });
     });
   };
 
+  // ============ AGREGAR NOTICIA (BASE64) ============
   document.getElementById('agregarNoticia').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
     const titulo = document.getElementById('nuevaNoticiaTitulo').value.trim();
@@ -2565,8 +2443,8 @@
           document.getElementById('nuevaNoticiaTitulo').value = '';
           document.getElementById('nuevaNoticiaDesc').value = '';
           document.getElementById('nuevaNoticiaImagen').value = '';
-          cargarNoticias(true);
-          cargarNoticiasAdmin(true);
+          cargarNoticias();
+          cargarNoticiasAdmin();
           showToast('✅ Noticia agregada');
         });
       });
@@ -2583,8 +2461,9 @@
     }
   });
 
-  function cargarPatrocinadores(forceRefresh = false) {
-    return obtenerData('patrocinadores', forceRefresh).then(data => {
+  // ============ PATROCINADORES ============
+  function cargarPatrocinadores() {
+    return obtenerData('patrocinadores').then(data => {
       const lista = data || [];
       const track = document.getElementById('patrocinadoresTrack');
       if (!lista.length) {
@@ -2606,8 +2485,8 @@
     });
   }
 
-  function cargarPatrocinadoresAdmin(forceRefresh = false) {
-    return obtenerData('patrocinadores', forceRefresh).then(data => {
+  function cargarPatrocinadoresAdmin() {
+    return obtenerData('patrocinadores').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminPatrocinadoresList');
       if (!lista.length) { container.innerHTML = '<p>No hay patrocinadores.</p>'; return true; }
@@ -2632,13 +2511,14 @@
       let lista = data || [];
       lista.splice(index, 1);
       guardarData('patrocinadores', lista).then(() => {
-        cargarPatrocinadores(true);
-        cargarPatrocinadoresAdmin(true);
+        cargarPatrocinadores();
+        cargarPatrocinadoresAdmin();
         showToast('✅ Patrocinador eliminado');
       });
     });
   };
 
+  // ============ AGREGAR PATROCINADOR (BASE64) ============
   document.getElementById('agregarPatrocinador').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
     const nombre = document.getElementById('nuevoPatrocinadorNombre').value.trim();
@@ -2659,8 +2539,8 @@
           document.getElementById('nuevoPatrocinadorDesc').value = '';
           document.getElementById('nuevoPatrocinadorUrl').value = '';
           document.getElementById('nuevoPatrocinadorIcono').value = '';
-          cargarPatrocinadores(true);
-          cargarPatrocinadoresAdmin(true);
+          cargarPatrocinadores();
+          cargarPatrocinadoresAdmin();
           showToast('✅ Patrocinador agregado');
         });
       });
@@ -2678,17 +2558,16 @@
   });
 
   // ============ MEDALLERO ============
-  function cargarMedallero(forceRefresh = false) {
-    return obtenerData('medallas', forceRefresh).then(medallas => {
+  function cargarMedallero() {
+    return obtenerData('medallas').then(medallas => {
       const m = medallas || {};
       const zonas = ['1','2','3','4','5'];
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
       const colores = { '1':'#2ecc71','2':'#e74c8b','3':'#f39c12','4':'#8e44ad','5':'#f1c40f' };
       
-      // Puntuación: Oro=15, Plata=10, Bronce=5
       const resultados = zonas.map(z => {
         const d = m[z] || { oro:0, plata:0, bronce:0 };
-        const total = (d.oro||0)*15 + (d.plata||0)*10 + (d.bronce||0)*5;
+        const total = (d.oro||0)*3 + (d.plata||0)*2 + (d.bronce||0)*1;
         return { zona: z, ...d, total };
       });
       resultados.sort((a,b) => b.total - a.total || b.oro - a.oro);
@@ -2697,6 +2576,7 @@
       const medallaEmoji = { oro:'🥇', plata:'🥈', bronce:'🥉' };
       const clasesPos = ['primero', 'segundo', 'tercero'];
 
+      // Header
       let html = `
         <div class="medallero-header">
           <span>#</span>
@@ -2706,11 +2586,12 @@
         </div>
       `;
 
+      // Filas
       html += resultados.map((r,i) => `
         <div class="medallero-fila ${clasesPos[i] || ''}" style="border-left: 4px solid ${colores[r.zona]};">
           <div class="posicion">${i+1}</div>
           <div class="zona-info">
-            <div class="zona-color" style="background:${colores[r.zona]};">${r.zona}</div>
+            <div class="zona-circulo" style="background:${colores[r.zona]};">${r.zona}</div>
             <div class="zona-nombre">${zonaNombres[r.zona]}</div>
           </div>
           <div class="medallas">
@@ -2727,8 +2608,9 @@
     });
   }
 
-  function cargarMedallasAdmin(forceRefresh = false) {
-    return obtenerData('medallas', forceRefresh).then(data => {
+  // ============ MEDALLAS ADMIN ============
+  function cargarMedallasAdmin() {
+    return obtenerData('medallas').then(data => {
       const m = data || {};
       const container = document.getElementById('adminMedallasList');
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
@@ -2756,8 +2638,8 @@
         const m = data || {};
         m[zona] = { oro:0, plata:0, bronce:0 };
         guardarData('medallas', m).then(() => {
-          cargarMedallero(true);
-          cargarMedallasAdmin(true);
+          cargarMedallero();
+          cargarMedallasAdmin();
           showToast('✅ Medallas limpiadas');
         });
       });
@@ -2773,8 +2655,8 @@
       if (!m[zona]) m[zona] = { oro:0, plata:0, bronce:0 };
       m[zona][tipo] = (m[zona][tipo]||0) + 1;
       guardarData('medallas', m).then(() => {
-        cargarMedallero(true);
-        cargarMedallasAdmin(true);
+        cargarMedallero();
+        cargarMedallasAdmin();
         showToast(`✅ Medalla ${tipo} asignada a Zona ${zona}`);
       });
     });
@@ -2827,15 +2709,15 @@
     });
   };
 
-  function cargarAtletasVista(forceRefresh = false) {
-    return obtenerData('atletas', forceRefresh).then(data => {
+  function cargarAtletasVista() {
+    return obtenerData('atletas').then(data => {
       renderAtletas(data);
       return true;
     });
   }
 
-  function cargarAtletasAdmin(forceRefresh = false) {
-    return obtenerData('atletas', forceRefresh).then(data => {
+  function cargarAtletasAdmin() {
+    return obtenerData('atletas').then(data => {
       const container = document.getElementById('adminAtletasList');
       if (!data || Object.keys(data).length === 0) { container.innerHTML = '<p>No hay atletas registrados.</p>'; return true; }
       let html = '';
@@ -2867,14 +2749,15 @@
         const atletas = data || {};
         delete atletas[id];
         guardarData('atletas', atletas).then(() => {
-          cargarAtletasAdmin(true);
-          cargarAtletasVista(true);
+          cargarAtletasAdmin();
+          cargarAtletasVista();
           showToast('✅ Atleta eliminado');
         });
       });
     }
   };
 
+  // ============ REGISTRAR ATLETA (BASE64 - SIN STORAGE) ============
   document.getElementById('formAtleta').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!adminAutenticado) { showToast('❌ Inicia sesión primero.'); return; }
@@ -2902,10 +2785,10 @@
           showToast('✅ Atleta registrado');
           document.getElementById('formAtleta').reset();
           document.getElementById('canceladoAtleta').checked = false;
-          cargarAtletasAdmin(true);
-          cargarAtletasVista(true);
-          cargarDisciplinasSelect(true);
-          cargarCategoriasSelect(true);
+          cargarAtletasAdmin();
+          cargarAtletasVista();
+          cargarDisciplinasSelect();
+          cargarCategoriasSelect();
         });
       });
     };
@@ -2927,7 +2810,7 @@
     const texto = document.getElementById('editInicioTexto').value;
     guardarData('inicio', { texto }).then(() => { 
       showToast('✅ Inicio actualizado'); 
-      cargarInicio(true); 
+      cargarInicio(); 
     });
   });
 
@@ -2942,8 +2825,8 @@
       data.imagenUrl = imagenBase64 || '';
       guardarData('sede', data).then(() => { 
         showToast('✅ Sede actualizada'); 
-        cargarSede(true); 
-        cargarSedeAdmin(true); 
+        cargarSede(); 
+        cargarSedeAdmin(); 
       });
     };
 
@@ -2964,7 +2847,7 @@
     const texto = document.getElementById('editVideoTexto').value;
     guardarData('video', { url, texto }).then(() => {
       showToast('✅ Video actualizado');
-      cargarVideo(true);
+      cargarVideo();
     });
   });
 
@@ -2974,37 +2857,34 @@
     const texto = document.getElementById('editPatrocinadoresTexto').value;
     guardarData('patrocinadoresVideo', { url, texto }).then(() => {
       showToast('✅ Video patrocinadores actualizado');
-      cargarPatrocinadoresVideo(true);
+      cargarPatrocinadoresVideo();
     });
   });
 
   // ============ FILTROS ============
-  document.getElementById('buscarAtleta').addEventListener('input', () => cargarAtletasVista(true));
-  document.getElementById('filtroZona').addEventListener('change', () => cargarAtletasVista(true));
-  document.getElementById('filtroCategoria').addEventListener('change', () => cargarAtletasVista(true));
+  document.getElementById('buscarAtleta').addEventListener('input', cargarAtletasVista);
+  document.getElementById('filtroZona').addEventListener('change', cargarAtletasVista);
+  document.getElementById('filtroCategoria').addEventListener('change', cargarAtletasVista);
 
   // ============ INICIALIZAR ============
-  // Forzar carga inicial desde Firebase (sin caché)
-  cacheData = {};
-  
   Promise.all([
-    cargarInicio(true),
-    cargarSlider(true),
-    cargarSede(true),
-    cargarDisciplinas(true),
-    cargarCategorias(true),
-    cargarBaseBiblica(true),
-    cargarVideo(true),
-    cargarPatrocinadoresVideo(true),
-    cargarNoticias(true),
-    cargarPatrocinadores(true),
-    cargarMedallero(true),
-    cargarAtletasVista(true),
-    cargarDisciplinasSelect(true),
-    cargarCategoriasSelect(true),
-    cargarFiltroCategorias(true)
+    cargarInicio(),
+    cargarSlider(),
+    cargarSede(),
+    cargarDisciplinas(),
+    cargarCategorias(),
+    cargarBaseBiblica(),
+    cargarVideo(),
+    cargarPatrocinadoresVideo(),
+    cargarNoticias(),
+    cargarPatrocinadores(),
+    cargarMedallero(),
+    cargarAtletasVista(),
+    cargarDisciplinasSelect(),
+    cargarCategoriasSelect(),
+    cargarFiltroCategorias()
   ]).then(() => {
-    console.log('✅ Todos los datos cargados correctamente desde Firebase');
+    console.log('✅ Todos los datos cargados correctamente');
   });
 
   console.log('🔑 CREDENCIALES:');
@@ -3013,7 +2893,6 @@
   console.log('📸 IMÁGENES EN BASE64 - SIN STORAGE - 100% GRATIS');
   console.log('🎵 Música de fondo automática al cargar la página');
   console.log('🔄 Botón para actualizar en tiempo real');
-  console.log('🗑️ Botón para limpiar caché y recargar');
 </script>
 </body>
 </html>
