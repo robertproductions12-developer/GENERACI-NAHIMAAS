@@ -96,7 +96,6 @@
             flex-shrink: 0;
         }
 
-        /* Botón hamburguesa */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -170,7 +169,6 @@
             box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
         }
 
-        /* ===== RESPONSIVE MÓVIL ===== */
         @media (max-width: 768px) {
             .hamburger {
                 display: flex;
@@ -212,13 +210,6 @@
                 height: 220px !important;
                 border-radius: 16px;
                 margin-top: 12px;
-            }
-
-            .slide-content h1 {
-                font-size: 1.8rem !important;
-            }
-            .slide-content p {
-                font-size: 0.9rem !important;
             }
 
             .section {
@@ -339,17 +330,19 @@
             .info-card .info-body h3 {
                 font-size: 1.2rem !important;
             }
+            .info-item-actions {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            .info-item-actions button {
+                width: 100% !important;
+                justify-content: center !important;
+            }
         }
 
         @media (max-width: 480px) {
             .hero-slider {
                 height: 180px !important;
-            }
-            .slide-content h1 {
-                font-size: 1.4rem !important;
-            }
-            .slide-content p {
-                font-size: 0.75rem !important;
             }
             .slide {
                 padding: 0 20px !important;
@@ -371,7 +364,7 @@
             }
         }
 
-        /* ===== RESTO DE ESTILOS (sin cambios) ===== */
+        /* ===== HERO SLIDER - SIN TEXTO ===== */
         .hero-slider {
             position: relative;
             width: 100%;
@@ -390,37 +383,10 @@
             transition: opacity 0.8s ease;
             background-size: cover;
             background-position: center;
-            display: flex;
-            align-items: center;
-            padding: 0 48px;
         }
 
         .slide.active {
             opacity: 1;
-        }
-
-        .slide-content {
-            max-width: 600px;
-            color: white;
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
-        }
-
-        .slide-content h1 {
-            font-size: 3.8rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff, #4ade80);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .slide-content p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            color: #d4e4f0;
         }
 
         .slider-controls {
@@ -477,6 +443,7 @@
             width: 32px;
         }
 
+        /* ===== RESTO DE ESTILOS ===== */
         .section {
             display: none;
             margin: 32px 0;
@@ -669,7 +636,7 @@
         .athlete-card.zona-2 { border-color: #f472b6; }
         .athlete-card.zona-3 { border-color: #fb923c; }
         .athlete-card.zona-4 { border-color: #a78bfa; }
-        .athlete-card.zona-5 { border-color: #fbbf24; }
+        .athlete-card.zona-5 { border-color: #22d3ee; }
 
         .athlete-card:hover {
             transform: translateY(-4px);
@@ -912,6 +879,7 @@
             padding: 16px 0;
         }
 
+        /* ===== INFO CARDS MÚLTIPLES ===== */
         .info-card {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 28px;
@@ -956,6 +924,43 @@
 
         .info-card .info-body .info-link:hover {
             text-decoration: underline;
+        }
+
+        .info-item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .info-item-actions button {
+            padding: 4px 14px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .info-item-actions .edit-info-btn {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+
+        .info-item-actions .edit-info-btn:hover {
+            background: rgba(74, 222, 128, 0.3);
+        }
+
+        .info-item-actions .delete-info-btn {
+            background: rgba(220, 50, 50, 0.2);
+            color: #dc3232;
+        }
+
+        .info-item-actions .delete-info-btn:hover {
+            background: rgba(220, 50, 50, 0.4);
         }
 
         .video-section {
@@ -1068,7 +1073,6 @@
             min-width: 180px;
         }
 
-        /* ===== NOTICIAS ===== */
         .news-item {
             background: rgba(255, 255, 255, 0.04);
             border-radius: 16px;
@@ -1139,7 +1143,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Reproductor de música flotante */
         .music-player {
             position: fixed;
             bottom: 20px;
@@ -1178,6 +1181,56 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        /* Versículo destacado */
+        .verse-box {
+            background: rgba(74, 222, 128, 0.08);
+            border: 1px solid rgba(74, 222, 128, 0.15);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .verse-box p {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #4ade80;
+            line-height: 1.6;
+        }
+
+        .verse-box .citation {
+            font-size: 0.85rem;
+            color: #8aa4c8;
+            font-style: normal;
+            margin-top: 4px;
+        }
+
+        .leaders {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 12px 0;
+        }
+
+        .leaders .leader {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .leaders .leader .name {
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .leaders .leader .role {
+            font-size: 0.75rem;
+            color: #8aa4c8;
         }
     </style>
 </head>
@@ -1272,11 +1325,28 @@
         </div>
     </div>
 
+    <!-- MODAL EDITAR INFORMACIÓN -->
+    <div class="modal-overlay" id="editInfoModal">
+        <div class="modal">
+            <button class="close-modal" id="closeEditInfoModal">&times;</button>
+            <h2 style="margin-bottom:20px; color:#e8edf5;"><i class="fas fa-edit"></i> Editar Información</h2>
+            <form id="editInfoForm">
+                <input type="hidden" id="editInfoId" />
+                <div class="form-group"><label>Título</label><input type="text" id="editInfoTitle" required /></div>
+                <div class="form-group"><label>Descripción</label><textarea id="editInfoDesc" required></textarea></div>
+                <div class="form-group"><label>Enlace (URL)</label><input type="url" id="editInfoLink" placeholder="https://ejemplo.com" /></div>
+                <div class="form-group"><label>Texto del Enlace</label><input type="text" id="editInfoLinkText" placeholder="Ver más" /></div>
+                <div class="form-group"><label>Cambiar Imagen</label><input type="file" id="editInfoImage" accept="image/*" /></div>
+                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Actualizar</button>
+            </form>
+        </div>
+    </div>
+
     <div class="container">
 
         <!-- NAVBAR -->
         <nav class="navbar">
-            <div class="logo">🏅 OLIMPIADAS 2026</div>
+            <div class="logo">🏅 OLIMPIADAS 2026 · AVCS</div>
             <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
                 <span></span>
                 <span></span>
@@ -1293,31 +1363,12 @@
 
         <!-- SECCIÓN INICIO -->
         <div id="section-home" class="section active">
+            <!-- SLIDER SIN TEXTO -->
             <div class="hero-slider" id="heroSlider">
-                <div class="slide active" style="background-image: linear-gradient(135deg, rgba(10,22,40,0.6), rgba(10,22,40,0.3)), url('https://images.unsplash.com/photo-1534430480872-5d04dc3d84e7?w=900&h=500&fit=crop&crop=center');">
-                    <div class="slide-content">
-                        <h1 id="homeTitle">OLIMPIADAS 2026</h1>
-                        <p id="homeSubtitle">AVCS · El espíritu de la competencia</p>
-                    </div>
-                </div>
-                <div class="slide" style="background-image: linear-gradient(135deg, rgba(0,20,40,0.7), rgba(0,20,40,0.2)), url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=900&h=500&fit=crop&crop=center');">
-                    <div class="slide-content">
-                        <h1>ATLETAS DE ÉLITE</h1>
-                        <p>Entrenamiento, disciplina y pasión</p>
-                    </div>
-                </div>
-                <div class="slide" style="background-image: linear-gradient(135deg, rgba(10,30,50,0.6), rgba(10,30,50,0.2)), url('https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=900&h=500&fit=crop&crop=center');">
-                    <div class="slide-content">
-                        <h1>2026 · AVCS</h1>
-                        <p>Construyendo campeones dentro y fuera del campo</p>
-                    </div>
-                </div>
-                <div class="slide" style="background-image: linear-gradient(135deg, rgba(10,22,40,0.6), rgba(10,22,40,0.3)), url('https://images.unsplash.com/photo-1517649763962-0c623066013b?w=900&h=500&fit=crop&crop=center');">
-                    <div class="slide-content">
-                        <h1>COMPETENCIA 2026</h1>
-                        <p>El mejor evento deportivo del año</p>
-                    </div>
-                </div>
+                <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1534430480872-5d04dc3d84e7?w=1200&h=600&fit=crop&crop=center');"></div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200&h=600&fit=crop&crop=center');"></div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=1200&h=600&fit=crop&crop=center');"></div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200&h=600&fit=crop&crop=center');"></div>
                 <div class="slider-dots" id="sliderDots">
                     <button class="dot active" data-index="0"></button>
                     <button class="dot" data-index="1"></button>
@@ -1330,7 +1381,25 @@
                 </div>
             </div>
 
-            <div style="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:32px 0; display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.06);">
+            <!-- VERSÍCULO MOTIVADOR -->
+            <div class="verse-box">
+                <p>"Todo lo puedo en Cristo que me fortalece"</p>
+                <div class="citation">Filipenses 4:13</div>
+            </div>
+
+            <!-- LÍDERES -->
+            <div class="leaders">
+                <div class="leader">
+                    <div class="name">Javier Parra</div>
+                    <div class="role">Coordinador General</div>
+                </div>
+                <div class="leader">
+                    <div class="name">Jesús Utrera</div>
+                    <div class="role">Líder Juvenil</div>
+                </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:24px 0; display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.06);">
                 <div><span style="font-weight:800; font-size:2.2rem; color:#4ade80;" id="statYears">15</span> <span style="font-weight:500; color:#8aa4c8;">Años de excelencia</span></div>
                 <div style="display:flex; gap:16px; flex-wrap:wrap;">
                     <span style="background:rgba(255,255,255,0.06); padding:6px 16px; border-radius:60px; color:#b0c4de;"><i class="fas fa-certificate" style="color:#4ade80;"></i> <span id="statCoaches">Entrenadores certificados</span></span>
@@ -1339,12 +1408,12 @@
             </div>
 
             <div class="grid-2col" id="homeCards">
-                <div class="card"><h3 id="card1Title" style="color:#4ade80;">500+</h3><p style="font-weight:600; font-size:1.2rem; color:#b0c4de;" id="card1Desc">Atletas activos</p></div>
+                <div class="card"><h3 id="card1Title" style="color:#4ade80;">500+</h3><p style="font-weight:600; font-size:1.2rem; color:#b0c4de;" id="card1Desc">Atletas inscritos</p></div>
                 <div class="card"><h3 id="card2Title" style="color:#4ade80;">20+</h3><p style="font-weight:600; font-size:1.2rem; color:#b0c4de;" id="card2Desc">Entrenadores profesionales</p></div>
-                <div class="card"><h3 id="card3Title" style="color:#4ade80;">🏅 Entrenamiento Básico</h3><p id="card3Desc" style="color:#b0c4de;">Fundamentos, técnica y acondicionamiento.</p></div>
-                <div class="card"><h3 id="card4Title" style="color:#4ade80;">🔥 Entrenamiento Avanzado</h3><p id="card4Desc" style="color:#b0c4de;">Preparación táctica y competencias.</p></div>
+                <div class="card"><h3 id="card3Title" style="color:#4ade80;">🏅 Entrenamiento de Élite</h3><p id="card3Desc" style="color:#b0c4de;">Técnica avanzada y preparación física de alto rendimiento.</p></div>
+                <div class="card"><h3 id="card4Title" style="color:#4ade80;">🔥 Competencia y Fe</h3><p id="card4Desc" style="color:#b0c4de;">Formando atletas con valores y espíritu de superación.</p></div>
             </div>
-            <button class="btn-primary" id="homeBtn"><i class="fas fa-calendar-check"></i> <span id="homeBtnText">Reservar una Lección</span></button>
+            <button class="btn-primary" id="homeBtn"><i class="fas fa-calendar-check"></i> <span id="homeBtnText">Inscríbete ahora</span></button>
 
             <div class="video-section">
                 <h3><i class="fas fa-video" style="color:#4ade80;"></i> Nuestros Patrocinantes</h3>
@@ -1358,7 +1427,7 @@
             </div>
         </div>
 
-        <!-- SECCIÓN INFORMACIÓN -->
+        <!-- SECCIÓN INFORMACIÓN (MÚLTIPLE) -->
         <div id="section-info" class="section">
             <h2 class="section-title"><i class="fas fa-info-circle"></i> Información</h2>
             <div id="infoContainer"></div>
@@ -1436,20 +1505,24 @@
                 </div>
             </div>
 
-            <!-- Tab Información -->
+            <!-- Tab Información (Múltiple) -->
             <div id="tabInfo" class="tab-content">
                 <div class="card">
                     <h3>Gestionar Información</h3>
+                    <p style="color:#8aa4c8; margin-bottom:16px;">Crea, edita o elimina secciones de información.</p>
+
                     <form id="infoForm">
                         <div class="form-group"><label>Título</label><input type="text" id="infoTitle" required /></div>
                         <div class="form-group"><label>Descripción</label><textarea id="infoDesc" required></textarea></div>
                         <div class="form-group"><label>Enlace (URL)</label><input type="url" id="infoLink" placeholder="https://ejemplo.com" /></div>
                         <div class="form-group"><label>Texto del Enlace</label><input type="text" id="infoLinkText" placeholder="Ver más" /></div>
                         <div class="form-group"><label>Imagen</label><input type="file" id="infoImage" accept="image/*" /></div>
-                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar Información</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus-circle"></i> Agregar Información</button>
                     </form>
-                    <div style="margin-top:16px;">
-                        <button class="btn-danger" id="deleteInfo"><i class="fas fa-trash"></i> Eliminar Información</button>
+
+                    <div style="margin-top:24px;">
+                        <h4 style="color:#b0c4de; margin-bottom:12px;">Secciones de Información</h4>
+                        <div id="infoList"></div>
                     </div>
                 </div>
             </div>
@@ -1570,16 +1643,17 @@
 
     <script>
         // ============================================================
-        // 1. CONFIGURACIÓN DE FIREBASE (REEMPLAZAR CON TUS DATOS)
+        // 1. CONFIGURACIÓN DE FIREBASE
         // ============================================================
+        // 🔥 REEMPLAZA ESTOS DATOS CON LOS DE TU PROYECTO EN FIREBASE 🔥
         const firebaseConfig = {
-            apiKey: "AIzaSyDemoKey1234567890",
-            authDomain: "tu-proyecto.firebaseapp.com",
-            databaseURL: "https://tu-proyecto-default-rtdb.firebaseio.com",
-            projectId: "tu-proyecto",
-            storageBucket: "tu-proyecto.appspot.com",
-            messagingSenderId: "1234567890",
-            appId: "1:1234567890:web:abcdef123456"
+           apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
+           authDomain: "generacionahimaas.firebaseapp.com",
+           databaseURL: "https://generacionahimaas-default-rtdb.firebaseio.com",
+           projectId: "generacionahimaas",
+           storageBucket: "generacionahimaas.firebasestorage.app",
+           messagingSenderId: "854884058832",
+           appId: "1:854884058832:web:3946c71c4e33ff37f840d5"
         };
 
         let firebaseApp, database;
@@ -1589,7 +1663,7 @@
             firebaseApp = firebase.initializeApp(firebaseConfig);
             database = firebase.database();
             firebaseReady = true;
-            console.log('🔥 Firebase conectado');
+            console.log('🔥 Firebase conectado correctamente');
         } catch (e) {
             console.warn('⚠️ Firebase no disponible, usando localStorage', e);
             firebaseReady = false;
@@ -1599,38 +1673,40 @@
         // 2. DATA PRINCIPAL
         // ============================================================
         let data = {
-            disciplinas: ['Atletismo', 'Natación', 'Fútbol', 'Baloncesto'],
+            disciplinas: ['Atletismo', 'Natación', 'Fútbol', 'Baloncesto', 'Voleibol', 'Tenis'],
             categorias: ['Infantil', 'Juvenil', 'Adulto', 'Máster'],
             atletas: [],
             noticias: [],
+            infoItems: [],
             homeContent: {
-                title: 'OLIMPIADAS 2026',
-                subtitle: 'AVCS · El espíritu de la competencia',
+                title: 'OLIMPIADAS 2026 · AVCS',
+                subtitle: 'Fe, Disciplina y Excelencia Deportiva',
                 statYears: '15',
                 statCoaches: 'Entrenadores certificados',
                 statFacilities: 'Instalaciones modernas',
                 card1Title: '500+',
-                card1Desc: 'Atletas activos',
+                card1Desc: 'Atletas inscritos',
                 card2Title: '20+',
                 card2Desc: 'Entrenadores profesionales',
-                card3Title: '🏅 Entrenamiento Básico',
-                card3Desc: 'Fundamentos, técnica y acondicionamiento.',
-                card4Title: '🔥 Entrenamiento Avanzado',
-                card4Desc: 'Preparación táctica y competencias.',
-                btnText: 'Reservar una Lección'
+                card3Title: '🏅 Entrenamiento de Élite',
+                card3Desc: 'Técnica avanzada y preparación física de alto rendimiento.',
+                card4Title: '🔥 Competencia y Fe',
+                card4Desc: 'Formando atletas con valores y espíritu de superación.',
+                btnText: 'Inscríbete ahora'
             },
-            infoContent: null,
             sliderImages: [
-                'https://images.unsplash.com/photo-1534430480872-5d04dc3d84e7?w=900&h=500&fit=crop&crop=center',
-                'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=900&h=500&fit=crop&crop=center',
-                'https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=900&h=500&fit=crop&crop=center',
-                'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=900&h=500&fit=crop&crop=center'
+                'https://images.unsplash.com/photo-1534430480872-5d04dc3d84e7?w=1200&h=600&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200&h=600&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=1200&h=600&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200&h=600&fit=crop&crop=center'
             ]
         };
 
         let currentRole = 'coordinator';
         let isAdmin = false;
         let nextId = 3;
+        let nextInfoId = 1;
+        let nextNewsId = 100;
         let isFirebaseListenerActive = false;
 
         // ============================================================
@@ -1639,14 +1715,14 @@
         function saveDataToFirebase() {
             if (!firebaseReady || !database) return;
             try {
-                const ref = database.ref('olimpiadas2026');
+                const ref = database.ref('olimpiadas2026_v2');
                 ref.update({
                     disciplinas: data.disciplinas,
                     categorias: data.categorias,
                     atletas: data.atletas,
                     noticias: data.noticias,
+                    infoItems: data.infoItems,
                     homeContent: data.homeContent,
-                    infoContent: data.infoContent,
                     sliderImages: data.sliderImages
                 }).catch(err => console.warn('Error Firebase:', err));
             } catch (e) { console.warn('Error saveDataToFirebase:', e); }
@@ -1659,7 +1735,7 @@
                 return;
             }
             try {
-                const ref = database.ref('olimpiadas2026');
+                const ref = database.ref('olimpiadas2026_v2');
                 ref.once('value', (snapshot) => {
                     const val = snapshot.val();
                     if (val) {
@@ -1667,12 +1743,16 @@
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
                         data.noticias = val.noticias || [];
+                        data.infoItems = val.infoItems || [];
                         data.homeContent = val.homeContent || data.homeContent;
-                        data.infoContent = val.infoContent || null;
                         data.sliderImages = val.sliderImages || data.sliderImages;
                         if (data.atletas.length > 0) {
                             const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                             nextId = maxId + 1;
+                        }
+                        if (data.infoItems.length > 0) {
+                            const maxInfoId = Math.max(...data.infoItems.map(i => i.id || 0));
+                            nextInfoId = maxInfoId + 1;
                         }
                         saveDataToLocalStorage();
                         if (callback) callback();
@@ -1696,7 +1776,7 @@
         function listenFirebaseChanges() {
             if (!firebaseReady || !database || isFirebaseListenerActive) return;
             try {
-                const ref = database.ref('olimpiadas2026');
+                const ref = database.ref('olimpiadas2026_v2');
                 ref.on('value', (snapshot) => {
                     const val = snapshot.val();
                     if (val) {
@@ -1704,12 +1784,16 @@
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
                         data.noticias = val.noticias || [];
+                        data.infoItems = val.infoItems || [];
                         data.homeContent = val.homeContent || data.homeContent;
-                        data.infoContent = val.infoContent || null;
                         data.sliderImages = val.sliderImages || data.sliderImages;
                         if (data.atletas.length > 0) {
                             const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                             nextId = maxId + 1;
+                        }
+                        if (data.infoItems.length > 0) {
+                            const maxInfoId = Math.max(...data.infoItems.map(i => i.id || 0));
+                            nextInfoId = maxInfoId + 1;
                         }
                         saveDataToLocalStorage();
                         applyHomeContent();
@@ -1717,6 +1801,7 @@
                         renderAthletes();
                         renderAdminAthletes();
                         renderNoticias();
+                        renderInfoList();
                         updateSliderImages();
                         populateSelectors();
                         console.log('🔄 Datos actualizados en tiempo real');
@@ -1730,25 +1815,29 @@
 
         function saveDataToLocalStorage() {
             try {
-                localStorage.setItem('olimpiadas2026_data_v6', JSON.stringify(data));
+                localStorage.setItem('olimpiadas2026_data_v7', JSON.stringify(data));
             } catch (e) {}
         }
 
         function loadDataFromLocalStorage() {
             try {
-                const stored = localStorage.getItem('olimpiadas2026_data_v6');
+                const stored = localStorage.getItem('olimpiadas2026_data_v7');
                 if (stored) {
                     const parsed = JSON.parse(stored);
                     data.disciplinas = parsed.disciplinas || data.disciplinas;
                     data.categorias = parsed.categorias || data.categorias;
                     data.atletas = parsed.atletas || [];
                     data.noticias = parsed.noticias || [];
+                    data.infoItems = parsed.infoItems || [];
                     data.homeContent = parsed.homeContent || data.homeContent;
-                    data.infoContent = parsed.infoContent || null;
                     data.sliderImages = parsed.sliderImages || data.sliderImages;
                     if (data.atletas.length > 0) {
                         const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                         nextId = maxId + 1;
+                    }
+                    if (data.infoItems.length > 0) {
+                        const maxInfoId = Math.max(...data.infoItems.map(i => i.id || 0));
+                        nextInfoId = maxInfoId + 1;
                     }
                 } else {
                     data.atletas = [{
@@ -1778,14 +1867,16 @@
                         content: 'El próximo 15 de agosto daremos inicio al evento deportivo más importante del año.',
                         date: new Date().toLocaleDateString()
                     }];
-                    data.infoContent = {
+                    data.infoItems = [{
+                        id: 1,
                         title: 'Bienvenidos a las Olimpiadas AVCS 2026',
-                        desc: 'Las Olimpiadas AVCS son el evento deportivo más importante de la región.',
+                        desc: 'Las Olimpiadas AVCS son el evento deportivo más importante de la región, donde la fe y el deporte se unen.',
                         link: 'https://olimpiadasavcs.com',
                         linkText: 'Conoce más',
                         image: 'https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=800&h=400&fit=crop'
-                    };
+                    }];
                     nextId = 3;
+                    nextInfoId = 2;
                 }
             } catch (e) {}
         }
@@ -1807,7 +1898,6 @@
             navMenu.classList.toggle('open');
         });
 
-        // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-menu a, .nav-menu .btn-login').forEach(item => {
             item.addEventListener('click', function() {
                 hamburgerBtn.classList.remove('active');
@@ -1835,10 +1925,8 @@
                 link.classList.toggle('active', link.dataset.section === sectionId);
             });
             if (sectionId === 'athletes') renderAthletes();
-            if (sectionId === 'info') { renderInfo();
-                renderNoticiasPublicas(); }
+            if (sectionId === 'info') renderInfo();
             if (sectionId === 'home') applyHomeContent();
-            // Cerrar menú móvil
             hamburgerBtn.classList.remove('active');
             navMenu.classList.remove('open');
         }
@@ -1899,8 +1987,7 @@
         function updateSliderImages() {
             slides.forEach((slide, i) => {
                 if (data.sliderImages && data.sliderImages[i]) {
-                    const gradient = 'linear-gradient(135deg, rgba(10,22,40,0.6), rgba(10,22,40,0.3))';
-                    slide.style.backgroundImage = `${gradient}, url('${data.sliderImages[i]}')`;
+                    slide.style.backgroundImage = `url('${data.sliderImages[i]}')`;
                 }
             });
         }
@@ -1930,40 +2017,44 @@
         function applyHomeContent() {
             const hc = data.homeContent;
             if (!hc) return;
-            document.getElementById('homeTitle').textContent = hc.title || 'OLIMPIADAS 2026';
-            document.getElementById('homeSubtitle').textContent = hc.subtitle || 'AVCS · El espíritu de la competencia';
+            document.getElementById('homeTitle').textContent = hc.title || 'OLIMPIADAS 2026 · AVCS';
+            document.getElementById('homeSubtitle').textContent = hc.subtitle || 'Fe, Disciplina y Excelencia Deportiva';
             document.getElementById('statYears').textContent = hc.statYears || '15';
             document.getElementById('statCoaches').textContent = hc.statCoaches || 'Entrenadores certificados';
             document.getElementById('statFacilities').textContent = hc.statFacilities || 'Instalaciones modernas';
             document.getElementById('card1Title').textContent = hc.card1Title || '500+';
-            document.getElementById('card1Desc').textContent = hc.card1Desc || 'Atletas activos';
+            document.getElementById('card1Desc').textContent = hc.card1Desc || 'Atletas inscritos';
             document.getElementById('card2Title').textContent = hc.card2Title || '20+';
             document.getElementById('card2Desc').textContent = hc.card2Desc || 'Entrenadores profesionales';
-            document.getElementById('card3Title').textContent = hc.card3Title || '🏅 Entrenamiento Básico';
-            document.getElementById('card3Desc').textContent = hc.card3Desc || 'Fundamentos, técnica y acondicionamiento.';
-            document.getElementById('card4Title').textContent = hc.card4Title || '🔥 Entrenamiento Avanzado';
-            document.getElementById('card4Desc').textContent = hc.card4Desc || 'Preparación táctica y competencias.';
-            document.getElementById('homeBtnText').textContent = hc.btnText || 'Reservar una Lección';
+            document.getElementById('card3Title').textContent = hc.card3Title || '🏅 Entrenamiento de Élite';
+            document.getElementById('card3Desc').textContent = hc.card3Desc ||
+                'Técnica avanzada y preparación física de alto rendimiento.';
+            document.getElementById('card4Title').textContent = hc.card4Title || '🔥 Competencia y Fe';
+            document.getElementById('card4Desc').textContent = hc.card4Desc ||
+                'Formando atletas con valores y espíritu de superación.';
+            document.getElementById('homeBtnText').textContent = hc.btnText || 'Inscríbete ahora';
         }
 
         // ============================================================
-        // 9. INFO + NOTICIAS PÚBLICAS
+        // 9. INFO (MÚLTIPLE)
         // ============================================================
         function renderInfo() {
             const container = document.getElementById('infoContainer');
-            const info = data.infoContent;
             let html = '';
-            if (info) {
-                html += `
-                    <div class="info-card">
-                        ${info.image ? `<img src="${info.image}" alt="${info.title}" />` : ''}
-                        <div class="info-body">
-                            <h3>${info.title}</h3>
-                            <p>${info.desc}</p>
-                            ${info.link ? `<a href="${info.link}" target="_blank" class="info-link">${info.linkText || 'Ver más'} <i class="fas fa-arrow-right"></i></a>` : ''}
+
+            if (data.infoItems && data.infoItems.length > 0) {
+                data.infoItems.forEach(item => {
+                    html += `
+                        <div class="info-card">
+                            ${item.image ? `<img src="${item.image}" alt="${item.title}" />` : ''}
+                            <div class="info-body">
+                                <h3>${item.title}</h3>
+                                <p>${item.desc}</p>
+                                ${item.link ? `<a href="${item.link}" target="_blank" class="info-link">${item.linkText || 'Ver más'} <i class="fas fa-arrow-right"></i></a>` : ''}
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
             }
 
             // Noticias públicas
@@ -1986,9 +2077,100 @@
             container.innerHTML = html || '<div class="empty-message">No hay información disponible.</div>';
         }
 
-        function renderNoticiasPublicas() {
-            // Ya se renderiza en renderInfo()
+        function renderInfoList() {
+            const container = document.getElementById('infoList');
+            if (!container) return;
+
+            if (!data.infoItems || data.infoItems.length === 0) {
+                container.innerHTML = '<div class="empty-message">No hay secciones de información creadas.</div>';
+                return;
+            }
+
+            container.innerHTML = data.infoItems.map(item => `
+                    <div class="info-card" style="padding:16px 20px;">
+                        <div class="info-body" style="padding:0;">
+                            <h4 style="font-size:1.1rem; color:#e8edf5; margin-bottom:4px;">${item.title}</h4>
+                            <p style="color:#b0c4de; font-size:0.9rem; margin-bottom:8px;">${item.desc.substring(0, 100)}${item.desc.length > 100 ? '...' : ''}</p>
+                            ${item.image ? `<div style="margin-bottom:8px;"><img src="${item.image}" style="max-height:60px; border-radius:8px; object-fit:cover;" /></div>` : ''}
+                            <div class="info-item-actions">
+                                <button class="edit-info-btn" onclick="editInfoItem(${item.id})"><i class="fas fa-edit"></i> Editar</button>
+                                <button class="delete-info-btn" onclick="deleteInfoItem(${item.id})"><i class="fas fa-trash"></i> Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
         }
+
+        window.editInfoItem = function(id) {
+            if (currentRole === 'coordinator') {
+                alert('⚠️ Los coordinadores no pueden editar información.');
+                return;
+            }
+            const item = data.infoItems.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('editInfoId').value = id;
+            document.getElementById('editInfoTitle').value = item.title || '';
+            document.getElementById('editInfoDesc').value = item.desc || '';
+            document.getElementById('editInfoLink').value = item.link || '';
+            document.getElementById('editInfoLinkText').value = item.linkText || '';
+            document.getElementById('editInfoImage').value = '';
+
+            document.getElementById('editInfoModal').classList.add('show');
+        };
+
+        document.getElementById('editInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('editInfoId').value);
+            const item = data.infoItems.find(i => i.id === id);
+            if (!item) return;
+
+            item.title = document.getElementById('editInfoTitle').value.trim();
+            item.desc = document.getElementById('editInfoDesc').value.trim();
+            item.link = document.getElementById('editInfoLink').value.trim();
+            item.linkText = document.getElementById('editInfoLinkText').value.trim();
+
+            const imageInput = document.getElementById('editInfoImage');
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    item.image = e.target.result;
+                    saveData();
+                    renderInfo();
+                    renderInfoList();
+                    document.getElementById('editInfoModal').classList.remove('show');
+                    alert('✅ Información actualizada.');
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                saveData();
+                renderInfo();
+                renderInfoList();
+                document.getElementById('editInfoModal').classList.remove('show');
+                alert('✅ Información actualizada.');
+            }
+        });
+
+        window.deleteInfoItem = function(id) {
+            if (currentRole === 'coordinator') {
+                alert('⚠️ Los coordinadores no pueden eliminar información.');
+                return;
+            }
+            if (confirm('¿Eliminar esta sección de información?')) {
+                data.infoItems = data.infoItems.filter(i => i.id !== id);
+                saveData();
+                renderInfo();
+                renderInfoList();
+                alert('✅ Información eliminada.');
+            }
+        };
+
+        document.getElementById('closeEditInfoModal').addEventListener('click', function() {
+            document.getElementById('editInfoModal').classList.remove('show');
+        });
+        document.getElementById('editInfoModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('show');
+        });
 
         // ============================================================
         // 10. ADMIN TABS
@@ -2016,7 +2198,8 @@
                 });
                 if (this.dataset.tab === 'tabRegistrar') populateSelectors();
                 if (this.dataset.tab === 'tabInicio') loadHomeForm();
-                if (this.dataset.tab === 'tabInfo') loadInfoForm();
+                if (this.dataset.tab === 'tabInfo') { loadInfoForm();
+                    renderInfoList(); }
                 if (this.dataset.tab === 'tabSlider') loadSliderForm();
                 if (this.dataset.tab === 'tabAtletas') renderAdminAthletes();
                 if (this.dataset.tab === 'tabNoticias') renderNoticias();
@@ -2092,6 +2275,7 @@
             loadSliderForm();
             renderAdminAthletes();
             renderNoticias();
+            renderInfoList();
             updateAdminTabs();
         }
 
@@ -2099,7 +2283,6 @@
             const allTabs = document.querySelectorAll('#adminTabs button');
 
             if (currentRole === 'coordinator') {
-                // Coordinador: solo ver "Registrar Atleta"
                 allTabs.forEach(tab => {
                     const tabId = tab.dataset.tab;
                     if (tabId === 'tabRegistrar') {
@@ -2109,7 +2292,6 @@
                     }
                 });
             } else {
-                // Oficial: mostrar todas
                 allTabs.forEach(tab => {
                     tab.classList.remove('hidden-tab');
                 });
@@ -2296,58 +2478,62 @@
         });
 
         // ============================================================
-        // 16. INFO FORM
+        // 16. INFO FORM (CREAR NUEVO)
         // ============================================================
         function loadInfoForm() {
-            const info = data.infoContent;
-            if (info) {
-                document.getElementById('infoTitle').value = info.title || '';
-                document.getElementById('infoDesc').value = info.desc || '';
-                document.getElementById('infoLink').value = info.link || '';
-                document.getElementById('infoLinkText').value = info.linkText || '';
-            } else {
-                document.getElementById('infoTitle').value = '';
-                document.getElementById('infoDesc').value = '';
-                document.getElementById('infoLink').value = '';
-                document.getElementById('infoLinkText').value = '';
-            }
+            document.getElementById('infoTitle').value = '';
+            document.getElementById('infoDesc').value = '';
+            document.getElementById('infoLink').value = '';
+            document.getElementById('infoLinkText').value = '';
+            document.getElementById('infoImage').value = '';
         }
 
         document.getElementById('infoForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            if (currentRole === 'coordinator') {
+                alert('⚠️ Los coordinadores no pueden agregar información.');
+                return;
+            }
+
             const title = document.getElementById('infoTitle').value.trim();
             const desc = document.getElementById('infoDesc').value.trim();
             const link = document.getElementById('infoLink').value.trim();
             const linkText = document.getElementById('infoLinkText').value.trim();
             const imageInput = document.getElementById('infoImage');
 
-            const infoData = { title, desc, link, linkText, image: data.infoContent ? data.infoContent.image : '' };
+            if (!title || !desc) {
+                alert('Título y descripción son obligatorios.');
+                return;
+            }
+
+            const newItem = {
+                id: nextInfoId++,
+                title: title,
+                desc: desc,
+                link: link || '',
+                linkText: linkText || '',
+                image: ''
+            };
 
             if (imageInput.files && imageInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    infoData.image = e.target.result;
-                    data.infoContent = infoData;
+                    newItem.image = e.target.result;
+                    data.infoItems.push(newItem);
                     saveData();
                     renderInfo();
-                    alert('✅ Información guardada.');
+                    renderInfoList();
+                    document.getElementById('infoForm').reset();
+                    alert('✅ Información agregada correctamente.');
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
-                data.infoContent = infoData;
+                data.infoItems.push(newItem);
                 saveData();
                 renderInfo();
-                alert('✅ Información guardada.');
-            }
-        });
-
-        document.getElementById('deleteInfo').addEventListener('click', function() {
-            if (confirm('¿Eliminar la información actual?')) {
-                data.infoContent = null;
-                saveData();
-                renderInfo();
-                loadInfoForm();
-                alert('✅ Información eliminada.');
+                renderInfoList();
+                document.getElementById('infoForm').reset();
+                alert('✅ Información agregada correctamente.');
             }
         });
 
@@ -2711,8 +2897,6 @@
         // ============================================================
         // 25. NOTICIAS (ADMIN)
         // ============================================================
-        let nextNewsId = 100;
-
         function renderNoticias() {
             const container = document.getElementById('newsList');
             if (!container) return;
@@ -2790,7 +2974,6 @@
 
         function initMusic() {
             try {
-                // URL de la música en GitHub (reemplazar con tu archivo)
                 const musicUrl = 'https://github.com/tu-usuario/tu-repo/raw/main/himno-avcs.mp3';
                 audio = new Audio(musicUrl);
                 audio.loop = true;
@@ -2811,7 +2994,6 @@
                     }
                 });
 
-                // Intentar reproducir automáticamente al cargar
                 audio.play().then(() => {
                     isMusicPlaying = true;
                     toggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
@@ -2819,7 +3001,6 @@
                     console.log('Autoplay bloqueado, esperando interacción del usuario');
                 });
 
-                // Reproducir cuando el usuario haga clic en cualquier parte (para móviles)
                 document.addEventListener('click', function playOnInteraction() {
                     if (audio && !isMusicPlaying) {
                         audio.play().then(() => {
@@ -2870,7 +3051,6 @@
                 loadAdminData();
             });
 
-            // Iniciar música
             initMusic();
         }
 
