@@ -66,6 +66,11 @@
       font-size: 1.2rem;
     }
 
+    /* REPRODUCTOR DE MÚSICA - OCULTO */
+    #musicaFondo {
+      display: none;
+    }
+
     .menu-wrapper {
       position: relative;
       display: inline-block;
@@ -177,6 +182,34 @@
       border-bottom: 3px dashed #CDF22B;
       padding-bottom: 0.5rem;
       margin-bottom: 1.2rem;
+    }
+
+    /* BOTÓN ACTUALIZAR EN TIEMPO REAL */
+    .btn-actualizar {
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 2px solid #1a7a42;
+    }
+    .btn-actualizar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(46,204,113,0.4);
+    }
+    .btn-actualizar.rotating {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     /* SLIDER */
@@ -400,99 +433,88 @@
       color: #4a6a8a;
     }
 
-    /* MEDALLERO */
+    /* MEDALLERO - ESTILO IMAGEN */
     .medallero-container {
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 0.3rem;
       margin-top: 1.5rem;
-    }
-    .medallero-fila {
-      display: flex;
-      align-items: center;
-      padding: 0.8rem 1.5rem;
-      background: #f8faff;
-      border-radius: 16px;
-      border-left: 6px solid #1E45FB;
-      transition: 0.3s;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      position: relative;
+      background: #ffffff;
+      border-radius: 20px;
       overflow: hidden;
+      border: 2px solid #dde6f0;
     }
-    .medallero-fila::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transform: translateX(-100%);
-      transition: 0.5s;
+    .medallero-header {
+      display: grid;
+      grid-template-columns: 60px 1fr 120px 80px;
+      padding: 0.8rem 1.5rem;
+      background: #1a2e42;
+      color: #CDF22B;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    .medallero-fila:hover::before {
-      transform: translateX(100%);
+    .medallero-header span:last-child { text-align: right; }
+    .medallero-fila {
+      display: grid;
+      grid-template-columns: 60px 1fr 120px 80px;
+      padding: 0.7rem 1.5rem;
+      background: #f8faff;
+      border-bottom: 1px solid #eef2f6;
+      transition: 0.3s;
+      align-items: center;
     }
     .medallero-fila:hover {
-      transform: translateX(6px);
-      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      background: #eef4fc;
+      transform: translateX(5px);
     }
     .medallero-fila .posicion {
-      font-size: 1.8rem;
       font-weight: 900;
-      min-width: 70px;
       color: #1E45FB;
+      font-size: 1.2rem;
       font-family: 'Segoe UI', sans-serif;
     }
     .medallero-fila .zona-info {
-      flex: 1;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.8rem;
     }
     .medallero-fila .zona-circulo {
-      width: 50px;
-      height: 50px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
       color: white;
-      font-size: 1.4rem;
-      border: 3px solid rgba(26,46,66,0.2);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-      transition: 0.3s;
-    }
-    .medallero-fila:hover .zona-circulo {
-      transform: scale(1.08) rotate(5deg);
+      font-size: 0.9rem;
+      border: 2px solid rgba(26,46,66,0.2);
+      flex-shrink: 0;
     }
     .medallero-fila .zona-nombre {
-      font-weight: 700;
-      font-size: 1.1rem;
+      font-weight: 600;
       color: #1a2e42;
+      font-size: 0.95rem;
     }
     .medallero-fila .medallas {
       display: flex;
-      gap: 1.5rem;
-      font-size: 1.5rem;
-      background: rgba(255,255,255,0.85);
-      padding: 0.3rem 1.2rem;
-      border-radius: 60px;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      gap: 0.8rem;
+      font-size: 1.2rem;
+      justify-content: center;
     }
     .medallero-fila .medallas span {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.2rem;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: #1a2e42;
     }
     .medallero-fila .medallas .count {
-      font-size: 1.1rem;
-      min-width: 22px;
+      font-size: 0.95rem;
+      min-width: 18px;
       font-weight: 800;
     }
     .medallero-fila .medalla-oro .count { color: #f1c40f; }
@@ -501,31 +523,22 @@
     .medallero-fila .puntos {
       font-weight: 700;
       color: #1E45FB;
-      min-width: 80px;
       text-align: right;
-      font-size: 1.1rem;
-      background: rgba(30,69,251,0.08);
-      padding: 0.2rem 0.8rem;
-      border-radius: 40px;
+      font-size: 1rem;
     }
     .medallero-fila.primero {
       background: linear-gradient(90deg, #fef9e7, #fdf2d0);
-      border-left-color: #f1c40f;
-      box-shadow: 0 3px 20px rgba(241,196,15,0.2);
     }
     .medallero-fila.primero .posicion { color: #f1c40f; }
-    .medallero-fila.primero .puntos { background: rgba(241,196,15,0.15); color: #b7950b; }
+    .medallero-fila.primero .puntos { color: #b7950b; }
     .medallero-fila.segundo {
       background: linear-gradient(90deg, #f8f9fa, #e8eaed);
-      border-left-color: #bdc3c7;
     }
     .medallero-fila.segundo .posicion { color: #95a5a6; }
     .medallero-fila.tercero {
       background: linear-gradient(90deg, #fdf2e9, #fad7b3);
-      border-left-color: #e67e22;
     }
     .medallero-fila.tercero .posicion { color: #e67e22; }
-    .medallero-fila.tercero .puntos { background: rgba(230,126,34,0.15); color: #b9770e; }
 
     /* VIDEO */
     .video-container {
@@ -1115,8 +1128,11 @@
       .footer .social { gap: 1rem; }
       .login-options { flex-direction: column; }
       .slider-container { height: 300px; }
-      .medallero-fila { flex-wrap: wrap; gap: 0.5rem; }
-      .medallero-fila .medallas { width: 100%; justify-content: center; }
+      .medallero-header { grid-template-columns: 40px 1fr 100px 60px; font-size: 0.7rem; padding: 0.5rem 1rem; }
+      .medallero-fila { grid-template-columns: 40px 1fr 100px 60px; padding: 0.5rem 1rem; gap: 0.3rem; }
+      .medallero-fila .posicion { font-size: 1rem; }
+      .medallero-fila .medallas { font-size: 1rem; gap: 0.4rem; }
+      .medallero-fila .zona-circulo { width: 28px; height: 28px; font-size: 0.8rem; }
       .seccion h2 { font-size: 1.8rem; }
       .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
       .atleta-grid-item .atleta-img { height: 150px; }
@@ -1127,11 +1143,23 @@
       .seccion h2 { font-size: 1.5rem; }
       .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
       .atleta-grid-item .atleta-img { height: 120px; }
+      .medallero-header { grid-template-columns: 30px 1fr 80px 50px; font-size: 0.6rem; padding: 0.3rem 0.8rem; }
+      .medallero-fila { grid-template-columns: 30px 1fr 80px 50px; padding: 0.3rem 0.8rem; }
+      .medallero-fila .posicion { font-size: 0.8rem; }
+      .medallero-fila .medallas { font-size: 0.8rem; gap: 0.3rem; }
+      .medallero-fila .zona-circulo { width: 24px; height: 24px; font-size: 0.7rem; }
     }
   </style>
 </head>
 <body>
 <div class="app" id="app">
+
+  <!-- REPRODUCTOR DE MÚSICA (OCULTO) -->
+  <audio id="musicaFondo" loop preload="auto">
+    <source src="tu-musica.mp3" type="audio/mpeg">
+    <!-- URL alternativa desde GitHub -->
+    <source src="https://raw.githubusercontent.com/tu-usuario/tu-repo/main/musica-fondo.mp3" type="audio/mpeg">
+  </audio>
 
   <!-- ADMIN LOGIN OVERLAY -->
   <div class="admin-login-overlay" id="adminLoginOverlay">
@@ -1307,6 +1335,11 @@
         <div id="adminContent" class="admin-content-hidden">
 
           <div id="roleIndicator" class="login-role-indicator" style="display:none;"></div>
+
+          <!-- BOTÓN ACTUALIZAR EN TIEMPO REAL -->
+          <button class="btn-actualizar" id="btnActualizar">
+            🔄 Actualizar Datos en Tiempo Real
+          </button>
 
           <!-- EDITOR SLIDER -->
           <div class="admin-editor">
@@ -1494,14 +1527,37 @@
 </div>
 
 <script>
+  // ============ REPRODUCTOR DE MÚSICA ============
+  function iniciarMusica() {
+    const audio = document.getElementById('musicaFondo');
+    audio.volume = 0.3;
+    audio.play().catch(() => {
+      console.log('La música se reproducirá cuando el usuario interactúe');
+    });
+  }
+
+  // Iniciar música al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    // Intentar reproducir automáticamente
+    iniciarMusica();
+    
+    // Si falla el autoplay, iniciar con cualquier clic
+    document.addEventListener('click', function() {
+      const audio = document.getElementById('musicaFondo');
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      }
+    }, { once: true });
+  });
+
   // ============ FIREBASE CONFIG (SOLO DATABASE) ============
   const firebaseConfig = {
-     apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
-     authDomain: "generacionahimaas.firebaseapp.com",
-     projectId: "generacionahimaas",
-     storageBucket: "generacionahimaas.firebasestorage.app",
-     messagingSenderId: "854884058832",
-     appId: "1:854884058832:web:3946c71c4e33ff37f840d5"
+    apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
+    authDomain: "generacionahimaas.firebaseapp.com",
+    projectId: "generacionahimaas",
+    storageBucket: "generacionahimaas.firebasestorage.app",
+    messagingSenderId: "854884058832",
+    appId: "1:854884058832:web:3946c71c4e33ff37f840d5"
   };
 
   let useFirebase = true;
@@ -1601,6 +1657,40 @@
       }
     });
   }
+
+  // ============ FUNCIÓN ACTUALIZAR EN TIEMPO REAL ============
+  function actualizarTodo() {
+    const btn = document.getElementById('btnActualizar');
+    btn.classList.add('rotating');
+    btn.textContent = '🔄 Actualizando...';
+    
+    Promise.all([
+      cargarInicio(),
+      cargarSlider(),
+      cargarSede(),
+      cargarDisciplinas(),
+      cargarCategorias(),
+      cargarBaseBiblica(),
+      cargarVideo(),
+      cargarPatrocinadoresVideo(),
+      cargarNoticias(),
+      cargarPatrocinadores(),
+      cargarMedallero(),
+      cargarAtletasVista(),
+      cargarDisciplinasSelect(),
+      cargarCategoriasSelect(),
+      cargarFiltroCategorias()
+    ]).then(() => {
+      btn.classList.remove('rotating');
+      btn.textContent = '🔄 Actualizar Datos en Tiempo Real';
+      showToast('✅ Todos los datos actualizados en tiempo real');
+    }).catch(() => {
+      btn.classList.remove('rotating');
+      btn.textContent = '🔄 Actualizar Datos en Tiempo Real';
+    });
+  }
+
+  document.getElementById('btnActualizar').addEventListener('click', actualizarTodo);
 
   // ============ CREDENCIALES ============
   const ADMIN_USER = "admin";
@@ -1781,9 +1871,10 @@
   let sliderInterval;
 
   function cargarSlider() {
-    obtenerData('slider').then(data => {
+    return obtenerData('slider').then(data => {
       sliderImages = data || localData.slider;
       actualizarSlider();
+      return true;
     });
   }
 
@@ -1863,7 +1954,7 @@
 
   // ============ SLIDER ADMIN (BASE64) ============
   function cargarSliderAdmin() {
-    obtenerData('slider').then(data => {
+    return obtenerData('slider').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminSliderList');
       if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return; }
@@ -1874,6 +1965,7 @@
           ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarSliderImage(${i})">✕</button>` : ''}
         </div>
       `).join('');
+      return true;
     });
   }
 
@@ -1934,7 +2026,7 @@
 
   // ============ SEDE ADMIN (BASE64) ============
   function cargarSedeAdmin() {
-    obtenerData('sede').then(data => {
+    return obtenerData('sede').then(data => {
       const container = document.getElementById('adminSedeList');
       if (!data || !data.titulo) {
         container.innerHTML = '<p>No hay sede configurada.</p>';
@@ -1952,6 +2044,7 @@
       `;
       document.getElementById('editSedeTitulo').value = data.titulo || '';
       document.getElementById('editSedeTexto').value = data.texto || '';
+      return true;
     });
   }
 
@@ -1989,7 +2082,7 @@
 
   // ============ CARGAR SELECTORES ============
   function cargarDisciplinasSelect() {
-    obtenerData('disciplinas').then(data => {
+    return obtenerData('disciplinas').then(data => {
       const select = document.getElementById('disciplinaAtleta');
       const lista = data || [];
       select.innerHTML = '<option value="">Selecciona una disciplina...</option>';
@@ -1999,11 +2092,12 @@
         opt.textContent = d;
         select.appendChild(opt);
       });
+      return true;
     });
   }
 
   function cargarCategoriasSelect() {
-    obtenerData('categorias').then(data => {
+    return obtenerData('categorias').then(data => {
       const select = document.getElementById('categoriaAtleta');
       const lista = data || [];
       select.innerHTML = '<option value="">Selecciona una categoría...</option>';
@@ -2013,11 +2107,12 @@
         opt.textContent = d;
         select.appendChild(opt);
       });
+      return true;
     });
   }
 
   function cargarFiltroCategorias() {
-    obtenerData('categorias').then(data => {
+    return obtenerData('categorias').then(data => {
       const select = document.getElementById('filtroCategoria');
       const lista = data || [];
       select.innerHTML = '<option value="">Todas las categorías</option>';
@@ -2027,57 +2122,62 @@
         opt.textContent = d;
         select.appendChild(opt);
       });
+      return true;
     });
   }
 
   // ============ CARGAR INICIO ============
   function cargarInicio() {
-    obtenerData('inicio').then(data => {
+    return obtenerData('inicio').then(data => {
       const d = data || {};
       document.getElementById('inicioTexto').innerHTML = d.texto || 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.';
       document.getElementById('editInicioTexto').value = d.texto || '';
+      return true;
     });
   }
 
   // ============ CARGAR SEDE ============
   function cargarSede() {
-    obtenerData('sede').then(data => {
+    return obtenerData('sede').then(data => {
       const d = data || {};
       const container = document.getElementById('sedeContenido');
       if (!d.titulo && !d.texto) {
         container.innerHTML = '<p style="color:#7a8a9e;">No hay sede configurada.</p>';
-        return;
+        return true;
       }
       let html = `<h3>${d.titulo || 'Ciudad AVCS'}</h3><p>${d.texto || 'Estadio Olímpico Generación Ahimaas. Capacidad: 45.000 espectadores.'}</p>`;
       if (d.imagenUrl) html += `<img src="${d.imagenUrl}" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-top:0.8rem;" />`;
       container.innerHTML = html;
+      return true;
     });
   }
 
   // ============ CARGAR DISCIPLINAS ============
   function cargarDisciplinas() {
-    obtenerData('disciplinas').then(data => {
+    return obtenerData('disciplinas').then(data => {
       const lista = data || [];
       const container = document.getElementById('disciplinasContenido');
       if (!lista.length) {
         container.innerHTML = '<div class="disciplina-item"><span class="check">✅</span> Atletismo - 100m, 200m, 400m</div><div class="disciplina-item"><span class="check">✅</span> Natación - 50m, 100m, relevos</div><div class="disciplina-item"><span class="check">✅</span> Gimnasia - artística y rítmica</div>';
-        return;
+        return true;
       }
       container.innerHTML = lista.map(d => `<div class="disciplina-item"><span class="check">✅</span> ${d}</div>`).join('');
+      return true;
     });
   }
 
   function cargarDisciplinasAdmin() {
-    obtenerData('disciplinas').then(data => {
+    return obtenerData('disciplinas').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminDisciplinasList');
-      if (!lista.length) { container.innerHTML = '<p>No hay disciplinas.</p>'; return; }
+      if (!lista.length) { container.innerHTML = '<p>No hay disciplinas.</p>'; return true; }
       container.innerHTML = lista.map((d, i) => `
         <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:40px;">
           <span>✅ ${d}</span>
           ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarDisciplina(${i})" style="margin-left:auto;">✕</button>` : ''}
         </div>
       `).join('');
+      return true;
     });
   }
 
@@ -2114,28 +2214,30 @@
 
   // ============ CARGAR CATEGORÍAS ============
   function cargarCategorias() {
-    obtenerData('categorias').then(data => {
+    return obtenerData('categorias').then(data => {
       const lista = data || [];
       const container = document.getElementById('categoriasContenido');
       if (!lista.length) {
         container.innerHTML = '<div class="disciplina-item"><span class="check">✅</span> Sub-15</div><div class="disciplina-item"><span class="check">✅</span> Sub-17</div><div class="disciplina-item"><span class="check">✅</span> Sub-20</div><div class="disciplina-item"><span class="check">✅</span> Abierta</div>';
-        return;
+        return true;
       }
       container.innerHTML = lista.map(d => `<div class="disciplina-item"><span class="check">✅</span> ${d}</div>`).join('');
+      return true;
     });
   }
 
   function cargarCategoriasAdmin() {
-    obtenerData('categorias').then(data => {
+    return obtenerData('categorias').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminCategoriasList');
-      if (!lista.length) { container.innerHTML = '<p>No hay categorías.</p>'; return; }
+      if (!lista.length) { container.innerHTML = '<p>No hay categorías.</p>'; return true; }
       container.innerHTML = lista.map((d, i) => `
         <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:40px;">
           <span>🏷️ ${d}</span>
           ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarCategoria(${i})" style="margin-left:auto;">✕</button>` : ''}
         </div>
       `).join('');
+      return true;
     });
   }
 
@@ -2174,12 +2276,12 @@
 
   // ============ CARGAR BASE BÍBLICA ============
   function cargarBaseBiblica() {
-    obtenerData('basebiblica').then(data => {
+    return obtenerData('basebiblica').then(data => {
       const lista = data || [];
       const container = document.getElementById('baseBiblicaContenido');
       if (!lista.length) {
         container.innerHTML = '<div class="base-biblica-item"><div class="titulo">Dios está con nosotros</div><div class="texto">Esforzaos y cobrad ánimo; no temáis... porque Jehová tu Dios es el que va contigo.</div><div class="referencia">Deuteronomio 31:8</div></div>';
-        return;
+        return true;
       }
       container.innerHTML = lista.map(item => `
         <div class="base-biblica-item">
@@ -2188,14 +2290,15 @@
           <div class="referencia">${item.referencia || ''}</div>
         </div>
       `).join('');
+      return true;
     });
   }
 
   function cargarBaseBiblicaAdmin() {
-    obtenerData('basebiblica').then(data => {
+    return obtenerData('basebiblica').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminBaseBiblicaList');
-      if (!lista.length) { container.innerHTML = '<p>No hay bases bíblicas.</p>'; return; }
+      if (!lista.length) { container.innerHTML = '<p>No hay bases bíblicas.</p>'; return true; }
       container.innerHTML = lista.map((item, i) => `
         <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:16px; border:1px solid #dde6f0;">
           <div style="flex:1;">
@@ -2206,6 +2309,7 @@
           ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarBaseBiblica(${i})">✕</button>` : ''}
         </div>
       `).join('');
+      return true;
     });
   }
 
@@ -2245,36 +2349,38 @@
 
   // ============ CARGAR VIDEO ============
   function cargarVideo() {
-    obtenerData('video').then(data => {
+    return obtenerData('video').then(data => {
       const d = data || {};
       const iframe = document.getElementById('videoIframe');
       if (d.url) iframe.src = d.url;
       document.getElementById('videoTexto').innerHTML = d.texto || '';
       document.getElementById('editVideoUrl').value = d.url || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
       document.getElementById('editVideoTexto').value = d.texto || '';
+      return true;
     });
   }
 
   // ============ CARGAR VIDEO PATROCINADORES ============
   function cargarPatrocinadoresVideo() {
-    obtenerData('patrocinadoresVideo').then(data => {
+    return obtenerData('patrocinadoresVideo').then(data => {
       const d = data || {};
       const iframe = document.getElementById('patrocinadoresVideo');
       if (d.url) iframe.src = d.url;
       document.getElementById('patrocinadoresTexto').innerHTML = d.texto || '';
       document.getElementById('editPatrocinadoresVideo').value = d.url || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
       document.getElementById('editPatrocinadoresTexto').value = d.texto || '';
+      return true;
     });
   }
 
   // ============ NOTICIAS ============
   function cargarNoticias() {
-    obtenerData('noticias').then(data => {
+    return obtenerData('noticias').then(data => {
       const lista = data || [];
       const container = document.getElementById('noticiasContenido');
       if (!lista.length) {
         container.innerHTML = '<div class="noticias-grid"><div class="noticia-card" style="background:#f0f5fe; display:flex; align-items:center; justify-content:center; color:#7a8a9e;">No hay noticias disponibles</div></div>';
-        return;
+        return true;
       }
       container.innerHTML = `<div class="noticias-grid">${lista.map((n) => `
         <div class="noticia-card">
@@ -2285,14 +2391,15 @@
           </div>
         </div>
       `).join('')}</div>`;
+      return true;
     });
   }
 
   function cargarNoticiasAdmin() {
-    obtenerData('noticias').then(data => {
+    return obtenerData('noticias').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminNoticiasList');
-      if (!lista.length) { container.innerHTML = '<p>No hay noticias.</p>'; return; }
+      if (!lista.length) { container.innerHTML = '<p>No hay noticias.</p>'; return true; }
       container.innerHTML = lista.map((n, i) => `
         <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:16px; border:1px solid #dde6f0;">
           <img src="${n.imagen || 'https://via.placeholder.com/50x50?text=Img'}" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" />
@@ -2300,6 +2407,7 @@
           ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarNoticia(${i})">✕</button>` : ''}
         </div>
       `).join('');
+      return true;
     });
   }
 
@@ -2355,13 +2463,13 @@
 
   // ============ PATROCINADORES ============
   function cargarPatrocinadores() {
-    obtenerData('patrocinadores').then(data => {
+    return obtenerData('patrocinadores').then(data => {
       const lista = data || [];
       const track = document.getElementById('patrocinadoresTrack');
       if (!lista.length) {
         track.innerHTML = '<p style="padding:1rem; color:#aabbcc;">No hay patrocinadores registrados.</p>';
         track.style.animation = 'none';
-        return;
+        return true;
       }
       const items = lista.map(p => `
         <div class="patrocinador-item">
@@ -2373,14 +2481,15 @@
       `).join('');
       track.innerHTML = items + items;
       track.style.animation = 'scrollPatrocinadores 30s linear infinite';
+      return true;
     });
   }
 
   function cargarPatrocinadoresAdmin() {
-    obtenerData('patrocinadores').then(data => {
+    return obtenerData('patrocinadores').then(data => {
       const lista = data || [];
       const container = document.getElementById('adminPatrocinadoresList');
-      if (!lista.length) { container.innerHTML = '<p>No hay patrocinadores.</p>'; return; }
+      if (!lista.length) { container.innerHTML = '<p>No hay patrocinadores.</p>'; return true; }
       container.innerHTML = lista.map((p, i) => `
         <div class="patrocinador-admin">
           <img src="${p.icono || 'https://via.placeholder.com/40x40?text=Logo'}" />
@@ -2392,6 +2501,7 @@
           ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarPatrocinador(${i})">✕</button>` : ''}
         </div>
       `).join('');
+      return true;
     });
   }
 
@@ -2449,10 +2559,12 @@
 
   // ============ MEDALLERO ============
   function cargarMedallero() {
-    obtenerData('medallas').then(medallas => {
+    return obtenerData('medallas').then(medallas => {
       const m = medallas || {};
       const zonas = ['1','2','3','4','5'];
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
+      const colores = { '1':'#2ecc71','2':'#e74c8b','3':'#f39c12','4':'#8e44ad','5':'#f1c40f' };
+      
       const resultados = zonas.map(z => {
         const d = m[z] || { oro:0, plata:0, bronce:0 };
         const total = (d.oro||0)*3 + (d.plata||0)*2 + (d.bronce||0)*1;
@@ -2461,13 +2573,23 @@
       resultados.sort((a,b) => b.total - a.total || b.oro - a.oro);
 
       const container = document.getElementById('medalleroContainer');
-      const colores = { '1':'#2ecc71','2':'#e74c8b','3':'#f39c12','4':'#8e44ad','5':'#f1c40f' };
       const medallaEmoji = { oro:'🥇', plata:'🥈', bronce:'🥉' };
       const clasesPos = ['primero', 'segundo', 'tercero'];
 
-      container.innerHTML = resultados.map((r,i) => `
-        <div class="medallero-fila ${clasesPos[i] || ''}" style="border-left-color:${colores[r.zona]};">
-          <div class="posicion">#${i+1}</div>
+      // Header
+      let html = `
+        <div class="medallero-header">
+          <span>#</span>
+          <span>Zona</span>
+          <span>Medallas</span>
+          <span>Pts</span>
+        </div>
+      `;
+
+      // Filas
+      html += resultados.map((r,i) => `
+        <div class="medallero-fila ${clasesPos[i] || ''}" style="border-left: 4px solid ${colores[r.zona]};">
+          <div class="posicion">${i+1}</div>
           <div class="zona-info">
             <div class="zona-circulo" style="background:${colores[r.zona]};">${r.zona}</div>
             <div class="zona-nombre">${zonaNombres[r.zona]}</div>
@@ -2477,15 +2599,18 @@
             <span class="medalla-plata">${medallaEmoji.plata} <span class="count">${r.plata||0}</span></span>
             <span class="medalla-bronce">${medallaEmoji.bronce} <span class="count">${r.bronce||0}</span></span>
           </div>
-          <div class="puntos">${r.total} pts</div>
+          <div class="puntos">${r.total}</div>
         </div>
       `).join('');
+
+      container.innerHTML = html;
+      return true;
     });
   }
 
   // ============ MEDALLAS ADMIN ============
   function cargarMedallasAdmin() {
-    obtenerData('medallas').then(data => {
+    return obtenerData('medallas').then(data => {
       const m = data || {};
       const container = document.getElementById('adminMedallasList');
       const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
@@ -2502,6 +2627,7 @@
         </div>`;
       }
       container.innerHTML = html;
+      return true;
     });
   }
 
@@ -2584,15 +2710,16 @@
   };
 
   function cargarAtletasVista() {
-    obtenerData('atletas').then(data => {
+    return obtenerData('atletas').then(data => {
       renderAtletas(data);
+      return true;
     });
   }
 
   function cargarAtletasAdmin() {
-    obtenerData('atletas').then(data => {
+    return obtenerData('atletas').then(data => {
       const container = document.getElementById('adminAtletasList');
-      if (!data || Object.keys(data).length === 0) { container.innerHTML = '<p>No hay atletas registrados.</p>'; return; }
+      if (!data || Object.keys(data).length === 0) { container.innerHTML = '<p>No hay atletas registrados.</p>'; return true; }
       let html = '';
       Object.keys(data).forEach(key => {
         const a = data[key];
@@ -2611,6 +2738,7 @@
         `;
       });
       container.innerHTML = html;
+      return true;
     });
   }
 
@@ -2665,7 +2793,6 @@
       });
     };
 
-    // Convertir imagen a Base64 (NO usa Firebase Storage)
     if (file) {
       const reader = new FileReader();
       reader.onload = function(e) {
@@ -2687,7 +2814,6 @@
     });
   });
 
-  // ============ GUARDAR SEDE (BASE64) ============
   document.getElementById('guardarSede').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
     const titulo = document.getElementById('editSedeTitulo').value;
@@ -2741,26 +2867,32 @@
   document.getElementById('filtroCategoria').addEventListener('change', cargarAtletasVista);
 
   // ============ INICIALIZAR ============
-  cargarInicio();
-  cargarSlider();
-  cargarSede();
-  cargarDisciplinas();
-  cargarCategorias();
-  cargarBaseBiblica();
-  cargarVideo();
-  cargarPatrocinadoresVideo();
-  cargarNoticias();
-  cargarPatrocinadores();
-  cargarMedallero();
-  cargarAtletasVista();
-  cargarDisciplinasSelect();
-  cargarCategoriasSelect();
-  cargarFiltroCategorias();
+  Promise.all([
+    cargarInicio(),
+    cargarSlider(),
+    cargarSede(),
+    cargarDisciplinas(),
+    cargarCategorias(),
+    cargarBaseBiblica(),
+    cargarVideo(),
+    cargarPatrocinadoresVideo(),
+    cargarNoticias(),
+    cargarPatrocinadores(),
+    cargarMedallero(),
+    cargarAtletasVista(),
+    cargarDisciplinasSelect(),
+    cargarCategoriasSelect(),
+    cargarFiltroCategorias()
+  ]).then(() => {
+    console.log('✅ Todos los datos cargados correctamente');
+  });
 
   console.log('🔑 CREDENCIALES:');
   console.log('   OFICIAL - Usuario: admin | Contraseña: Olimpiadas2026!');
   console.log('   COORDINADOR - Usuario: coord | Contraseña: coord2026');
   console.log('📸 IMÁGENES EN BASE64 - SIN STORAGE - 100% GRATIS');
+  console.log('🎵 Música de fondo automática al cargar la página');
+  console.log('🔄 Botón para actualizar en tiempo real');
 </script>
 </body>
 </html>
