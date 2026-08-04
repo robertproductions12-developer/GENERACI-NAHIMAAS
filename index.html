@@ -1,0 +1,2760 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+  <title>Olimpiadas 2026 · AVCS</title>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: #f0f3f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+    }
+    .app {
+      max-width: 1400px;
+      width: 100%;
+      background: #ffffff;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* HEADER */
+    .header-fixed {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, rgba(11,31,48,0.95) 0%, rgba(30,69,251,0.9) 100%);
+      padding: 0.8rem 2rem;
+      border-bottom: 4px solid #CDF22B;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+    }
+    .logo h1 span {
+      color: #CDF22B;
+      background: rgba(30,69,251,0.7);
+      padding: 0 0.6rem;
+      border-radius: 30px;
+      font-size: 1.2rem;
+    }
+
+    .menu-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .menu-toggle {
+      background: #CDF22B;
+      color: #0b1f30;
+      border: none;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .menu-toggle:hover { background: #ffffff; transform: scale(0.97); }
+    .menu-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 3.2rem;
+      background: white;
+      min-width: 220px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid #eef2f6;
+      padding: 0.5rem 0;
+      z-index: 100;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .menu-dropdown.active { display: block; }
+    .menu-dropdown button {
+      background: transparent;
+      border: none;
+      padding: 0.7rem 1.8rem;
+      width: 100%;
+      text-align: left;
+      font-weight: 500;
+      color: #1a2e42;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      cursor: pointer;
+      border-left: 4px solid transparent;
+    }
+    .menu-dropdown button:hover {
+      background: #f0f5ff;
+      border-left-color: #1E45FB;
+      color: #1E45FB;
+    }
+    .menu-dropdown button.active-sec {
+      background: #e8f0fe;
+      border-left-color: #CDF22B;
+      font-weight: 600;
+    }
+
+    .hero-static {
+      background: #ffffff;
+      padding: 0.3rem 1.5rem;
+      text-align: center;
+      border-bottom: 2px solid #CDF22B;
+    }
+    .hero-static h2 {
+      font-size: clamp(1.8rem, 6vw, 3.5rem);
+      font-weight: 800;
+      color: #1E45FB;
+      letter-spacing: 3px;
+      line-height: 1.2;
+    }
+    .hero-static h2 small {
+      color: #CDF22B;
+      background: #1E45FB;
+      padding: 0 1rem;
+      border-radius: 60px;
+      font-size: 1.4rem;
+      display: inline-block;
+    }
+
+    .main-content {
+      padding: 1.8rem 2rem 2rem;
+      background: #ffffff;
+      flex:1;
+    }
+
+    .seccion {
+      display: none;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 1.5rem;
+      border-left: 8px solid #1E45FB;
+      border-right: 8px solid #CDF22B;
+      min-height: 200px;
+      scroll-margin-top: 100px;
+      animation: fadeInSection 0.5s ease;
+    }
+    @keyframes fadeInSection {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .seccion.active-seccion { display: block; }
+    .seccion h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1E45FB;
+      border-bottom: 3px dashed #CDF22B;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    /* SLIDER */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+      border-radius: 16px;
+      margin: 1rem 0;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    .slider-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .slider-slide {
+      min-width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .slider-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .slider-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.8rem;
+      z-index: 10;
+    }
+    .slider-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: 0.3s;
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+    .slider-dot.active {
+      background: #CDF22B;
+      transform: scale(1.3);
+    }
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      transition: 0.3s;
+      z-index: 10;
+    }
+    .slider-btn:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .slider-btn.prev { left: 10px; }
+    .slider-btn.next { right: 10px; }
+
+    .inicio-texto { 
+      font-size: 1.1rem; 
+      line-height: 1.8; 
+      color: #1a2e42; 
+      padding: 1rem 0;
+    }
+
+    /* ATLETAS - GRID DE CUADROS */
+    .atletas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .atleta-grid-item {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      border: 2px solid #eef2f6;
+    }
+    .atleta-grid-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+      border-color: #1E45FB;
+    }
+    .atleta-grid-item .atleta-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #eef4fc;
+      display: block;
+    }
+    .atleta-grid-item .atleta-nombre {
+      padding: 0.8rem 0.6rem;
+      text-align: center;
+      font-weight: 600;
+      color: #1a2e42;
+      font-size: 0.95rem;
+      background: #f8faff;
+      border-top: 1px solid #eef2f6;
+    }
+    .atleta-grid-item .atleta-zona {
+      display: inline-block;
+      padding: 0.15rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-top: 0.2rem;
+    }
+    .zona-1 { background: #d5f5e3; color: #1a7a42; }
+    .zona-2 { background: #fce4ec; color: #a9325e; }
+    .zona-3 { background: #fdebd0; color: #b9770e; }
+    .zona-4 { background: #ebdef0; color: #6c3483; }
+    .zona-5 { background: #fef9e7; color: #b7950b; }
+
+    .filtros-atletas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      background: #f5f8fe;
+      padding: 1rem;
+      border-radius: 60px;
+      align-items: center;
+    }
+    .filtros-atletas input, .filtros-atletas select {
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      border: 2px solid #dde6f0;
+      font-size: 0.95rem;
+      background: white;
+      flex: 1;
+      min-width: 150px;
+    }
+    .filtros-atletas input:focus, .filtros-atletas select:focus {
+      outline: none;
+      border-color: #1E45FB;
+      box-shadow: 0 0 0 4px rgba(30,69,251,0.1);
+    }
+
+    /* MODAL ATLETA */
+    .atleta-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+    .atleta-modal.active { display: flex; }
+    .atleta-modal-content {
+      background: white;
+      border-radius: 30px;
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalFadeIn 0.3s ease;
+      border: 4px solid #CDF22B;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .atleta-modal-content .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 2rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #7a8a9e;
+      transition: 0.2s;
+    }
+    .atleta-modal-content .close-modal:hover { color: #1a2e42; }
+    .atleta-modal-content .modal-foto {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid #1E45FB;
+      margin: 0 auto 1rem;
+      display: block;
+    }
+    .atleta-modal-content .modal-info {
+      text-align: center;
+    }
+    .atleta-modal-content .modal-info h3 {
+      font-size: 1.8rem;
+      color: #1E45FB;
+      margin-bottom: 0.5rem;
+    }
+    .atleta-modal-content .modal-info .detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eef2f6;
+    }
+    .atleta-modal-content .modal-info .detail .label {
+      font-weight: 600;
+      color: #4a6a8a;
+    }
+
+    /* MEDALLERO - TIPO IMAGEN */
+    .medallero-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    .medallero-fila {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      background: #f8faff;
+      border-radius: 16px;
+      border-left: 6px solid #1E45FB;
+      transition: 0.3s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .medallero-fila::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: translateX(-100%);
+      transition: 0.5s;
+    }
+    .medallero-fila:hover::before {
+      transform: translateX(100%);
+    }
+    .medallero-fila:hover {
+      transform: translateX(6px);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    }
+    .medallero-fila .posicion {
+      font-size: 1.8rem;
+      font-weight: 900;
+      min-width: 70px;
+      color: #1E45FB;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .medallero-fila .zona-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .medallero-fila .zona-circulo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: white;
+      font-size: 1.4rem;
+      border: 3px solid rgba(26,46,66,0.2);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+      transition: 0.3s;
+    }
+    .medallero-fila:hover .zona-circulo {
+      transform: scale(1.08) rotate(5deg);
+    }
+    .medallero-fila .zona-nombre {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #1a2e42;
+    }
+    .medallero-fila .medallas {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 1.5rem;
+      background: rgba(255,255,255,0.85);
+      padding: 0.3rem 1.2rem;
+      border-radius: 60px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .medallero-fila .medallas span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #1a2e42;
+    }
+    .medallero-fila .medallas .count {
+      font-size: 1.1rem;
+      min-width: 22px;
+      font-weight: 800;
+    }
+    .medallero-fila .medalla-oro .count { color: #f1c40f; text-shadow: 0 1px 5px rgba(241,196,15,0.3); }
+    .medallero-fila .medalla-plata .count { color: #95a5a6; }
+    .medallero-fila .medalla-bronce .count { color: #e67e22; }
+    .medallero-fila .puntos {
+      font-weight: 700;
+      color: #1E45FB;
+      min-width: 80px;
+      text-align: right;
+      font-size: 1.1rem;
+      background: rgba(30,69,251,0.08);
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+    }
+    .medallero-fila.primero {
+      background: linear-gradient(90deg, #fef9e7, #fdf2d0);
+      border-left-color: #f1c40f;
+      box-shadow: 0 3px 20px rgba(241,196,15,0.2);
+    }
+    .medallero-fila.primero .posicion { color: #f1c40f; }
+    .medallero-fila.primero .puntos { background: rgba(241,196,15,0.15); color: #b7950b; }
+    .medallero-fila.segundo {
+      background: linear-gradient(90deg, #f8f9fa, #e8eaed);
+      border-left-color: #bdc3c7;
+    }
+    .medallero-fila.segundo .posicion { color: #95a5a6; }
+    .medallero-fila.tercero {
+      background: linear-gradient(90deg, #fdf2e9, #fad7b3);
+      border-left-color: #e67e22;
+    }
+    .medallero-fila.tercero .posicion { color: #e67e22; }
+    .medallero-fila.tercero .puntos { background: rgba(230,126,34,0.15); color: #b9770e; }
+
+    /* VIDEO */
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      margin: 1rem 0;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* NOTICIAS */
+    .noticias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .noticia-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      height: 300px;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .noticia-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .noticia-card .noticia-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(3px) brightness(0.5);
+      transition: 0.3s;
+    }
+    .noticia-card:hover .noticia-bg {
+      filter: blur(0px) brightness(0.7);
+      transform: scale(1.05);
+    }
+    .noticia-card .noticia-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      text-align: center;
+      color: white;
+      transition: 0.3s;
+    }
+    .noticia-card .noticia-overlay h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      margin-bottom: 0.5rem;
+    }
+    .noticia-card .noticia-overlay p {
+      opacity: 0;
+      transition: 0.3s;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .noticia-card:hover .noticia-overlay p {
+      opacity: 1;
+    }
+
+    /* PATROCINADORES - SECCIÓN OSCURA */
+    #sec-patrocinadores {
+      background: #0a1628 !important;
+      border-left: 8px solid #CDF22B !important;
+      border-right: 8px solid #CDF22B !important;
+    }
+    #sec-patrocinadores h2 {
+      color: #CDF22B !important;
+      border-bottom-color: #CDF22B !important;
+    }
+    .patrocinadores-wrapper {
+      background: #0a1628;
+      padding: 2rem 1rem;
+      border-radius: 20px;
+    }
+    .patrocinadores-wrapper .video-container {
+      border: 2px solid #CDF22B;
+    }
+    .patrocinadores-wrapper .patrocinadores-loop {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(205,242,43,0.2);
+      margin-top: 1rem;
+    }
+    .patrocinadores-wrapper .patrocinador-item .patrocinador-nombre {
+      color: #CDF22B !important;
+    }
+    .patrocinadores-wrapper .patrocinador-item .patrocinador-desc {
+      color: #aabbcc !important;
+    }
+    .patrocinadores-wrapper .patrocinador-item a {
+      color: #CDF22B !important;
+    }
+    .patrocinadores-wrapper .patrocinador-item img {
+      border-color: rgba(205,242,43,0.3);
+      background: rgba(255,255,255,0.05);
+    }
+    .patrocinadores-wrapper .patrocinadores-track {
+      animation: scrollPatrocinadores 30s linear infinite;
+    }
+    .patrocinadores-wrapper .patrocinador-item {
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      transition: 0.3s;
+      background: rgba(255,255,255,0.03);
+    }
+    .patrocinadores-wrapper .patrocinador-item:hover {
+      background: rgba(205,242,43,0.05);
+      transform: scale(1.08);
+    }
+
+    .patrocinadores-loop {
+      overflow: hidden;
+      padding: 1.5rem 0;
+      border-radius: 20px;
+      border: 2px solid #dde6f0;
+      position: relative;
+    }
+    .patrocinadores-track {
+      display: flex;
+      gap: 3rem;
+      animation: scrollPatrocinadores 25s linear infinite;
+      width: max-content;
+    }
+    .patrocinadores-track:hover {
+      animation-play-state: paused;
+    }
+    .patrocinador-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      min-width: 140px;
+      transition: 0.2s;
+    }
+    .patrocinador-item:hover { transform: scale(1.05); }
+    .patrocinador-item img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: white;
+      padding: 0.5rem;
+      border: 2px solid #dde6f0;
+    }
+    .patrocinador-item .patrocinador-nombre {
+      font-weight: 600;
+      color: #1a2e42;
+      font-size: 0.9rem;
+    }
+    .patrocinador-item .patrocinador-desc {
+      font-size: 0.75rem;
+      color: #7a8a9e;
+      text-align: center;
+    }
+    .patrocinador-item a {
+      color: #1E45FB;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+
+    @keyframes scrollPatrocinadores {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* BASE BÍBLICA - ADVENTIS */
+    .base-biblica-container {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .base-biblica-item {
+      background: #f8faff;
+      padding: 1.5rem;
+      border-radius: 20px;
+      border-left: 6px solid #1E45FB;
+      transition: 0.3s;
+    }
+    .base-biblica-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .base-biblica-item .titulo {
+      font-weight: 700;
+      color: #1E45FB;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .base-biblica-item .texto {
+      color: #1a2e42;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .base-biblica-item .referencia {
+      color: #7a8a9e;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: #0b1f30;
+      color: #eaf3ff;
+      padding: 1.8rem 2rem;
+      text-align: center;
+      border-top: 4px solid #CDF22B;
+      margin-top: 2rem;
+    }
+    .footer .social {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .footer .social a {
+      color: #CDF22B;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+    }
+    .footer .social a:hover { color: #ffffff; }
+    .footer .copy {
+      font-size: 0.85rem;
+      color: #8aa0b5;
+      border-top: 1px solid #2a4055;
+      padding-top: 0.8rem;
+    }
+    .footer .copy span { color: #CDF22B; font-weight: 600; }
+
+    /* LOGIN DUAL */
+    .login-options {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+      justify-content: center;
+    }
+    .login-options button {
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      border: 2px solid #1E45FB;
+      background: white;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      flex: 1;
+    }
+    .login-options button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .login-options .btn-oficial {
+      background: #1E45FB;
+      color: white;
+    }
+    .login-options .btn-oficial:hover {
+      background: #0f2fbb;
+    }
+    .login-options .btn-coordinador {
+      background: #CDF22B;
+      color: #0b1f30;
+    }
+    .login-options .btn-coordinador:hover {
+      background: #b8d926;
+    }
+
+    .login-role-indicator {
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .login-role-indicator.oficial {
+      background: #d5e3ff;
+      color: #1E45FB;
+    }
+    .login-role-indicator.coordinador {
+      background: #f4fcd5;
+      color: #7a8a2e;
+    }
+
+    /* ADMIN PANEL */
+    .admin-panel {
+      background: #f0f5fe;
+      border-radius: 30px;
+      padding: 1.8rem;
+      border: 2px solid #1E45FB;
+    }
+    .admin-panel h3 {
+      color: #1E45FB;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .admin-panel h3 small {
+      background: #CDF22B;
+      padding: 0.1rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      color: #0b1f30;
+    }
+
+    .form-atleta {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 28px;
+      margin: 1rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.8rem;
+      border: 1px solid #dde6f0;
+    }
+    .form-atleta .full { grid-column: 1 / -1; }
+    .form-atleta label {
+      font-weight: 600;
+      color: #1a2e42;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      font-size: 0.9rem;
+    }
+    .form-atleta input, .form-atleta select, .form-atleta textarea {
+      padding: 0.5rem 0.8rem;
+      border-radius: 30px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.95rem;
+      background: #fafcff;
+    }
+    .form-atleta input:focus, .form-atleta select:focus {
+      outline: 2px solid #1E45FB;
+      border-color: transparent;
+    }
+    .form-atleta .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+    .form-atleta .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #1E45FB;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #1E45FB;
+      color: white;
+      border: none;
+      padding: 0.6rem 2rem;
+      border-radius: 40px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid #CDF22B;
+    }
+    .btn-primary:hover { background: #0f2fbb; }
+    .btn-sec {
+      background: #CDF22B;
+      color: #0b1f30;
+      border: none;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .btn-success {
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .admin-editor {
+      background: white;
+      border-radius: 24px;
+      padding: 1.2rem;
+      margin: 0.8rem 0;
+      border: 1px solid #dde6f0;
+    }
+    .admin-editor textarea, .admin-editor input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+      border: 1px solid #cbd5e1;
+      margin: 0.3rem 0;
+    }
+    .admin-editor textarea { min-height: 80px; border-radius: 16px; }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a2e42;
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 9999;
+      display: none;
+      border-left: 6px solid #CDF22B;
+    }
+    .toast.show { display: block; animation: fadeInUp 0.3s ease; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    .admin-content-hidden { display: none; }
+
+    /* SLIDER ADMIN */
+    .slider-admin-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #f8faff;
+      padding: 0.5rem 1rem;
+      border-radius: 16px;
+      margin: 0.3rem 0;
+      border: 1px solid #dde6f0;
+    }
+    .slider-admin-item img {
+      width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    /* ADMIN LOGIN OVERLAY */
+    .admin-login-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    .admin-login-overlay.active { display: flex; }
+    .admin-login-box {
+      background: white;
+      border-radius: 30px;
+      padding: 2.5rem;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      border: 3px solid #1E45FB;
+      position: relative;
+    }
+    .admin-login-box h2 {
+      color: #1E45FB;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+    .admin-login-box .sub {
+      text-align: center;
+      color: #7a8a9e;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .admin-login-box label {
+      font-weight: 600;
+      color: #1a2e42;
+      display: block;
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+    }
+    .admin-login-box input {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      border-radius: 40px;
+      border: 2px solid #dde6f0;
+      font-size: 1rem;
+      margin-top: 0.2rem;
+    }
+    .admin-login-box input:focus {
+      outline: none;
+      border-color: #1E45FB;
+      box-shadow: 0 0 0 3px rgba(30,69,251,0.15);
+    }
+    .admin-login-box .btn-login {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.7rem;
+      background: #1E45FB;
+      color: white;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid #CDF22B;
+    }
+    .admin-login-box .btn-login:hover { background: #0f2fbb; }
+    .admin-login-box .error-msg {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 0.8rem;
+      display: none;
+    }
+    .admin-login-box .close-login {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #7a8a9e;
+      background: none;
+      border: none;
+    }
+    .admin-login-box .close-login:hover { color: #1a2e42; }
+
+    .sede-admin-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #f8faff;
+      padding: 0.5rem 1rem;
+      border-radius: 16px;
+      margin: 0.3rem 0;
+      border: 1px solid #dde6f0;
+    }
+    .sede-admin-item img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .header-fixed { flex-direction: column; align-items: stretch; gap: 0.6rem; padding: 0.6rem 1rem; }
+      .menu-wrapper { align-self: flex-end; }
+      .form-atleta { grid-template-columns: 1fr; }
+      .filtros-atletas { border-radius: 30px; flex-direction: column; align-items: stretch; }
+      .main-content { padding: 1rem; }
+      .footer { padding: 1.5rem 1rem; }
+      .footer .social { gap: 1rem; }
+      .login-options { flex-direction: column; }
+      .slider-container { height: 300px; }
+      .medallero-fila { flex-wrap: wrap; gap: 0.5rem; }
+      .medallero-fila .medallas { width: 100%; justify-content: center; }
+      .seccion h2 { font-size: 1.8rem; }
+      .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .atleta-grid-item .atleta-img { height: 150px; }
+    }
+    @media (max-width: 430px) {
+      .logo h1 { font-size: 1.4rem; }
+      .slider-container { height: 200px; }
+      .seccion h2 { font-size: 1.5rem; }
+      .atletas-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+      .atleta-grid-item .atleta-img { height: 120px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ADMIN LOGIN OVERLAY -->
+  <div class="admin-login-overlay" id="adminLoginOverlay">
+    <div class="admin-login-box">
+      <button class="close-login" id="closeLogin">✕</button>
+      <h2>🔐 ACCESO</h2>
+      <p class="sub">Selecciona tu rol</p>
+      <div class="login-options">
+        <button class="btn-oficial" id="loginOficial">👤 OFICIAL</button>
+        <button class="btn-coordinador" id="loginCoordinador">📋 COORDINADOR</button>
+      </div>
+      <div id="loginFields" style="display:none;">
+        <label>👤 Usuario</label>
+        <input type="text" id="loginUser" placeholder="Usuario" />
+        <label>🔑 Contraseña</label>
+        <input type="password" id="loginPass" placeholder="Contraseña" />
+        <button class="btn-login" id="btnLogin">Ingresar</button>
+        <div class="error-msg" id="loginError">❌ Usuario o contraseña incorrectos</div>
+      </div>
+      <div id="roleInfo" style="text-align:center; margin-top:1rem; font-size:0.9rem; color:#7a8a9e;"></div>
+    </div>
+  </div>
+
+  <!-- MODAL ATLETA -->
+  <div class="atleta-modal" id="atletaModal">
+    <div class="atleta-modal-content">
+      <button class="close-modal" id="closeAtletaModal">✕</button>
+      <img class="modal-foto" id="modalFoto" src="" alt="Foto" />
+      <div class="modal-info">
+        <h3 id="modalNombre">Nombre</h3>
+        <div class="detail"><span class="label">Zona:</span> <span id="modalZona">-</span></div>
+        <div class="detail"><span class="label">Categoría:</span> <span id="modalCategoria">-</span></div>
+        <div class="detail"><span class="label">Disciplina:</span> <span id="modalDisciplina">-</span></div>
+        <div class="detail"><span class="label">Documento:</span> <span id="modalDocumento">-</span></div>
+        <div class="detail"><span class="label">Estado:</span> <span id="modalEstado">Activo</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header-fixed" id="mainHeader">
+    <div class="logo">
+      <h1>OLIMPIADAS <span>2026</span></h1>
+    </div>
+    <div class="menu-wrapper">
+      <button class="menu-toggle" id="menuToggle">☰ MENÚ</button>
+      <div class="menu-dropdown" id="menuDropdown">
+        <button class="active-sec" data-sec="inicio">OLIMPIADAS</button>
+        <button data-sec="atletas">Atletas</button>
+        <button data-sec="medallero">Medallero</button>
+        <button data-sec="sede">Sede</button>
+        <button data-sec="disciplinas">Disciplinas</button>
+        <button data-sec="categorias">Categorías</button>
+        <button data-sec="basebiblica">Base Bíblica</button>
+        <button data-sec="informacion">Información</button>
+        <button data-sec="noticias">Noticias</button>
+        <button data-sec="patrocinadores">Patrocinadores</button>
+        <button data-sec="admin" style="border-top:2px solid #CDF22B; margin-top:0.3rem; color:#1E45FB; font-weight:700;">🔐 ADMIN</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero-static">
+    <h2>OLIMPIADAS <small>2026</small></h2>
+  </div>
+
+  <div class="main-content">
+    <!-- OLIMPIADAS (INICIO) -->
+    <div id="sec-inicio" class="seccion active-seccion">
+      <h2>OLIMPIADAS 2026</h2>
+      <div id="inicioContenido">
+        <!-- SLIDER -->
+        <div class="slider-container" id="sliderContainer">
+          <div class="slider-track" id="sliderTrack">
+            <div class="slider-slide"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&fit=crop" alt="Slide 1" /></div>
+            <div class="slider-slide"><img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1920&h=1080&fit=crop" alt="Slide 2" /></div>
+            <div class="slider-slide"><img src="https://images.unsplash.com/photo-1518071534997-4ac1aab81e17?w=1920&h=1080&fit=crop" alt="Slide 3" /></div>
+            <div class="slider-slide"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&fit=crop" alt="Slide 4" /></div>
+          </div>
+          <button class="slider-btn prev" id="sliderPrev">‹</button>
+          <button class="slider-btn next" id="sliderNext">›</button>
+          <div class="slider-controls" id="sliderControls"></div>
+        </div>
+        <div id="inicioTexto" class="inicio-texto"></div>
+      </div>
+    </div>
+
+    <!-- ATLETAS -->
+    <div id="sec-atletas" class="seccion">
+      <h2>ATLETAS</h2>
+      <div class="filtros-atletas">
+        <input type="text" id="buscarAtleta" placeholder="🔍 Buscar por nombre..." />
+        <select id="filtroZona">
+          <option value="">Todas las zonas</option>
+          <option value="1">Zona 1</option>
+          <option value="2">Zona 2</option>
+          <option value="3">Zona 3</option>
+          <option value="4">Zona 4</option>
+          <option value="5">Zona 5</option>
+        </select>
+        <select id="filtroCategoria">
+          <option value="">Todas las categorías</option>
+        </select>
+      </div>
+      <div id="listaAtletasContainer" class="atletas-grid"></div>
+    </div>
+
+    <!-- MEDALLERO -->
+    <div id="sec-medallero" class="seccion">
+      <h2>MEDALLERO</h2>
+      <div id="medalleroContainer" class="medallero-container"></div>
+    </div>
+
+    <!-- SEDE -->
+    <div id="sec-sede" class="seccion">
+      <h2>SEDE</h2>
+      <div id="sedeContenido"></div>
+    </div>
+
+    <!-- DISCIPLINAS -->
+    <div id="sec-disciplinas" class="seccion">
+      <h2>DISCIPLINAS</h2>
+      <div id="disciplinasContenido"></div>
+    </div>
+
+    <!-- CATEGORÍAS -->
+    <div id="sec-categorias" class="seccion">
+      <h2>CATEGORÍAS</h2>
+      <div id="categoriasContenido"></div>
+    </div>
+
+    <!-- BASE BÍBLICA -->
+    <div id="sec-basebiblica" class="seccion">
+      <h2>BASE BÍBLICA</h2>
+      <div id="baseBiblicaContenido" class="base-biblica-container"></div>
+    </div>
+
+    <!-- INFORMACION -->
+    <div id="sec-informacion" class="seccion">
+      <h2>INFORMACIÓN</h2>
+      <div id="videoContenido">
+        <div class="video-container">
+          <iframe id="videoIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div id="videoTexto" style="font-size:1.1rem; line-height:1.6; color:#1a2e42;"></div>
+      </div>
+    </div>
+
+    <!-- NOTICIAS -->
+    <div id="sec-noticias" class="seccion">
+      <h2>NOTICIAS</h2>
+      <div id="noticiasContenido"></div>
+    </div>
+
+    <!-- PATROCINADORES -->
+    <div id="sec-patrocinadores" class="seccion">
+      <h2>PATROCINADORES</h2>
+      <div class="patrocinadores-wrapper">
+        <div class="video-container">
+          <iframe id="patrocinadoresVideo" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div id="patrocinadoresTexto" style="color:#aabbcc; text-align:center; margin:0.5rem 0; font-size:1rem;"></div>
+        <div class="patrocinadores-loop">
+          <div class="patrocinadores-track" id="patrocinadoresTrack"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div id="sec-admin" class="seccion">
+      <h2>🔐 ADMINISTRADOR</h2>
+      <div class="admin-panel">
+        <h3>OLIMPIADAS 2026 <small>ADMIN</small></h3>
+        <div id="adminContent" class="admin-content-hidden">
+
+          <div id="roleIndicator" class="login-role-indicator" style="display:none;"></div>
+
+          <!-- EDITOR SLIDER -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">🖼️ Editar Slider</h4>
+            <div id="adminSliderList"></div>
+            <div style="display:grid; gap:0.5rem; margin-top:0.5rem;">
+              <input type="file" id="nuevaSliderImagen" accept="image/*" multiple />
+              <button class="btn-primary" id="agregarSlider">Agregar Imágenes</button>
+              <button class="btn-danger" id="limpiarSlider" style="margin-top:0.3rem;">Limpiar Slider</button>
+            </div>
+          </div>
+
+          <!-- EDITOR INICIO -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">📝 Editar Inicio</h4>
+            <textarea id="editInicioTexto" placeholder="Texto de inicio..."></textarea>
+            <button class="btn-primary" id="guardarInicio">Guardar Inicio</button>
+          </div>
+
+          <!-- FORMULARIO ATLETA -->
+          <div style="background:#ffffff; border-radius:28px; padding:1.2rem; margin:1rem 0; border:2px solid #CDF22B;">
+            <h4 style="color:#1E45FB;">📋 Registrar Atleta</h4>
+            <form id="formAtleta" class="form-atleta">
+              <label class="full">Nombre completo <input type="text" id="nombreAtleta" required /></label>
+              <label>Zona (1-5)
+                <select id="zonaAtleta">
+                  <option value="1">Zona 1</option><option value="2">Zona 2</option>
+                  <option value="3">Zona 3</option><option value="4">Zona 4</option>
+                  <option value="5">Zona 5</option>
+                </select>
+              </label>
+              <label>Documento <input type="text" id="documentoAtleta" /></label>
+              <label>Categoría
+                <select id="categoriaAtleta" style="width:100%; padding:0.5rem 1rem; border-radius:30px; border:2px solid #cbd5e1;">
+                  <option value="">Selecciona una categoría...</option>
+                </select>
+              </label>
+              <label class="full">Disciplina
+                <select id="disciplinaAtleta" style="width:100%; padding:0.5rem 1rem; border-radius:30px; border:2px solid #cbd5e1;">
+                  <option value="">Selecciona una disciplina...</option>
+                </select>
+              </label>
+              <label class="full checkbox-group">
+                <input type="checkbox" id="canceladoAtleta" /> ¿Cancelado?
+              </label>
+              <label class="full">📸 Foto <input type="file" id="fotoAtleta" accept="image/*" /></label>
+              <div class="full" style="display:flex; gap:1rem; flex-wrap:wrap;">
+                <button type="submit" class="btn-primary">Registrar</button>
+                <button type="reset" class="btn-sec">Limpiar</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- GESTIÓN ATLETAS -->
+          <div style="background:#ffffff; border-radius:28px; padding:1.2rem; margin:1rem 0; border:2px solid #1E45FB;">
+            <h4 style="color:#1E45FB;">📸 Gestión de Atletas</h4>
+            <div id="adminAtletasList"></div>
+          </div>
+
+          <!-- ASIGNAR MEDALLAS -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">🏅 Asignar Medallas</h4>
+            <div id="adminMedallasList"></div>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.5rem;">
+              <select id="selectZonaMedalla" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;">
+                <option value="1">Zona 1</option><option value="2">Zona 2</option>
+                <option value="3">Zona 3</option><option value="4">Zona 4</option>
+                <option value="5">Zona 5</option>
+              </select>
+              <select id="selectTipoMedalla" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;">
+                <option value="oro">🥇 Oro</option>
+                <option value="plata">🥈 Plata</option>
+                <option value="bronce">🥉 Bronce</option>
+              </select>
+              <button class="btn-primary" id="asignarMedalla">Asignar</button>
+            </div>
+          </div>
+
+          <!-- EDITOR SEDE -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">📍 Editar Sede</h4>
+            <div id="adminSedeList"></div>
+            <div style="display:grid; gap:0.5rem; margin-top:0.5rem;">
+              <input type="text" id="editSedeTitulo" placeholder="Título" />
+              <textarea id="editSedeTexto" placeholder="Descripción..."></textarea>
+              <input type="file" id="editSedeImagen" accept="image/*" />
+              <button class="btn-primary" id="guardarSede">Guardar Sede</button>
+              <button class="btn-danger" id="eliminarSede" style="margin-top:0.3rem;">Eliminar Sede</button>
+            </div>
+          </div>
+
+          <!-- EDITOR DISCIPLINAS -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">⚡ Editar Disciplinas</h4>
+            <div id="adminDisciplinasList"></div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem;">
+              <input type="text" id="nuevaDisciplina" placeholder="Nueva disciplina..." style="flex:1; padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <button class="btn-primary" id="agregarDisciplina">Agregar</button>
+            </div>
+          </div>
+
+          <!-- EDITOR CATEGORÍAS -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">🏷️ Editar Categorías</h4>
+            <div id="adminCategoriasList"></div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem;">
+              <input type="text" id="nuevaCategoria" placeholder="Nueva categoría..." style="flex:1; padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <button class="btn-primary" id="agregarCategoria">Agregar</button>
+            </div>
+          </div>
+
+          <!-- EDITOR BASE BÍBLICA -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">📖 Editar Base Bíblica</h4>
+            <div id="adminBaseBiblicaList"></div>
+            <div style="display:grid; gap:0.5rem; margin-top:0.5rem;">
+              <input type="text" id="nuevaBaseTitulo" placeholder="Título" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <textarea id="nuevaBaseTexto" placeholder="Texto bíblico..." style="padding:0.5rem 1rem; border-radius:16px; border:2px solid #dde6f0; min-height:60px;"></textarea>
+              <input type="text" id="nuevaBaseReferencia" placeholder="Referencia" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <button class="btn-primary" id="agregarBaseBiblica">Agregar</button>
+            </div>
+          </div>
+
+          <!-- EDITOR VIDEO -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">🎬 Editar Video</h4>
+            <input type="text" id="editVideoUrl" placeholder="URL del video" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
+            <textarea id="editVideoTexto" placeholder="Texto adicional..."></textarea>
+            <button class="btn-primary" id="guardarVideo">Guardar Video</button>
+          </div>
+
+          <!-- EDITOR VIDEO PATROCINADORES -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">🎬 Video Patrocinadores</h4>
+            <input type="text" id="editPatrocinadoresVideo" placeholder="URL del video" value="https://www.youtube.com/embed/dQw4w9WgXcQ" />
+            <textarea id="editPatrocinadoresTexto" placeholder="Texto..."></textarea>
+            <button class="btn-primary" id="guardarPatrocinadoresVideo">Guardar</button>
+          </div>
+
+          <!-- EDITOR NOTICIAS -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">📰 Editar Noticias</h4>
+            <div id="adminNoticiasList"></div>
+            <div style="display:grid; gap:0.5rem; margin-top:0.5rem;">
+              <input type="text" id="nuevaNoticiaTitulo" placeholder="Título" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <textarea id="nuevaNoticiaDesc" placeholder="Descripción..." style="padding:0.5rem 1rem; border-radius:16px; border:2px solid #dde6f0; min-height:60px;"></textarea>
+              <input type="file" id="nuevaNoticiaImagen" accept="image/*" />
+              <button class="btn-primary" id="agregarNoticia">Agregar</button>
+            </div>
+          </div>
+
+          <!-- EDITOR PATROCINADORES -->
+          <div class="admin-editor">
+            <h4 style="color:#1E45FB;">🤝 Editar Patrocinadores</h4>
+            <div id="adminPatrocinadoresList"></div>
+            <div style="display:grid; gap:0.5rem; margin-top:0.5rem;">
+              <input type="text" id="nuevoPatrocinadorNombre" placeholder="Nombre" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <input type="text" id="nuevoPatrocinadorDesc" placeholder="Descripción" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <input type="text" id="nuevoPatrocinadorUrl" placeholder="URL web" style="padding:0.5rem 1rem; border-radius:40px; border:2px solid #dde6f0;" />
+              <input type="file" id="nuevoPatrocinadorIcono" accept="image/*" />
+              <button class="btn-primary" id="agregarPatrocinador">Agregar</button>
+            </div>
+          </div>
+
+        </div>
+        <div id="adminLocked" style="text-align:center; padding:1.5rem; color:#7a8a9e;">
+          🔒 Inicia sesión para ver el panel de administración
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="social">
+      <a href="#" target="_blank">📸 JovenAVCSur</a>
+    </div>
+    <div class="copy">
+      Desarrollado por: <span>RS ART STUDIO</span> · 2026
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast">✅ Guardado correctamente</div>
+</div>
+
+<script>
+  // ============ FIREBASE CONFIG ============
+  const firebaseConfig = {
+    apiKey: "AIzaSyD-8j7d9QqF5xH8yN9v0jKpLmNqRstUvWxYz",
+    authDomain: "olimpiadas-2026-avcs.firebaseapp.com",
+    databaseURL: "https://olimpiadas-2026-avcs-default-rtdb.firebaseio.com",
+    projectId: "olimpiadas-2026-avcs",
+    storageBucket: "olimpiadas-2026-avcs.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:abcdef123456"
+  };
+
+  let useFirebase = true;
+  let db, storage;
+
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    storage = firebase.storage();
+    db.ref('.info/connected').on('value', snap => {
+      if (snap.val() === true) { useFirebase = true; } else { useFirebase = false; }
+    });
+  } catch(e) {
+    console.warn('Firebase no disponible, modo offline');
+    useFirebase = false;
+  }
+
+  let localData = {
+    inicio: { texto: 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.' },
+    slider: [
+      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&fit=crop',
+      'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1920&h=1080&fit=crop',
+      'https://images.unsplash.com/photo-1518071534997-4ac1aab81e17?w=1920&h=1080&fit=crop',
+      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&fit=crop'
+    ],
+    sede: { titulo: 'Ciudad AVCS', texto: 'Estadio Olímpico Generación Ahimaas. Capacidad: 45.000 espectadores.', imagenUrl: '' },
+    disciplinas: ['Atletismo - 100m, 200m, 400m', 'Natación - 50m, 100m, relevos', 'Gimnasia - artística y rítmica'],
+    categorias: ['Sub-15', 'Sub-17', 'Sub-20', 'Abierta'],
+    basebiblica: [
+      { titulo: 'Dios está con nosotros', texto: 'Esforzaos y cobrad ánimo; no temáis... porque Jehová tu Dios es el que va contigo.', referencia: 'Deuteronomio 31:8' }
+    ],
+    video: { url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', texto: '' },
+    patrocinadoresVideo: { url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', texto: '' },
+    noticias: [],
+    patrocinadores: [],
+    medallas: { '1': { oro:0, plata:0, bronce:0 }, '2': { oro:0, plata:0, bronce:0 }, '3': { oro:0, plata:0, bronce:0 }, '4': { oro:0, plata:0, bronce:0 }, '5': { oro:0, plata:0, bronce:0 } },
+    atletas: {}
+  };
+
+  function guardarData(path, data) {
+    return new Promise((resolve) => {
+      if (useFirebase && db) {
+        db.ref(path).set(data).then(() => resolve(true)).catch(() => {
+          const parts = path.split('/');
+          let ref = localData;
+          for (let i = 0; i < parts.length - 1; i++) {
+            if (!ref[parts[i]]) ref[parts[i]] = {};
+            ref = ref[parts[i]];
+          }
+          ref[parts[parts.length - 1]] = data;
+          resolve(true);
+        });
+      } else {
+        const parts = path.split('/');
+        let ref = localData;
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (!ref[parts[i]]) ref[parts[i]] = {};
+          ref = ref[parts[i]];
+        }
+        ref[parts[parts.length - 1]] = data;
+        resolve(true);
+      }
+    });
+  }
+
+  function obtenerData(path) {
+    return new Promise((resolve) => {
+      if (useFirebase && db) {
+        db.ref(path).once('value').then(snap => {
+          const val = snap.val();
+          if (val !== null) resolve(val);
+          else {
+            const parts = path.split('/');
+            let ref = localData;
+            for (let p of parts) {
+              if (ref && ref[p] !== undefined) ref = ref[p];
+              else { ref = undefined; break; }
+            }
+            resolve(ref);
+          }
+        }).catch(() => {
+          const parts = path.split('/');
+          let ref = localData;
+          for (let p of parts) {
+            if (ref && ref[p] !== undefined) ref = ref[p];
+            else { ref = undefined; break; }
+          }
+          resolve(ref);
+        });
+      } else {
+        const parts = path.split('/');
+        let ref = localData;
+        for (let p of parts) {
+          if (ref && ref[p] !== undefined) ref = ref[p];
+          else { ref = undefined; break; }
+        }
+        resolve(ref);
+      }
+    });
+  }
+
+  // ============ CREDENCIALES ============
+  const ADMIN_USER = "admin";
+  const ADMIN_PASS = "Olimpiadas2026!";
+  const COORD_USER = "coord";
+  const COORD_PASS = "coord2026";
+
+  let adminAutenticado = false;
+  let userRole = '';
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg || '✅ Guardado correctamente';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ============ LOGIN DUAL ============
+  const loginOverlay = document.getElementById('adminLoginOverlay');
+  const loginUser = document.getElementById('loginUser');
+  const loginPass = document.getElementById('loginPass');
+  const loginError = document.getElementById('loginError');
+  const btnLogin = document.getElementById('btnLogin');
+  const closeLogin = document.getElementById('closeLogin');
+  const loginFields = document.getElementById('loginFields');
+  const roleInfo = document.getElementById('roleInfo');
+
+  let selectedRole = '';
+
+  function showLogin() {
+    loginOverlay.classList.add('active');
+    loginError.style.display = 'none';
+    loginFields.style.display = 'none';
+    roleInfo.textContent = '';
+    loginUser.value = '';
+    loginPass.value = '';
+    selectedRole = '';
+  }
+
+  function hideLogin() {
+    loginOverlay.classList.remove('active');
+  }
+
+  document.getElementById('loginOficial').addEventListener('click', function() {
+    selectedRole = 'oficial';
+    loginFields.style.display = 'block';
+    roleInfo.textContent = '👤 Ingresa con credenciales de OFICIAL';
+    loginUser.value = ADMIN_USER;
+    loginPass.value = '';
+    loginError.style.display = 'none';
+    loginUser.focus();
+  });
+
+  document.getElementById('loginCoordinador').addEventListener('click', function() {
+    selectedRole = 'coordinador';
+    loginFields.style.display = 'block';
+    roleInfo.textContent = '📋 Ingresa con credenciales de COORDINADOR';
+    loginUser.value = COORD_USER;
+    loginPass.value = '';
+    loginError.style.display = 'none';
+    loginUser.focus();
+  });
+
+  function doLogin() {
+    const user = loginUser.value.trim();
+    const pass = loginPass.value.trim();
+    
+    if (selectedRole === 'oficial') {
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        adminAutenticado = true;
+        userRole = 'oficial';
+        hideLogin();
+        mostrarPanelAdmin('oficial');
+        showToast('🔓 Sesión iniciada como OFICIAL');
+        return;
+      }
+    } else if (selectedRole === 'coordinador') {
+      if (user === COORD_USER && pass === COORD_PASS) {
+        adminAutenticado = true;
+        userRole = 'coordinador';
+        hideLogin();
+        mostrarPanelAdmin('coordinador');
+        showToast('🔓 Sesión iniciada como COORDINADOR');
+        return;
+      }
+    }
+    loginError.style.display = 'block';
+  }
+
+  function mostrarPanelAdmin(role) {
+    document.getElementById('adminContent').classList.remove('admin-content-hidden');
+    document.getElementById('adminLocked').style.display = 'none';
+    
+    const indicator = document.getElementById('roleIndicator');
+    indicator.style.display = 'block';
+    if (role === 'oficial') {
+      indicator.className = 'login-role-indicator oficial';
+      indicator.textContent = '👤 Modo OFICIAL - Gestión completa';
+      document.querySelectorAll('.admin-editor').forEach(el => el.style.display = 'block');
+      document.querySelectorAll('.admin-panel > div').forEach(el => {
+        if (el.id !== 'adminContent' && el.id !== 'adminLocked' && el.id !== 'roleIndicator') {
+          el.style.display = 'block';
+        }
+      });
+    } else {
+      indicator.className = 'login-role-indicator coordinador';
+      indicator.textContent = '📋 Modo COORDINADOR - Solo registro de atletas';
+      document.querySelectorAll('.admin-editor').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.admin-panel > div').forEach(el => {
+        if (el.id !== 'adminContent' && el.id !== 'adminLocked' && el.id !== 'roleIndicator') {
+          el.style.display = 'none';
+        }
+      });
+      document.querySelector('#adminContent > div[style*="border:2px solid #CDF22B"]').style.display = 'block';
+    }
+    
+    cargarAtletasAdmin();
+    cargarMedallasAdmin();
+    cargarDisciplinasAdmin();
+    cargarCategoriasAdmin();
+    cargarBaseBiblicaAdmin();
+    cargarPatrocinadoresAdmin();
+    cargarNoticiasAdmin();
+    cargarSliderAdmin();
+    cargarSedeAdmin();
+    cargarDisciplinasSelect();
+    cargarCategoriasSelect();
+    cargarFiltroCategorias();
+  }
+
+  btnLogin.addEventListener('click', doLogin);
+  loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  loginUser.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginPass.focus(); });
+  closeLogin.addEventListener('click', hideLogin);
+  loginOverlay.addEventListener('click', (e) => { if (e.target === loginOverlay) hideLogin(); });
+
+  // ============ MENU ============
+  const toggleBtn = document.getElementById('menuToggle');
+  const dropdown = document.getElementById('menuDropdown');
+  
+  toggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('active');
+  });
+  
+  document.addEventListener('click', function(e) {
+    if (!dropdown.contains(e.target) && e.target !== toggleBtn) {
+      dropdown.classList.remove('active');
+    }
+  });
+
+  document.querySelectorAll('.menu-dropdown button').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      
+      document.querySelectorAll('.menu-dropdown button').forEach(b => b.classList.remove('active-sec'));
+      this.classList.add('active-sec');
+      
+      const sec = this.dataset.sec;
+      document.querySelectorAll('.seccion').forEach(el => el.classList.remove('active-seccion'));
+      const target = document.getElementById('sec-'+sec);
+      if (target) {
+        target.classList.add('active-seccion');
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      
+      dropdown.classList.remove('active');
+      
+      if (sec === 'admin' && !adminAutenticado) {
+        showLogin();
+      }
+    });
+  });
+
+  // ============ SLIDER ============
+  let sliderImages = [];
+  let currentSlide = 0;
+  let sliderInterval;
+
+  function cargarSlider() {
+    obtenerData('slider').then(data => {
+      sliderImages = data || localData.slider;
+      actualizarSlider();
+    });
+  }
+
+  function actualizarSlider() {
+    const track = document.getElementById('sliderTrack');
+    const controls = document.getElementById('sliderControls');
+    
+    if (!sliderImages.length) {
+      track.innerHTML = '<div class="slider-slide" style="display:flex; align-items:center; justify-content:center; background:#f0f5fe; color:#7a8a9e;">No hay imágenes</div>';
+      controls.innerHTML = '';
+      return;
+    }
+
+    track.innerHTML = sliderImages.map(img => `
+      <div class="slider-slide"><img src="${img}" alt="Slide" /></div>
+    `).join('');
+
+    controls.innerHTML = sliderImages.map((_, i) => `
+      <div class="slider-dot ${i === currentSlide ? 'active' : ''}" data-index="${i}"></div>
+    `).join('');
+
+    controls.querySelectorAll('.slider-dot').forEach(dot => {
+      dot.addEventListener('click', function() {
+        const index = parseInt(this.dataset.index);
+        irAlSlide(index);
+        resetAutoSlide();
+      });
+    });
+
+    irAlSlide(0);
+    startAutoSlide();
+  }
+
+  function irAlSlide(index) {
+    const total = sliderImages.length;
+    if (total === 0) return;
+    currentSlide = index;
+    const track = document.getElementById('sliderTrack');
+    track.style.transform = `translateX(-${index * 100}%)`;
+    
+    document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  function startAutoSlide() {
+    if (sliderInterval) clearInterval(sliderInterval);
+    if (sliderImages.length <= 1) return;
+    sliderInterval = setInterval(() => {
+      const next = (currentSlide + 1) % sliderImages.length;
+      irAlSlide(next);
+    }, 5000);
+  }
+
+  function resetAutoSlide() {
+    if (sliderInterval) {
+      clearInterval(sliderInterval);
+      startAutoSlide();
+    }
+  }
+
+  document.getElementById('sliderPrev').addEventListener('click', function() {
+    const total = sliderImages.length;
+    if (total === 0) return;
+    currentSlide = (currentSlide - 1 + total) % total;
+    irAlSlide(currentSlide);
+    resetAutoSlide();
+  });
+
+  document.getElementById('sliderNext').addEventListener('click', function() {
+    const total = sliderImages.length;
+    if (total === 0) return;
+    currentSlide = (currentSlide + 1) % total;
+    irAlSlide(currentSlide);
+    resetAutoSlide();
+  });
+
+  // ============ SLIDER ADMIN ============
+  function cargarSliderAdmin() {
+    obtenerData('slider').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('adminSliderList');
+      if (!lista.length) { container.innerHTML = '<p>No hay imágenes.</p>'; return; }
+      container.innerHTML = lista.map((img, i) => `
+        <div class="slider-admin-item">
+          <img src="${img}" alt="Slide ${i+1}" />
+          <span style="flex:1;">Imagen ${i+1}</span>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarSliderImage(${i})">✕</button>` : ''}
+        </div>
+      `).join('');
+    });
+  }
+
+  window.eliminarSliderImage = function(index) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    obtenerData('slider').then(data => {
+      let lista = data || [];
+      lista.splice(index, 1);
+      guardarData('slider', lista).then(() => {
+        cargarSlider();
+        cargarSliderAdmin();
+        showToast('✅ Imagen eliminada');
+      });
+    });
+  };
+
+  document.getElementById('agregarSlider').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
+    const files = document.getElementById('nuevaSliderImagen').files;
+    if (!files.length) return showToast('❌ Selecciona al menos una imagen');
+
+    let uploadPromises = [];
+    for (let file of files) {
+      const promise = new Promise((resolve) => {
+        const id = Date.now() + Math.random().toString(36);
+        if (useFirebase && storage) {
+          const ref = storage.ref('slider/' + id + '/' + file.name);
+          ref.put(file).then(s => s.ref.getDownloadURL()).then(url => resolve(url)).catch(() => resolve(''));
+        } else {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(file);
+        }
+      });
+      uploadPromises.push(promise);
+    }
+
+    Promise.all(uploadPromises).then(urls => {
+      obtenerData('slider').then(data => {
+        let lista = data || [];
+        urls.forEach(url => { if (url) lista.push(url); });
+        guardarData('slider', lista).then(() => {
+          document.getElementById('nuevaSliderImagen').value = '';
+          cargarSlider();
+          cargarSliderAdmin();
+          showToast('✅ Imágenes agregadas');
+        });
+      });
+    });
+  });
+
+  document.getElementById('limpiarSlider').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede limpiar');
+    if (confirm('¿Eliminar todas las imágenes del slider?')) {
+      guardarData('slider', []).then(() => {
+        cargarSlider();
+        cargarSliderAdmin();
+        showToast('✅ Slider limpiado');
+      });
+    }
+  });
+
+  // ============ SEDE ADMIN ============
+  function cargarSedeAdmin() {
+    obtenerData('sede').then(data => {
+      const container = document.getElementById('adminSedeList');
+      if (!data || !data.titulo) {
+        container.innerHTML = '<p>No hay sede configurada.</p>';
+        return;
+      }
+      container.innerHTML = `
+        <div class="sede-admin-item">
+          ${data.imagenUrl ? `<img src="${data.imagenUrl}" alt="Sede" />` : '<div style="width:80px; height:60px; background:#eef2f6; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#7a8a9e;">Sin imagen</div>'}
+          <div style="flex:1;">
+            <div style="font-weight:600;">${data.titulo}</div>
+            <div style="font-size:0.85rem; color:#7a8a9e;">${data.texto || ''}</div>
+          </div>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarSede()">✕</button>` : ''}
+        </div>
+      `;
+      document.getElementById('editSedeTitulo').value = data.titulo || '';
+      document.getElementById('editSedeTexto').value = data.texto || '';
+    });
+  }
+
+  window.eliminarSede = function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    if (confirm('¿Eliminar la sede?')) {
+      guardarData('sede', { titulo: '', texto: '', imagenUrl: '' }).then(() => {
+        cargarSede();
+        cargarSedeAdmin();
+        showToast('✅ Sede eliminada');
+      });
+    }
+  };
+
+  document.getElementById('eliminarSede').addEventListener('click', window.eliminarSede);
+
+  // ============ MODAL ATLETA ============
+  const atletaModal = document.getElementById('atletaModal');
+  const closeAtletaModal = document.getElementById('closeAtletaModal');
+
+  function showAtletaModal(atleta) {
+    document.getElementById('modalFoto').src = atleta.fotoUrl || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22 viewBox=%220 0 24 24%22 fill=%22%231E45FB%22%3E%3Ccircle cx=%2212%22 cy=%228%22 r=%224%22/%3E%3Cpath d=%22M12 14c-4 0-6 2-6 4v2h12v-2c0-2-2-4-6-4z%22/%3E%3C/svg%3E';
+    document.getElementById('modalNombre').textContent = atleta.nombre || 'Sin nombre';
+    document.getElementById('modalZona').textContent = 'Zona ' + (atleta.zona || '?');
+    document.getElementById('modalCategoria').textContent = atleta.categoria || 'No especificada';
+    document.getElementById('modalDisciplina').textContent = atleta.disciplina || 'No especificada';
+    document.getElementById('modalDocumento').textContent = atleta.documento || 'No registrado';
+    document.getElementById('modalEstado').textContent = atleta.cancelado ? '⛔ Cancelado' : '✅ Activo';
+    document.getElementById('modalEstado').style.color = atleta.cancelado ? '#e74c3c' : '#2ecc71';
+    atletaModal.classList.add('active');
+  }
+
+  closeAtletaModal.addEventListener('click', () => atletaModal.classList.remove('active'));
+  atletaModal.addEventListener('click', (e) => { if (e.target === atletaModal) atletaModal.classList.remove('active'); });
+
+  // ============ CARGAR SELECTORES ============
+  function cargarDisciplinasSelect() {
+    obtenerData('disciplinas').then(data => {
+      const select = document.getElementById('disciplinaAtleta');
+      const lista = data || [];
+      select.innerHTML = '<option value="">Selecciona una disciplina...</option>';
+      lista.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  function cargarCategoriasSelect() {
+    obtenerData('categorias').then(data => {
+      const select = document.getElementById('categoriaAtleta');
+      const lista = data || [];
+      select.innerHTML = '<option value="">Selecciona una categoría...</option>';
+      lista.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  function cargarFiltroCategorias() {
+    obtenerData('categorias').then(data => {
+      const select = document.getElementById('filtroCategoria');
+      const lista = data || [];
+      select.innerHTML = '<option value="">Todas las categorías</option>';
+      lista.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  // ============ CARGAR INICIO ============
+  function cargarInicio() {
+    obtenerData('inicio').then(data => {
+      const d = data || {};
+      document.getElementById('inicioTexto').innerHTML = d.texto || 'Bienvenidos a las Olimpiadas 2026. Un evento que reúne a los mejores atletas de todas las zonas en un espíritu de competencia y fraternidad.';
+      document.getElementById('editInicioTexto').value = d.texto || '';
+    });
+  }
+
+  // ============ CARGAR SEDE ============
+  function cargarSede() {
+    obtenerData('sede').then(data => {
+      const d = data || {};
+      const container = document.getElementById('sedeContenido');
+      if (!d.titulo && !d.texto) {
+        container.innerHTML = '<p style="color:#7a8a9e;">No hay sede configurada.</p>';
+        return;
+      }
+      let html = `<h3>${d.titulo || 'Ciudad AVCS'}</h3><p>${d.texto || 'Estadio Olímpico Generación Ahimaas. Capacidad: 45.000 espectadores.'}</p>`;
+      if (d.imagenUrl) html += `<img src="${d.imagenUrl}" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-top:0.8rem;" />`;
+      container.innerHTML = html;
+    });
+  }
+
+  // ============ CARGAR DISCIPLINAS ============
+  function cargarDisciplinas() {
+    obtenerData('disciplinas').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('disciplinasContenido');
+      if (!lista.length) {
+        container.innerHTML = '<div class="disciplina-item"><span class="check">✅</span> Atletismo - 100m, 200m, 400m</div><div class="disciplina-item"><span class="check">✅</span> Natación - 50m, 100m, relevos</div><div class="disciplina-item"><span class="check">✅</span> Gimnasia - artística y rítmica</div>';
+        return;
+      }
+      container.innerHTML = lista.map(d => `<div class="disciplina-item"><span class="check">✅</span> ${d}</div>`).join('');
+    });
+  }
+
+  function cargarDisciplinasAdmin() {
+    obtenerData('disciplinas').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('adminDisciplinasList');
+      if (!lista.length) { container.innerHTML = '<p>No hay disciplinas.</p>'; return; }
+      container.innerHTML = lista.map((d, i) => `
+        <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:40px;">
+          <span>✅ ${d}</span>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarDisciplina(${i})" style="margin-left:auto;">✕</button>` : ''}
+        </div>
+      `).join('');
+    });
+  }
+
+  window.eliminarDisciplina = function(index) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    obtenerData('disciplinas').then(data => {
+      let lista = data || [];
+      lista.splice(index, 1);
+      guardarData('disciplinas', lista).then(() => {
+        cargarDisciplinas();
+        cargarDisciplinasAdmin();
+        cargarDisciplinasSelect();
+        showToast('✅ Disciplina eliminada');
+      });
+    });
+  };
+
+  document.getElementById('agregarDisciplina').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
+    const val = document.getElementById('nuevaDisciplina').value.trim();
+    if (!val) return showToast('❌ Escribe una disciplina');
+    obtenerData('disciplinas').then(data => {
+      let lista = data || [];
+      lista.push(val);
+      guardarData('disciplinas', lista).then(() => {
+        document.getElementById('nuevaDisciplina').value = '';
+        cargarDisciplinas();
+        cargarDisciplinasAdmin();
+        cargarDisciplinasSelect();
+        showToast('✅ Disciplina agregada');
+      });
+    });
+  });
+
+  // ============ CARGAR CATEGORÍAS ============
+  function cargarCategorias() {
+    obtenerData('categorias').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('categoriasContenido');
+      if (!lista.length) {
+        container.innerHTML = '<div class="disciplina-item"><span class="check">✅</span> Sub-15</div><div class="disciplina-item"><span class="check">✅</span> Sub-17</div><div class="disciplina-item"><span class="check">✅</span> Sub-20</div><div class="disciplina-item"><span class="check">✅</span> Abierta</div>';
+        return;
+      }
+      container.innerHTML = lista.map(d => `<div class="disciplina-item"><span class="check">✅</span> ${d}</div>`).join('');
+    });
+  }
+
+  function cargarCategoriasAdmin() {
+    obtenerData('categorias').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('adminCategoriasList');
+      if (!lista.length) { container.innerHTML = '<p>No hay categorías.</p>'; return; }
+      container.innerHTML = lista.map((d, i) => `
+        <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:40px;">
+          <span>🏷️ ${d}</span>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarCategoria(${i})" style="margin-left:auto;">✕</button>` : ''}
+        </div>
+      `).join('');
+    });
+  }
+
+  window.eliminarCategoria = function(index) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    obtenerData('categorias').then(data => {
+      let lista = data || [];
+      lista.splice(index, 1);
+      guardarData('categorias', lista).then(() => {
+        cargarCategorias();
+        cargarCategoriasAdmin();
+        cargarCategoriasSelect();
+        cargarFiltroCategorias();
+        showToast('✅ Categoría eliminada');
+      });
+    });
+  };
+
+  document.getElementById('agregarCategoria').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
+    const val = document.getElementById('nuevaCategoria').value.trim();
+    if (!val) return showToast('❌ Escribe una categoría');
+    obtenerData('categorias').then(data => {
+      let lista = data || [];
+      lista.push(val);
+      guardarData('categorias', lista).then(() => {
+        document.getElementById('nuevaCategoria').value = '';
+        cargarCategorias();
+        cargarCategoriasAdmin();
+        cargarCategoriasSelect();
+        cargarFiltroCategorias();
+        showToast('✅ Categoría agregada');
+      });
+    });
+  });
+
+  // ============ CARGAR BASE BÍBLICA ============
+  function cargarBaseBiblica() {
+    obtenerData('basebiblica').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('baseBiblicaContenido');
+      if (!lista.length) {
+        container.innerHTML = '<div class="base-biblica-item"><div class="titulo">Dios está con nosotros</div><div class="texto">Esforzaos y cobrad ánimo; no temáis... porque Jehová tu Dios es el que va contigo.</div><div class="referencia">Deuteronomio 31:8</div></div>';
+        return;
+      }
+      container.innerHTML = lista.map(item => `
+        <div class="base-biblica-item">
+          <div class="titulo">${item.titulo || 'Base Bíblica'}</div>
+          <div class="texto">${item.texto || ''}</div>
+          <div class="referencia">${item.referencia || ''}</div>
+        </div>
+      `).join('');
+    });
+  }
+
+  function cargarBaseBiblicaAdmin() {
+    obtenerData('basebiblica').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('adminBaseBiblicaList');
+      if (!lista.length) { container.innerHTML = '<p>No hay bases bíblicas.</p>'; return; }
+      container.innerHTML = lista.map((item, i) => `
+        <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:16px; border:1px solid #dde6f0;">
+          <div style="flex:1;">
+            <div style="font-weight:600;">${item.titulo}</div>
+            <div style="font-size:0.85rem; color:#7a8a9e;">${item.texto}</div>
+            <div style="font-size:0.8rem; color:#1E45FB;">${item.referencia || ''}</div>
+          </div>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarBaseBiblica(${i})">✕</button>` : ''}
+        </div>
+      `).join('');
+    });
+  }
+
+  window.eliminarBaseBiblica = function(index) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    obtenerData('basebiblica').then(data => {
+      let lista = data || [];
+      lista.splice(index, 1);
+      guardarData('basebiblica', lista).then(() => {
+        cargarBaseBiblica();
+        cargarBaseBiblicaAdmin();
+        showToast('✅ Base Bíblica eliminada');
+      });
+    });
+  };
+
+  document.getElementById('agregarBaseBiblica').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
+    const titulo = document.getElementById('nuevaBaseTitulo').value.trim();
+    const texto = document.getElementById('nuevaBaseTexto').value.trim();
+    const referencia = document.getElementById('nuevaBaseReferencia').value.trim();
+    if (!texto) return showToast('❌ Escribe un texto bíblico');
+
+    obtenerData('basebiblica').then(data => {
+      let lista = data || [];
+      lista.push({ titulo, texto, referencia });
+      guardarData('basebiblica', lista).then(() => {
+        document.getElementById('nuevaBaseTitulo').value = '';
+        document.getElementById('nuevaBaseTexto').value = '';
+        document.getElementById('nuevaBaseReferencia').value = '';
+        cargarBaseBiblica();
+        cargarBaseBiblicaAdmin();
+        showToast('✅ Base Bíblica agregada');
+      });
+    });
+  });
+
+  // ============ CARGAR VIDEO ============
+  function cargarVideo() {
+    obtenerData('video').then(data => {
+      const d = data || {};
+      const iframe = document.getElementById('videoIframe');
+      if (d.url) iframe.src = d.url;
+      document.getElementById('videoTexto').innerHTML = d.texto || '';
+      document.getElementById('editVideoUrl').value = d.url || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+      document.getElementById('editVideoTexto').value = d.texto || '';
+    });
+  }
+
+  // ============ CARGAR VIDEO PATROCINADORES ============
+  function cargarPatrocinadoresVideo() {
+    obtenerData('patrocinadoresVideo').then(data => {
+      const d = data || {};
+      const iframe = document.getElementById('patrocinadoresVideo');
+      if (d.url) iframe.src = d.url;
+      document.getElementById('patrocinadoresTexto').innerHTML = d.texto || '';
+      document.getElementById('editPatrocinadoresVideo').value = d.url || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+      document.getElementById('editPatrocinadoresTexto').value = d.texto || '';
+    });
+  }
+
+  // ============ NOTICIAS ============
+  function cargarNoticias() {
+    obtenerData('noticias').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('noticiasContenido');
+      if (!lista.length) {
+        container.innerHTML = '<div class="noticias-grid"><div class="noticia-card" style="background:#f0f5fe; display:flex; align-items:center; justify-content:center; color:#7a8a9e;">No hay noticias disponibles</div></div>';
+        return;
+      }
+      container.innerHTML = `<div class="noticias-grid">${lista.map((n) => `
+        <div class="noticia-card">
+          <img class="noticia-bg" src="${n.imagen || 'https://via.placeholder.com/400x300?text=Noticia'}" alt="${n.titulo}" />
+          <div class="noticia-overlay">
+            <h3>${n.titulo}</h3>
+            <p>${n.descripcion || ''}</p>
+          </div>
+        </div>
+      `).join('')}</div>`;
+    });
+  }
+
+  function cargarNoticiasAdmin() {
+    obtenerData('noticias').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('adminNoticiasList');
+      if (!lista.length) { container.innerHTML = '<p>No hay noticias.</p>'; return; }
+      container.innerHTML = lista.map((n, i) => `
+        <div style="display:flex; align-items:center; gap:0.5rem; margin:0.3rem 0; background:#f8faff; padding:0.3rem 1rem; border-radius:16px; border:1px solid #dde6f0;">
+          <img src="${n.imagen || 'https://via.placeholder.com/50x50?text=Img'}" style="width:50px; height:50px; object-fit:cover; border-radius:8px;" />
+          <span style="flex:1; font-weight:500;">${n.titulo}</span>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarNoticia(${i})">✕</button>` : ''}
+        </div>
+      `).join('');
+    });
+  }
+
+  window.eliminarNoticia = function(index) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    obtenerData('noticias').then(data => {
+      let lista = data || [];
+      lista.splice(index, 1);
+      guardarData('noticias', lista).then(() => {
+        cargarNoticias();
+        cargarNoticiasAdmin();
+        showToast('✅ Noticia eliminada');
+      });
+    });
+  };
+
+  document.getElementById('agregarNoticia').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
+    const titulo = document.getElementById('nuevaNoticiaTitulo').value.trim();
+    const descripcion = document.getElementById('nuevaNoticiaDesc').value.trim();
+    const file = document.getElementById('nuevaNoticiaImagen').files[0];
+    if (!titulo) return showToast('❌ Escribe un título');
+
+    const noticiaId = Date.now().toString();
+    const data = { titulo, descripcion, imagen: '' };
+
+    const saveNoticia = (imagenUrl) => {
+      data.imagen = imagenUrl || '';
+      obtenerData('noticias').then(snap => {
+        let lista = snap || [];
+        lista.push(data);
+        guardarData('noticias', lista).then(() => {
+          document.getElementById('nuevaNoticiaTitulo').value = '';
+          document.getElementById('nuevaNoticiaDesc').value = '';
+          document.getElementById('nuevaNoticiaImagen').value = '';
+          cargarNoticias();
+          cargarNoticiasAdmin();
+          showToast('✅ Noticia agregada');
+        });
+      });
+    };
+
+    if (file && useFirebase && storage) {
+      const ref = storage.ref('noticias/' + noticiaId + '/' + file.name);
+      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => saveNoticia(url)).catch(() => saveNoticia(''));
+    } else {
+      saveNoticia('');
+    }
+  });
+
+  // ============ PATROCINADORES ============
+  function cargarPatrocinadores() {
+    obtenerData('patrocinadores').then(data => {
+      const lista = data || [];
+      const track = document.getElementById('patrocinadoresTrack');
+      if (!lista.length) {
+        track.innerHTML = '<p style="padding:1rem; color:#aabbcc;">No hay patrocinadores registrados.</p>';
+        track.style.animation = 'none';
+        return;
+      }
+      const items = lista.map(p => `
+        <div class="patrocinador-item">
+          <img src="${p.icono || 'https://via.placeholder.com/70x70?text=Logo'}" alt="${p.nombre}" />
+          <span class="patrocinador-nombre">${p.nombre}</span>
+          ${p.descripcion ? `<span class="patrocinador-desc">${p.descripcion}</span>` : ''}
+          ${p.url ? `<a href="${p.url}" target="_blank">🔗 Visitar</a>` : ''}
+        </div>
+      `).join('');
+      track.innerHTML = items + items;
+      track.style.animation = 'scrollPatrocinadores 30s linear infinite';
+    });
+  }
+
+  function cargarPatrocinadoresAdmin() {
+    obtenerData('patrocinadores').then(data => {
+      const lista = data || [];
+      const container = document.getElementById('adminPatrocinadoresList');
+      if (!lista.length) { container.innerHTML = '<p>No hay patrocinadores.</p>'; return; }
+      container.innerHTML = lista.map((p, i) => `
+        <div class="patrocinador-admin">
+          <img src="${p.icono || 'https://via.placeholder.com/40x40?text=Logo'}" />
+          <div style="flex:1;">
+            <div style="font-weight:600;">${p.nombre || 'Sin nombre'}</div>
+            ${p.descripcion ? `<div style="font-size:0.8rem; color:#7a8a9e;">${p.descripcion}</div>` : ''}
+          </div>
+          ${p.url ? `<a href="${p.url}" target="_blank" style="color:#1E45FB; font-size:0.8rem;">🔗</a>` : ''}
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarPatrocinador(${i})">✕</button>` : ''}
+        </div>
+      `).join('');
+    });
+  }
+
+  window.eliminarPatrocinador = function(index) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    obtenerData('patrocinadores').then(data => {
+      let lista = data || [];
+      lista.splice(index, 1);
+      guardarData('patrocinadores', lista).then(() => {
+        cargarPatrocinadores();
+        cargarPatrocinadoresAdmin();
+        showToast('✅ Patrocinador eliminado');
+      });
+    });
+  };
+
+  document.getElementById('agregarPatrocinador').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
+    const nombre = document.getElementById('nuevoPatrocinadorNombre').value.trim();
+    const descripcion = document.getElementById('nuevoPatrocinadorDesc').value.trim();
+    const url = document.getElementById('nuevoPatrocinadorUrl').value.trim();
+    const file = document.getElementById('nuevoPatrocinadorIcono').files[0];
+    if (!nombre) return showToast('❌ Ingresa un nombre');
+
+    const patrocinadorId = Date.now().toString();
+    const data = { nombre, descripcion, url: url || '', icono: '' };
+
+    const savePatrocinador = (iconoUrl) => {
+      data.icono = iconoUrl || '';
+      obtenerData('patrocinadores').then(snap => {
+        let lista = snap || [];
+        lista.push(data);
+        guardarData('patrocinadores', lista).then(() => {
+          document.getElementById('nuevoPatrocinadorNombre').value = '';
+          document.getElementById('nuevoPatrocinadorDesc').value = '';
+          document.getElementById('nuevoPatrocinadorUrl').value = '';
+          document.getElementById('nuevoPatrocinadorIcono').value = '';
+          cargarPatrocinadores();
+          cargarPatrocinadoresAdmin();
+          showToast('✅ Patrocinador agregado');
+        });
+      });
+    };
+
+    if (file && useFirebase && storage) {
+      const ref = storage.ref('patrocinadores/' + patrocinadorId + '/' + file.name);
+      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => savePatrocinador(url)).catch(() => savePatrocinador(''));
+    } else {
+      savePatrocinador('');
+    }
+  });
+
+  // ============ MEDALLERO ============
+  function cargarMedallero() {
+    obtenerData('medallas').then(medallas => {
+      const m = medallas || {};
+      const zonas = ['1','2','3','4','5'];
+      const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
+      const resultados = zonas.map(z => {
+        const d = m[z] || { oro:0, plata:0, bronce:0 };
+        const total = (d.oro||0)*3 + (d.plata||0)*2 + (d.bronce||0)*1;
+        return { zona: z, ...d, total };
+      });
+      resultados.sort((a,b) => b.total - a.total || b.oro - a.oro);
+
+      const container = document.getElementById('medalleroContainer');
+      const colores = { '1':'#2ecc71','2':'#e74c8b','3':'#f39c12','4':'#8e44ad','5':'#f1c40f' };
+      const medallaEmoji = { oro:'🥇', plata:'🥈', bronce:'🥉' };
+      const clasesPos = ['primero', 'segundo', 'tercero'];
+
+      container.innerHTML = resultados.map((r,i) => `
+        <div class="medallero-fila ${clasesPos[i] || ''}" style="border-left-color:${colores[r.zona]};">
+          <div class="posicion">#${i+1}</div>
+          <div class="zona-info">
+            <div class="zona-circulo" style="background:${colores[r.zona]};">${r.zona}</div>
+            <div class="zona-nombre">${zonaNombres[r.zona]}</div>
+          </div>
+          <div class="medallas">
+            <span class="medalla-oro">${medallaEmoji.oro} <span class="count">${r.oro||0}</span></span>
+            <span class="medalla-plata">${medallaEmoji.plata} <span class="count">${r.plata||0}</span></span>
+            <span class="medalla-bronce">${medallaEmoji.bronce} <span class="count">${r.bronce||0}</span></span>
+          </div>
+          <div class="puntos">${r.total} pts</div>
+        </div>
+      `).join('');
+    });
+  }
+
+  // ============ MEDALLAS ADMIN ============
+  function cargarMedallasAdmin() {
+    obtenerData('medallas').then(data => {
+      const m = data || {};
+      const container = document.getElementById('adminMedallasList');
+      const zonaNombres = { '1':'Zona 1', '2':'Zona 2', '3':'Zona 3', '4':'Zona 4', '5':'Zona 5' };
+      const colores = { '1':'#2ecc71','2':'#e74c8b','3':'#f39c12','4':'#8e44ad','5':'#f1c40f' };
+      let html = '';
+      for (let z of ['1','2','3','4','5']) {
+        const d = m[z] || { oro:0, plata:0, bronce:0 };
+        html += `<div style="display:flex; align-items:center; gap:1rem; background:white; padding:0.3rem 1rem; border-radius:40px; margin:0.2rem 0; border-left:6px solid ${colores[z]};">
+          <span style="font-weight:700; width:80px;">${zonaNombres[z]}</span>
+          <span>🥇 ${d.oro||0}</span>
+          <span>🥈 ${d.plata||0}</span>
+          <span>🥉 ${d.bronce||0}</span>
+          ${userRole === 'oficial' ? `<button class="btn-danger" onclick="limpiarMedallas('${z}')" style="margin-left:auto;">Limpiar</button>` : ''}
+        </div>`;
+      }
+      container.innerHTML = html;
+    });
+  }
+
+  window.limpiarMedallas = function(zona) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede limpiar');
+    if (confirm(`¿Limpiar todas las medallas de Zona ${zona}?`)) {
+      obtenerData('medallas').then(data => {
+        const m = data || {};
+        m[zona] = { oro:0, plata:0, bronce:0 };
+        guardarData('medallas', m).then(() => {
+          cargarMedallero();
+          cargarMedallasAdmin();
+          showToast('✅ Medallas limpiadas');
+        });
+      });
+    }
+  };
+
+  document.getElementById('asignarMedalla').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede asignar');
+    const zona = document.getElementById('selectZonaMedalla').value;
+    const tipo = document.getElementById('selectTipoMedalla').value;
+    obtenerData('medallas').then(data => {
+      const m = data || {};
+      if (!m[zona]) m[zona] = { oro:0, plata:0, bronce:0 };
+      m[zona][tipo] = (m[zona][tipo]||0) + 1;
+      guardarData('medallas', m).then(() => {
+        cargarMedallero();
+        cargarMedallasAdmin();
+        showToast(`✅ Medalla ${tipo} asignada a Zona ${zona}`);
+      });
+    });
+  });
+
+  // ============ ATLETAS ============
+  function getZonaClass(zona) {
+    const map = { '1':'zona-1','2':'zona-2','3':'zona-3','4':'zona-4','5':'zona-5' };
+    return map[zona] || 'zona-1';
+  }
+
+  function renderAtletas(atletas) {
+    const container = document.getElementById('listaAtletasContainer');
+    if (!atletas || Object.keys(atletas).length === 0) {
+      container.innerHTML = '<p>No hay atletas registrados.</p>';
+      return;
+    }
+    const buscar = document.getElementById('buscarAtleta').value.toLowerCase().trim();
+    const zonaFiltro = document.getElementById('filtroZona').value;
+    const catFiltro = document.getElementById('filtroCategoria').value;
+
+    let html = '';
+    Object.keys(atletas).forEach(key => {
+      const a = atletas[key];
+      const nombre = (a.nombre || '').toLowerCase();
+      if (buscar && !nombre.includes(buscar)) return;
+      if (zonaFiltro && a.zona !== zonaFiltro) return;
+      if (catFiltro && a.categoria !== catFiltro) return;
+
+      const zonaClass = getZonaClass(a.zona);
+      const cancelado = a.cancelado ? ' ⛔' : '';
+      html += `
+        <div class="atleta-grid-item" onclick="verAtleta('${key}')">
+          <img class="atleta-img" src="${a.fotoUrl || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 24 24%22 fill=%22%231E45FB%22%3E%3Ccircle cx=%2212%22 cy=%228%22 r=%224%22/%3E%3Cpath d=%22M12 14c-4 0-6 2-6 4v2h12v-2c0-2-2-4-6-4z%22/%3E%3C/svg%3E'}" alt="${a.nombre}" />
+          <div class="atleta-nombre">
+            ${a.nombre || 'Sin nombre'}${cancelado}
+            <br><span class="atleta-zona ${zonaClass}">Zona ${a.zona || '?'}</span>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html || '<p>No hay coincidencias.</p>';
+  }
+
+  window.verAtleta = function(id) {
+    obtenerData('atletas').then(data => {
+      const atletas = data || {};
+      const a = atletas[id];
+      if (a) showAtletaModal(a);
+    });
+  };
+
+  function cargarAtletasVista() {
+    obtenerData('atletas').then(data => {
+      renderAtletas(data);
+    });
+  }
+
+  function cargarAtletasAdmin() {
+    obtenerData('atletas').then(data => {
+      const container = document.getElementById('adminAtletasList');
+      if (!data || Object.keys(data).length === 0) { container.innerHTML = '<p>No hay atletas registrados.</p>'; return; }
+      let html = '';
+      Object.keys(data).forEach(key => {
+        const a = data[key];
+        const zonaClass = getZonaClass(a.zona);
+        const cancelado = a.cancelado ? ' ⛔' : '';
+        html += `
+          <div style="display:flex; align-items:center; gap:1rem; background:#f8faff; padding:0.5rem 1rem; border-radius:16px; margin:0.3rem 0; border:1px solid #dde6f0;">
+            <img src="${a.fotoUrl || 'https://via.placeholder.com/50x50?text=No'}" style="width:50px; height:50px; object-fit:cover; border-radius:50%; border:3px solid #1E45FB;" />
+            <div style="flex:1;">
+              <div style="font-weight:600;">${a.nombre || 'Sin nombre'}${cancelado}</div>
+              <div style="font-size:0.8rem; color:#7a8a9e;">${a.disciplina || ''} · ${a.categoria || ''}</div>
+            </div>
+            <span class="zona-badge ${zonaClass}">Zona ${a.zona || '?'}</span>
+            ${userRole === 'oficial' ? `<button class="btn-danger" onclick="eliminarAtleta('${key}')">✕</button>` : ''}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    });
+  }
+
+  window.eliminarAtleta = function(id) {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede eliminar');
+    if (confirm('¿Eliminar este atleta?')) {
+      obtenerData('atletas').then(data => {
+        const atletas = data || {};
+        delete atletas[id];
+        guardarData('atletas', atletas).then(() => {
+          cargarAtletasAdmin();
+          cargarAtletasVista();
+          showToast('✅ Atleta eliminado');
+        });
+      });
+    }
+  };
+
+  // ============ REGISTRAR ATLETA ============
+  document.getElementById('formAtleta').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!adminAutenticado) { showToast('❌ Inicia sesión primero.'); return; }
+    const nombre = document.getElementById('nombreAtleta').value.trim();
+    const zona = document.getElementById('zonaAtleta').value;
+    const documento = document.getElementById('documentoAtleta').value.trim();
+    const categoria = document.getElementById('categoriaAtleta').value;
+    const disciplina = document.getElementById('disciplinaAtleta').value;
+    const cancelado = document.getElementById('canceladoAtleta').checked;
+    const file = document.getElementById('fotoAtleta').files[0];
+
+    if (!nombre) { showToast('❌ Nombre es obligatorio'); return; }
+    if (!disciplina) { showToast('❌ Selecciona una disciplina'); return; }
+
+    const atletaId = Date.now().toString();
+    const data = { nombre, zona, documento, categoria, disciplina, cancelado, fotoUrl: '' };
+
+    const saveAtleta = (fotoUrl) => {
+      data.fotoUrl = fotoUrl || '';
+      obtenerData('atletas').then(atletas => {
+        const list = atletas || {};
+        list[atletaId] = data;
+        guardarData('atletas', list).then(() => {
+          showToast('✅ Atleta registrado');
+          document.getElementById('formAtleta').reset();
+          document.getElementById('canceladoAtleta').checked = false;
+          cargarAtletasAdmin();
+          cargarAtletasVista();
+          cargarDisciplinasSelect();
+          cargarCategoriasSelect();
+        });
+      });
+    };
+
+    if (file && useFirebase && storage) {
+      const ref = storage.ref('atletas/' + atletaId + '/' + file.name);
+      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => saveAtleta(url)).catch(() => saveAtleta(''));
+    } else {
+      saveAtleta('');
+    }
+  });
+
+  // ============ GUARDAR EDICIONES ============
+  document.getElementById('guardarInicio').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
+    const texto = document.getElementById('editInicioTexto').value;
+    guardarData('inicio', { texto }).then(() => { 
+      showToast('✅ Inicio actualizado'); 
+      cargarInicio(); 
+    });
+  });
+
+  document.getElementById('guardarSede').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
+    const titulo = document.getElementById('editSedeTitulo').value;
+    const texto = document.getElementById('editSedeTexto').value;
+    const file = document.getElementById('editSedeImagen').files[0];
+    const data = { titulo, texto, imagenUrl: '' };
+
+    const save = (url) => {
+      data.imagenUrl = url || '';
+      guardarData('sede', data).then(() => { 
+        showToast('✅ Sede actualizada'); 
+        cargarSede(); 
+        cargarSedeAdmin(); 
+      });
+    };
+
+    if (file && useFirebase && storage) {
+      const ref = storage.ref('sede/' + file.name);
+      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => save(url)).catch(() => save(''));
+    } else {
+      save('');
+    }
+  });
+
+  document.getElementById('guardarVideo').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
+    const url = document.getElementById('editVideoUrl').value.trim();
+    const texto = document.getElementById('editVideoTexto').value;
+    guardarData('video', { url, texto }).then(() => {
+      showToast('✅ Video actualizado');
+      cargarVideo();
+    });
+  });
+
+  document.getElementById('guardarPatrocinadoresVideo').addEventListener('click', function() {
+    if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
+    const url = document.getElementById('editPatrocinadoresVideo').value.trim();
+    const texto = document.getElementById('editPatrocinadoresTexto').value;
+    guardarData('patrocinadoresVideo', { url, texto }).then(() => {
+      showToast('✅ Video patrocinadores actualizado');
+      cargarPatrocinadoresVideo();
+    });
+  });
+
+  // ============ FILTROS ============
+  document.getElementById('buscarAtleta').addEventListener('input', cargarAtletasVista);
+  document.getElementById('filtroZona').addEventListener('change', cargarAtletasVista);
+  document.getElementById('filtroCategoria').addEventListener('change', cargarAtletasVista);
+
+  // ============ INICIALIZAR ============
+  cargarInicio();
+  cargarSlider();
+  cargarSede();
+  cargarDisciplinas();
+  cargarCategorias();
+  cargarBaseBiblica();
+  cargarVideo();
+  cargarPatrocinadoresVideo();
+  cargarNoticias();
+  cargarPatrocinadores();
+  cargarMedallero();
+  cargarAtletasVista();
+  cargarDisciplinasSelect();
+  cargarCategoriasSelect();
+  cargarFiltroCategorias();
+
+  console.log('🔑 CREDENCIALES:');
+  console.log('   OFICIAL - Usuario: admin | Contraseña: Olimpiadas2026!');
+  console.log('   COORDINADOR - Usuario: coord | Contraseña: coord2026');
+</script>
+</body>
+</html>
