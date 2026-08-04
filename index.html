@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
   <title>Olimpiadas 2026 · AVCS</title>
-  <!-- Firebase -->
+  <!-- Firebase SOLO DATABASE (sin Storage) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   <style>
     * {
       margin: 0;
@@ -401,7 +400,7 @@
       color: #4a6a8a;
     }
 
-    /* MEDALLERO - TIPO IMAGEN */
+    /* MEDALLERO */
     .medallero-container {
       display: flex;
       flex-direction: column;
@@ -496,7 +495,7 @@
       min-width: 22px;
       font-weight: 800;
     }
-    .medallero-fila .medalla-oro .count { color: #f1c40f; text-shadow: 0 1px 5px rgba(241,196,15,0.3); }
+    .medallero-fila .medalla-oro .count { color: #f1c40f; }
     .medallero-fila .medalla-plata .count { color: #95a5a6; }
     .medallero-fila .medalla-bronce .count { color: #e67e22; }
     .medallero-fila .puntos {
@@ -714,7 +713,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* BASE BÍBLICA - ADVENTIS */
+    /* BASE BÍBLICA */
     .base-biblica-container {
       display: grid;
       gap: 1.5rem;
@@ -983,7 +982,6 @@
 
     .admin-content-hidden { display: none; }
 
-    /* SLIDER ADMIN */
     .slider-admin-item {
       display: flex;
       align-items: center;
@@ -1001,7 +999,6 @@
       border-radius: 8px;
     }
 
-    /* ADMIN LOGIN OVERLAY */
     .admin-login-overlay {
       display: none;
       position: fixed;
@@ -1206,7 +1203,6 @@
     <div id="sec-inicio" class="seccion active-seccion">
       <h2>OLIMPIADAS 2026</h2>
       <div id="inicioContenido">
-        <!-- SLIDER -->
         <div class="slider-container" id="sliderContainer">
           <div class="slider-track" id="sliderTrack">
             <div class="slider-slide"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&h=1080&fit=crop" alt="Slide 1" /></div>
@@ -1498,23 +1494,22 @@
 </div>
 
 <script>
-  // ============ FIREBASE CONFIG ============
+  // ============ FIREBASE CONFIG (SOLO DATABASE) ============
   const firebaseConfig = {
-    apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
-    authDomain: "generacionahimaas.firebaseapp.com",
-    projectId: "generacionahimaas",
-    storageBucket: "generacionahimaas.firebasestorage.app",
-    messagingSenderId: "854884058832",
-    appId: "1:854884058832:web:3946c71c4e33ff37f840d5"
+     apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
+     authDomain: "generacionahimaas.firebaseapp.com",
+     projectId: "generacionahimaas",
+     storageBucket: "generacionahimaas.firebasestorage.app",
+     messagingSenderId: "854884058832",
+     appId: "1:854884058832:web:3946c71c4e33ff37f840d5"
   };
 
   let useFirebase = true;
-  let db, storage;
+  let db;
 
   try {
     firebase.initializeApp(firebaseConfig);
     db = firebase.database();
-    storage = firebase.storage();
     db.ref('.info/connected').on('value', snap => {
       if (snap.val() === true) { useFirebase = true; } else { useFirebase = false; }
     });
@@ -1866,7 +1861,7 @@
     resetAutoSlide();
   });
 
-  // ============ SLIDER ADMIN ============
+  // ============ SLIDER ADMIN (BASE64) ============
   function cargarSliderAdmin() {
     obtenerData('slider').then(data => {
       const lista = data || [];
@@ -1903,15 +1898,11 @@
     let uploadPromises = [];
     for (let file of files) {
       const promise = new Promise((resolve) => {
-        const id = Date.now() + Math.random().toString(36);
-        if (useFirebase && storage) {
-          const ref = storage.ref('slider/' + id + '/' + file.name);
-          ref.put(file).then(s => s.ref.getDownloadURL()).then(url => resolve(url)).catch(() => resolve(''));
-        } else {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target.result);
-          reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          resolve(e.target.result);
+        };
+        reader.readAsDataURL(file);
       });
       uploadPromises.push(promise);
     }
@@ -1941,7 +1932,7 @@
     }
   });
 
-  // ============ SEDE ADMIN ============
+  // ============ SEDE ADMIN (BASE64) ============
   function cargarSedeAdmin() {
     obtenerData('sede').then(data => {
       const container = document.getElementById('adminSedeList');
@@ -2325,6 +2316,7 @@
     });
   };
 
+  // ============ AGREGAR NOTICIA (BASE64) ============
   document.getElementById('agregarNoticia').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
     const titulo = document.getElementById('nuevaNoticiaTitulo').value.trim();
@@ -2332,11 +2324,10 @@
     const file = document.getElementById('nuevaNoticiaImagen').files[0];
     if (!titulo) return showToast('❌ Escribe un título');
 
-    const noticiaId = Date.now().toString();
     const data = { titulo, descripcion, imagen: '' };
 
-    const saveNoticia = (imagenUrl) => {
-      data.imagen = imagenUrl || '';
+    const saveNoticia = (imagenBase64) => {
+      data.imagen = imagenBase64 || '';
       obtenerData('noticias').then(snap => {
         let lista = snap || [];
         lista.push(data);
@@ -2351,9 +2342,12 @@
       });
     };
 
-    if (file && useFirebase && storage) {
-      const ref = storage.ref('noticias/' + noticiaId + '/' + file.name);
-      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => saveNoticia(url)).catch(() => saveNoticia(''));
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        saveNoticia(e.target.result);
+      };
+      reader.readAsDataURL(file);
     } else {
       saveNoticia('');
     }
@@ -2414,6 +2408,7 @@
     });
   };
 
+  // ============ AGREGAR PATROCINADOR (BASE64) ============
   document.getElementById('agregarPatrocinador').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede agregar');
     const nombre = document.getElementById('nuevoPatrocinadorNombre').value.trim();
@@ -2422,11 +2417,10 @@
     const file = document.getElementById('nuevoPatrocinadorIcono').files[0];
     if (!nombre) return showToast('❌ Ingresa un nombre');
 
-    const patrocinadorId = Date.now().toString();
     const data = { nombre, descripcion, url: url || '', icono: '' };
 
-    const savePatrocinador = (iconoUrl) => {
-      data.icono = iconoUrl || '';
+    const savePatrocinador = (iconoBase64) => {
+      data.icono = iconoBase64 || '';
       obtenerData('patrocinadores').then(snap => {
         let lista = snap || [];
         lista.push(data);
@@ -2442,9 +2436,12 @@
       });
     };
 
-    if (file && useFirebase && storage) {
-      const ref = storage.ref('patrocinadores/' + patrocinadorId + '/' + file.name);
-      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => savePatrocinador(url)).catch(() => savePatrocinador(''));
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        savePatrocinador(e.target.result);
+      };
+      reader.readAsDataURL(file);
     } else {
       savePatrocinador('');
     }
@@ -2632,10 +2629,11 @@
     }
   };
 
-  // ============ REGISTRAR ATLETA ============
+  // ============ REGISTRAR ATLETA (BASE64 - SIN STORAGE) ============
   document.getElementById('formAtleta').addEventListener('submit', function(e) {
     e.preventDefault();
     if (!adminAutenticado) { showToast('❌ Inicia sesión primero.'); return; }
+    
     const nombre = document.getElementById('nombreAtleta').value.trim();
     const zona = document.getElementById('zonaAtleta').value;
     const documento = document.getElementById('documentoAtleta').value.trim();
@@ -2650,8 +2648,8 @@
     const atletaId = Date.now().toString();
     const data = { nombre, zona, documento, categoria, disciplina, cancelado, fotoUrl: '' };
 
-    const saveAtleta = (fotoUrl) => {
-      data.fotoUrl = fotoUrl || '';
+    const saveAtleta = (fotoBase64) => {
+      data.fotoUrl = fotoBase64 || '';
       obtenerData('atletas').then(atletas => {
         const list = atletas || {};
         list[atletaId] = data;
@@ -2667,9 +2665,13 @@
       });
     };
 
-    if (file && useFirebase && storage) {
-      const ref = storage.ref('atletas/' + atletaId + '/' + file.name);
-      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => saveAtleta(url)).catch(() => saveAtleta(''));
+    // Convertir imagen a Base64 (NO usa Firebase Storage)
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        saveAtleta(e.target.result);
+      };
+      reader.readAsDataURL(file);
     } else {
       saveAtleta('');
     }
@@ -2685,6 +2687,7 @@
     });
   });
 
+  // ============ GUARDAR SEDE (BASE64) ============
   document.getElementById('guardarSede').addEventListener('click', function() {
     if (!adminAutenticado || userRole !== 'oficial') return showToast('❌ Solo oficial puede editar');
     const titulo = document.getElementById('editSedeTitulo').value;
@@ -2692,8 +2695,8 @@
     const file = document.getElementById('editSedeImagen').files[0];
     const data = { titulo, texto, imagenUrl: '' };
 
-    const save = (url) => {
-      data.imagenUrl = url || '';
+    const save = (imagenBase64) => {
+      data.imagenUrl = imagenBase64 || '';
       guardarData('sede', data).then(() => { 
         showToast('✅ Sede actualizada'); 
         cargarSede(); 
@@ -2701,9 +2704,12 @@
       });
     };
 
-    if (file && useFirebase && storage) {
-      const ref = storage.ref('sede/' + file.name);
-      ref.put(file).then(s => s.ref.getDownloadURL()).then(url => save(url)).catch(() => save(''));
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        save(e.target.result);
+      };
+      reader.readAsDataURL(file);
     } else {
       save('');
     }
@@ -2754,6 +2760,7 @@
   console.log('🔑 CREDENCIALES:');
   console.log('   OFICIAL - Usuario: admin | Contraseña: Olimpiadas2026!');
   console.log('   COORDINADOR - Usuario: coord | Contraseña: coord2026');
+  console.log('📸 IMÁGENES EN BASE64 - SIN STORAGE - 100% GRATIS');
 </script>
 </body>
 </html>
