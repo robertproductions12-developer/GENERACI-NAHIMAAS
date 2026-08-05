@@ -1605,7 +1605,7 @@
 
     <script>
         // ============================================================
-        // 1. CONFIGURACIÓN DE FIREBASE
+        // 1. CONFIGURACIÓN DE FIREBASE CON SOPORTE PARA MÓVILES
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
@@ -1619,12 +1619,73 @@
 
         let firebaseApp, database;
         let firebaseReady = false;
+        let reconnectAttempts = 0;
+        const MAX_RECONNECT_ATTEMPTS = 5;
 
         try {
             firebaseApp = firebase.initializeApp(firebaseConfig);
             database = firebase.database();
             firebaseReady = true;
             console.log('🔥 Firebase conectado correctamente');
+
+            // ============================================================
+            // SOLUCIÓN WEBSOCKETS PARA MÓVILES - CONFIGURACIÓN DE RECONEXIÓN
+            // ============================================================
+            
+            // 1. Configurar persistencia offline
+            database.ref('.info/connected').on('value', (snap) => {
+                if (snap.val() === true) {
+                    console.log('✅ Conexión a Firebase establecida');
+                    reconnectAttempts = 0;
+                } else {
+                    console.log('📡 Conexión a Firebase perdida, modo offline');
+                    // Intentar reconectar automáticamente
+                    if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                        reconnectAttempts++;
+                        setTimeout(() => {
+                            console.log(`🔄 Intento de reconexión ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`);
+                            try {
+                                database.goOffline();
+                                setTimeout(() => database.goOnline(), 500);
+                            } catch (e) {
+                                console.warn('⚠️ Error en reconexión:', e);
+                            }
+                        }, reconnectAttempts * 3000);
+                    }
+                }
+            });
+
+            // 2. Mantener sincronización activa
+            database.ref('olimpiadas2026_v2').keepSynced(true);
+            console.log('✅ Modo offline configurado para móviles');
+
+            // 3. Forzar reconexión inicial si no hay conexión
+            setTimeout(() => {
+                try {
+                    database.ref('.info/connected').once('value', (snap) => {
+                        if (!snap.val()) {
+                            console.log('🔄 Forzando reconexión inicial...');
+                            database.goOffline();
+                            setTimeout(() => {
+                                database.goOnline();
+                                console.log('✅ Reconexión forzada completada');
+                            }, 1000);
+                        }
+                    });
+                } catch (e) {
+                    console.log('⚠️ No se pudo verificar conexión inicial');
+                }
+            }, 3000);
+
+            // 4. Escuchar cambios en la conexión para mantenerla activa
+            const connectionRef = database.ref('.info/connected');
+            connectionRef.on('value', (snap) => {
+                if (snap.val() === true) {
+                    // Si estamos conectados, mantener la sincronización activa
+                    database.ref('olimpiadas2026_v2').keepSynced(true);
+                }
+            });
+
         } catch (e) {
             console.warn('⚠️ Firebase no disponible', e);
             firebaseReady = false;
