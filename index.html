@@ -343,6 +343,14 @@
                 width: 100% !important;
                 justify-content: center !important;
             }
+            .config-item {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 6px !important;
+            }
+            .config-item .actions {
+                justify-content: center !important;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1199,6 +1207,74 @@
             font-size: 0.75rem;
             color: #8aa4c8;
         }
+
+        /* Estilos para la configuración de categorías y disciplinas */
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 40px;
+            margin-bottom: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .config-item .name {
+            color: #e8edf5;
+            font-weight: 500;
+        }
+
+        .config-item .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .config-item .actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: #b0c4de;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.75rem;
+        }
+
+        .config-item .actions .delete-config:hover {
+            background: rgba(220, 50, 50, 0.3);
+            color: #dc3232;
+        }
+
+        .config-item .actions .edit-config:hover {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+
+        .config-add-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .config-add-form input {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px 14px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e8edf5;
+            font-size: 0.95rem;
+        }
+
+        .config-add-form input:focus {
+            outline: none;
+            border-color: #4ade80;
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -1289,6 +1365,20 @@
                 <div class="form-group"><label>Enlace (URL)</label><input type="url" id="editNewsLink" placeholder="https://ejemplo.com" /></div>
                 <div class="form-group"><label>Imagen</label><input type="file" id="editNewsImage" accept="image/*" /></div>
                 <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Actualizar Noticia</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR CATEGORÍA / DISCIPLINA -->
+    <div class="modal-overlay" id="editConfigModal">
+        <div class="modal">
+            <button class="close-modal" id="closeEditConfigModal">&times;</button>
+            <h2 style="margin-bottom:20px; color:#e8edf5;"><i class="fas fa-edit"></i> Editar</h2>
+            <form id="editConfigForm">
+                <input type="hidden" id="editConfigType" />
+                <input type="hidden" id="editConfigOldValue" />
+                <div class="form-group"><label>Nuevo valor</label><input type="text" id="editConfigNewValue" required /></div>
+                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Actualizar</button>
             </form>
         </div>
     </div>
@@ -1392,6 +1482,7 @@
                 <button data-tab="tabRegistrar">Registrar Atleta</button>
                 <button data-tab="tabAtletas">Gestionar Atletas</button>
                 <button data-tab="tabNoticias">Noticias</button>
+                <button data-tab="tabConfig">Categorías & Disciplinas</button>
                 <button data-tab="tabReportes">Descargar PDF</button>
             </div>
 
@@ -1469,6 +1560,29 @@
                 </div>
             </div>
 
+            <!-- TAB CONFIGURACIÓN: CATEGORÍAS Y DISCIPLINAS -->
+            <div id="tabConfig" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-tags"></i> Categorías</h3>
+                    <p style="color:#8aa4c8; margin-bottom:12px;">Gestiona las categorías disponibles para los atletas.</p>
+                    <div id="categoriasList"></div>
+                    <div class="config-add-form">
+                        <input type="text" id="newCategoriaInput" placeholder="Nueva categoría..." />
+                        <button class="btn-primary btn-sm" id="addCategoriaBtn"><i class="fas fa-plus"></i> Agregar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-running"></i> Disciplinas</h3>
+                    <p style="color:#8aa4c8; margin-bottom:12px;">Gestiona las disciplinas deportivas disponibles.</p>
+                    <div id="disciplinasList"></div>
+                    <div class="config-add-form">
+                        <input type="text" id="newDisciplinaInput" placeholder="Nueva disciplina..." />
+                        <button class="btn-primary btn-sm" id="addDisciplinaBtn"><i class="fas fa-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB REPORTES PDF -->
             <div id="tabReportes" class="tab-content">
                 <div class="card">
@@ -1520,7 +1634,7 @@
         // 2. DATA PRINCIPAL
         // ============================================================
         let data = {
-            disciplinas: ['100 MTS', '400 MTS','50 MTS','100 MTS','100 MTS',],
+            disciplinas: ['100 MTS', '400 MTS', '50 MTS', '100 MTS', '100 MTS'],
             categorias: ['Infantil', 'Juvenil', 'Adulto', 'Máster'],
             atletas: [],
             noticias: [],
@@ -1632,6 +1746,7 @@
                     renderAthletes();
                     renderAdminAthletes();
                     renderNoticias();
+                    renderConfigLists();
                     updateSliderImages();
                     populateSelectors();
                     console.log('🔄 Datos actualizados en tiempo real');
@@ -1840,6 +1955,7 @@
             tabRegistrar: document.getElementById('tabRegistrar'),
             tabAtletas: document.getElementById('tabAtletas'),
             tabNoticias: document.getElementById('tabNoticias'),
+            tabConfig: document.getElementById('tabConfig'),
             tabReportes: document.getElementById('tabReportes')
         };
 
@@ -1856,6 +1972,7 @@
                 if (this.dataset.tab === 'tabSlider') loadSliderForm();
                 if (this.dataset.tab === 'tabAtletas') renderAdminAthletes();
                 if (this.dataset.tab === 'tabNoticias') renderNoticias();
+                if (this.dataset.tab === 'tabConfig') renderConfigLists();
             });
         });
 
@@ -2373,7 +2490,188 @@
         });
 
         // ============================================================
-        // 20. REPORTE PDF - TODOS LOS ATLETAS
+        // 20. CONFIGURACIÓN: CATEGORÍAS Y DISCIPLINAS
+        // ============================================================
+        function renderConfigLists() {
+            renderCategorias();
+            renderDisciplinas();
+        }
+
+        function renderCategorias() {
+            const container = document.getElementById('categoriasList');
+            if (!container) return;
+
+            if (!data.categorias || data.categorias.length === 0) {
+                container.innerHTML = '<div class="empty-message">No hay categorías registradas.</div>';
+                return;
+            }
+
+            container.innerHTML = data.categorias.map(c => `
+                    <div class="config-item">
+                        <span class="name">${c}</span>
+                        <div class="actions">
+                            <button class="edit-config" onclick="editConfigItem('categoria', '${c}')" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button class="delete-config" onclick="deleteConfigItem('categoria', '${c}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function renderDisciplinas() {
+            const container = document.getElementById('disciplinasList');
+            if (!container) return;
+
+            if (!data.disciplinas || data.disciplinas.length === 0) {
+                container.innerHTML = '<div class="empty-message">No hay disciplinas registradas.</div>';
+                return;
+            }
+
+            container.innerHTML = data.disciplinas.map(d => `
+                    <div class="config-item">
+                        <span class="name">${d}</span>
+                        <div class="actions">
+                            <button class="edit-config" onclick="editConfigItem('disciplina', '${d}')" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button class="delete-config" onclick="deleteConfigItem('disciplina', '${d}')" title="Eliminar"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        // Eliminar categoría o disciplina
+        window.deleteConfigItem = function(type, value) {
+            if (type === 'categoria') {
+                if (!confirm(`¿Eliminar la categoría "${value}"?`)) return;
+                // Verificar si algún atleta la usa
+                const inUse = data.atletas.some(a => a.categoria === value);
+                if (inUse) {
+                    alert('❌ No se puede eliminar porque hay atletas usando esta categoría.');
+                    return;
+                }
+                data.categorias = data.categorias.filter(c => c !== value);
+            } else if (type === 'disciplina') {
+                if (!confirm(`¿Eliminar la disciplina "${value}"?`)) return;
+                const inUse = data.atletas.some(a => a.disciplina === value);
+                if (inUse) {
+                    alert('❌ No se puede eliminar porque hay atletas usando esta disciplina.');
+                    return;
+                }
+                data.disciplinas = data.disciplinas.filter(d => d !== value);
+            }
+            saveData();
+            renderConfigLists();
+            populateSelectors();
+            alert('✅ Eliminado correctamente.');
+        };
+
+        // Editar categoría o disciplina
+        window.editConfigItem = function(type, oldValue) {
+            document.getElementById('editConfigType').value = type;
+            document.getElementById('editConfigOldValue').value = oldValue;
+            document.getElementById('editConfigNewValue').value = oldValue;
+            document.getElementById('editConfigModal').classList.add('show');
+
+            // Actualizar título del modal
+            const title = type === 'categoria' ? 'Editar Categoría' : 'Editar Disciplina';
+            document.querySelector('#editConfigModal h2').textContent = title;
+        };
+
+        document.getElementById('editConfigForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const type = document.getElementById('editConfigType').value;
+            const oldValue = document.getElementById('editConfigOldValue').value;
+            const newValue = document.getElementById('editConfigNewValue').value.trim();
+
+            if (!newValue) {
+                alert('Ingresa un nuevo valor.');
+                return;
+            }
+
+            if (type === 'categoria') {
+                // Verificar duplicado
+                if (data.categorias.includes(newValue) && newValue !== oldValue) {
+                    alert('❌ Ya existe una categoría con ese nombre.');
+                    return;
+                }
+                // Actualizar en atletas
+                data.atletas.forEach(a => {
+                    if (a.categoria === oldValue) a.categoria = newValue;
+                });
+                data.categorias = data.categorias.map(c => c === oldValue ? newValue : c);
+            } else if (type === 'disciplina') {
+                if (data.disciplinas.includes(newValue) && newValue !== oldValue) {
+                    alert('❌ Ya existe una disciplina con ese nombre.');
+                    return;
+                }
+                data.atletas.forEach(a => {
+                    if (a.disciplina === oldValue) a.disciplina = newValue;
+                });
+                data.disciplinas = data.disciplinas.map(d => d === oldValue ? newValue : d);
+            }
+
+            saveData();
+            renderConfigLists();
+            populateSelectors();
+            document.getElementById('editConfigModal').classList.remove('show');
+            alert('✅ Actualizado correctamente.');
+        });
+
+        document.getElementById('closeEditConfigModal').addEventListener('click', function() {
+            document.getElementById('editConfigModal').classList.remove('show');
+        });
+        document.getElementById('editConfigModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('show');
+        });
+
+        // Agregar categoría
+        document.getElementById('addCategoriaBtn').addEventListener('click', function() {
+            const input = document.getElementById('newCategoriaInput');
+            const value = input.value.trim();
+            if (!value) {
+                alert('Ingresa un nombre para la categoría.');
+                return;
+            }
+            if (data.categorias.includes(value)) {
+                alert('❌ Esta categoría ya existe.');
+                return;
+            }
+            data.categorias.push(value);
+            saveData();
+            renderConfigLists();
+            populateSelectors();
+            input.value = '';
+            alert('✅ Categoría agregada.');
+        });
+
+        // Agregar disciplina
+        document.getElementById('addDisciplinaBtn').addEventListener('click', function() {
+            const input = document.getElementById('newDisciplinaInput');
+            const value = input.value.trim();
+            if (!value) {
+                alert('Ingresa un nombre para la disciplina.');
+                return;
+            }
+            if (data.disciplinas.includes(value)) {
+                alert('❌ Esta disciplina ya existe.');
+                return;
+            }
+            data.disciplinas.push(value);
+            saveData();
+            renderConfigLists();
+            populateSelectors();
+            input.value = '';
+            alert('✅ Disciplina agregada.');
+        });
+
+        // Enter key para agregar
+        document.getElementById('newCategoriaInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('addCategoriaBtn').click();
+        });
+        document.getElementById('newDisciplinaInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('addDisciplinaBtn').click();
+        });
+
+        // ============================================================
+        // 21. REPORTE PDF - TODOS LOS ATLETAS
         // ============================================================
         document.getElementById('downloadPDFAll')?.addEventListener('click', function() {
             const athletes = data.atletas || [];
@@ -2473,17 +2771,18 @@
         });
 
         // ============================================================
-        // 21. ADMIN DATA
+        // 22. ADMIN DATA
         // ============================================================
         function loadAdminData() {
             populateSelectors();
             loadSliderForm();
             renderAdminAthletes();
             renderNoticias();
+            renderConfigLists();
         }
 
         // ============================================================
-        // 22. INICIALIZAR
+        // 23. INICIALIZAR
         // ============================================================
         function initializeApp() {
             console.log('🚀 Iniciando aplicación...');
@@ -2496,6 +2795,7 @@
             loadSliderForm();
             renderAdminAthletes();
             renderNoticias();
+            renderConfigLists();
             updateSliderImages();
 
             if (firebaseReady) {
@@ -2506,6 +2806,7 @@
                     loadSliderForm();
                     renderAdminAthletes();
                     renderNoticias();
+                    renderConfigLists();
                     updateSliderImages();
                     setTimeout(() => {
                         listenFirebaseChanges();
