@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>OLIMPIADAS 2026 AVCS</title>
+    <title>OLIMPIADAS 2026 AVCS - Tiempo Real</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <!-- Firebase SDKs -->
@@ -11,13 +11,12 @@
     </script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js">
     </script>
-    <!-- Librerías para exportar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
     </script>
     <style>
-        /* ===== ESTILOS COMPLETOS ===== */
+        /* ===== ESTILOS MEJORADOS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -53,14 +52,12 @@
         .wave-line:nth-child(1) {
             top: 10%;
             animation-duration: 8s;
-            animation-delay: 0s;
             height: 3px;
         }
         .wave-line:nth-child(2) {
             top: 25%;
             animation-duration: 12s;
             animation-delay: 1s;
-            height: 2px;
         }
         .wave-line:nth-child(3) {
             top: 40%;
@@ -72,7 +69,6 @@
             top: 55%;
             animation-duration: 14s;
             animation-delay: 0.5s;
-            height: 2px;
         }
         .wave-line:nth-child(5) {
             top: 70%;
@@ -84,7 +80,6 @@
             top: 85%;
             animation-duration: 11s;
             animation-delay: 1.5s;
-            height: 2px;
         }
 
         @keyframes waveMove {
@@ -120,7 +115,6 @@
             padding: 10px 18px;
             margin-top: 10px;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            position: relative;
             flex-wrap: wrap;
         }
 
@@ -205,6 +199,43 @@
         .nav-menu .btn-login:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #8aa4c8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .status-indicator .dot-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator .dot-status.online {
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator .dot-status.offline {
+            background: #f87171;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1106,9 +1137,65 @@
             color: #8aa4c8;
         }
 
-        /* Ocultar elementos que ya no se usan */
         .hidden-element {
             display: none !important;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: #8aa4c8;
+        }
+
+        .loading-spinner i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 12px;
+            padding: 14px 24px;
+            color: #e8edf5;
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: #4ade80;
+        }
+
+        .toast.error {
+            border-color: #f87171;
+        }
+
+        .toast .toast-icon {
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -1122,6 +1209,12 @@
         <div class="wave-line"></div>
         <div class="wave-line"></div>
         <div class="wave-line"></div>
+    </div>
+
+    <!-- TOAST NOTIFICACIONES -->
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Mensaje</span>
     </div>
 
     <!-- MODAL LOGIN -->
@@ -1218,6 +1311,10 @@
                 <a class="active" data-section="home">Inicio</a>
                 <a data-section="athletes">Atletas</a>
                 <a data-section="admin" id="adminMenuLink" style="display:none;">Admin</a>
+                <span class="status-indicator" id="statusIndicator">
+                    <span class="dot-status offline" id="statusDot"></span>
+                    <span id="statusText">Sin conexión</span>
+                </span>
                 <button class="btn-login" id="loginBtn"><i class="fas fa-user-cog"></i> Admin</button>
             </div>
         </nav>
@@ -1257,7 +1354,6 @@
                 </div>
             </div>
 
-            <!-- NOTICIAS EN INICIO (ahora se llama "Información") -->
             <div id="homeNewsContainer">
                 <h3 style="color:#4ade80; margin-bottom:16px;">📰 Información</h3>
                 <div id="homeNewsList"></div>
@@ -1271,6 +1367,7 @@
                 <select id="filterZona"><option value="">Todas las zonas</option></select>
                 <select id="filterDisciplina"><option value="">Todas las disciplinas</option></select>
                 <button class="btn-secondary btn-sm" id="clearFilters"><i class="fas fa-times"></i> Limpiar filtros</button>
+                <span id="athleteCount" style="margin-left:auto; color:#8aa4c8; font-size:0.9rem;"></span>
             </div>
             <div id="athleteDisplay" class="athlete-grid"></div>
         </div>
@@ -1306,7 +1403,6 @@
                     <p style="color:#8aa4c8; margin-bottom:16px;">Agrega o elimina categorías y disciplinas para los selectores.</p>
 
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-                        <!-- Categorías -->
                         <div>
                             <h4 style="color:#b0c4de; margin-bottom:12px;">Categorías</h4>
                             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
@@ -1315,7 +1411,6 @@
                             </div>
                             <div id="categoriaList" class="list-items"></div>
                         </div>
-                        <!-- Disciplinas -->
                         <div>
                             <h4 style="color:#b0c4de; margin-bottom:12px;">Disciplinas</h4>
                             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
@@ -1435,6 +1530,7 @@
 
         let firebaseApp, database;
         let firebaseReady = false;
+        let isFirebaseConnected = false;
 
         try {
             firebaseApp = firebase.initializeApp(firebaseConfig);
@@ -1466,9 +1562,49 @@
         let nextId = 1;
         let nextNewsId = 1;
         let isFirebaseListenerActive = false;
+        let isInitialLoad = true;
 
         // ============================================================
-        // 3. FUNCIONES DE PERSISTENCIA CON FIREBASE MEJORADAS
+        // 3. TOAST NOTIFICATIONS
+        // ============================================================
+        let toastTimeout;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon = toast.querySelector('.toast-icon i');
+
+            toast.className = `toast ${type}`;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            toastMessage.textContent = message;
+
+            clearTimeout(toastTimeout);
+            toast.classList.add('show');
+
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ============================================================
+        // 4. STATUS INDICATOR
+        // ============================================================
+        function updateStatus(connected) {
+            isFirebaseConnected = connected;
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+
+            if (connected) {
+                dot.className = 'dot-status online';
+                text.textContent = 'Tiempo real';
+            } else {
+                dot.className = 'dot-status offline';
+                text.textContent = 'Sin conexión';
+            }
+        }
+
+        // ============================================================
+        // 5. FUNCIONES DE PERSISTENCIA CON FIREBASE MEJORADAS
         // ============================================================
         function saveDataToFirebase() {
             if (!firebaseReady || !database) {
@@ -1476,23 +1612,27 @@
                 saveDataToLocalStorage();
                 return;
             }
+
             try {
                 const ref = database.ref('olimpiadas2026_final');
-                // Usar set en lugar de update para asegurar que todos los datos se guarden
                 ref.set({
                     disciplinas: data.disciplinas,
                     categorias: data.categorias,
                     atletas: data.atletas,
                     noticias: data.noticias,
-                    sliderImages: data.sliderImages
+                    sliderImages: data.sliderImages,
+                    updatedAt: firebase.database.ServerValue.TIMESTAMP
                 }).then(() => {
                     console.log('💾 Datos guardados en Firebase correctamente');
+                    updateStatus(true);
                 }).catch(err => {
                     console.warn('⚠️ Error al guardar en Firebase:', err);
+                    updateStatus(false);
                     saveDataToLocalStorage();
                 });
             } catch (e) {
                 console.warn('⚠️ Error en saveDataToFirebase:', e);
+                updateStatus(false);
                 saveDataToLocalStorage();
             }
         }
@@ -1501,15 +1641,16 @@
             if (!firebaseReady || !database) {
                 console.warn('⚠️ Firebase no disponible, cargando desde localStorage');
                 loadDataFromLocalStorage();
+                updateStatus(false);
                 if (callback) callback();
                 return;
             }
+
             try {
                 const ref = database.ref('olimpiadas2026_final');
                 ref.once('value').then((snapshot) => {
                     const val = snapshot.val();
                     if (val) {
-                        // Actualizar solo si hay datos en Firebase
                         data.disciplinas = val.disciplinas || data.disciplinas;
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
@@ -1518,21 +1659,23 @@
                         updateIds();
                         saveDataToLocalStorage();
                         console.log('📥 Datos cargados desde Firebase');
-                        if (callback) callback();
+                        updateStatus(true);
                     } else {
-                        // Si no hay datos en Firebase, guardar los locales
                         console.log('📭 No hay datos en Firebase, guardando locales');
                         setTimeout(() => saveDataToFirebase(), 500);
-                        if (callback) callback();
+                        updateStatus(false);
                     }
+                    if (callback) callback();
                 }).catch((err) => {
                     console.warn('⚠️ Error al cargar desde Firebase:', err);
                     loadDataFromLocalStorage();
+                    updateStatus(false);
                     if (callback) callback();
                 });
             } catch (e) {
                 console.warn('⚠️ Error en loadDataFromFirebase:', e);
                 loadDataFromLocalStorage();
+                updateStatus(false);
                 if (callback) callback();
             }
         }
@@ -1544,9 +1687,15 @@
                 const ref = database.ref('olimpiadas2026_final');
                 ref.on('value', (snapshot) => {
                     const val = snapshot.val();
-                    if (!val) return;
+                    if (!val) {
+                        updateStatus(false);
+                        return;
+                    }
 
                     // Actualizar datos desde Firebase
+                    const oldAthletes = JSON.stringify(data.atletas);
+                    const oldNews = JSON.stringify(data.noticias);
+
                     data.disciplinas = val.disciplinas || data.disciplinas;
                     data.categorias = val.categorias || data.categorias;
                     data.atletas = val.atletas || [];
@@ -1556,12 +1705,23 @@
                     updateIds();
                     saveDataToLocalStorage();
 
-                    // Actualizar toda la UI
-                    renderAll();
+                    // Solo renderizar si hubo cambios reales
+                    const newAthletes = JSON.stringify(data.atletas);
+                    const newNews = JSON.stringify(data.noticias);
+
+                    if (oldAthletes !== newAthletes || oldNews !== newNews || isInitialLoad) {
+                        renderAll();
+                        if (!isInitialLoad) {
+                            showToast('📡 Cambios detectados en tiempo real');
+                        }
+                        isInitialLoad = false;
+                    }
+
+                    updateStatus(true);
                     console.log('🔄 Datos actualizados en tiempo real');
                 }, (error) => {
                     console.warn('⚠️ Error en listener de Firebase:', error);
-                    // Reintentar después de 5 segundos
+                    updateStatus(false);
                     setTimeout(() => {
                         isFirebaseListenerActive = false;
                         listenFirebaseChanges();
@@ -1571,6 +1731,7 @@
                 console.log('👂 Listener activado correctamente');
             } catch (e) {
                 console.warn('⚠️ Error al activar listener:', e);
+                updateStatus(false);
                 setTimeout(() => {
                     isFirebaseListenerActive = false;
                     listenFirebaseChanges();
@@ -1598,7 +1759,8 @@
             renderDisciplinas();
             updateSliderImages();
             populateSelectors();
-            // Actualizar el formulario de slider si está visible
+            updateAthleteCount();
+
             if (document.getElementById('tabSlider').classList.contains('active')) {
                 loadSliderForm();
             }
@@ -1667,8 +1829,15 @@
             saveDataToFirebase();
         }
 
+        function updateAthleteCount() {
+            const countEl = document.getElementById('athleteCount');
+            if (countEl) {
+                countEl.textContent = `${data.atletas.length} atletas registrados`;
+            }
+        }
+
         // ============================================================
-        // 4. MENÚ HAMBURGUESA
+        // 6. MENÚ HAMBURGUESA
         // ============================================================
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const navMenu = document.getElementById('navMenu');
@@ -1687,7 +1856,7 @@
         });
 
         // ============================================================
-        // 5. NAVEGACIÓN
+        // 7. NAVEGACIÓN
         // ============================================================
         const sections = {
             home: document.getElementById('section-home'),
@@ -1706,7 +1875,10 @@
             navLinks.forEach(link => {
                 link.classList.toggle('active', link.dataset.section === sectionId);
             });
-            if (sectionId === 'athletes') renderAthletes();
+            if (sectionId === 'athletes') {
+                renderAthletes();
+                updateAthleteCount();
+            }
             if (sectionId === 'home') renderHomeNews();
             hamburgerBtn.classList.remove('active');
             navMenu.classList.remove('open');
@@ -1720,7 +1892,7 @@
         });
 
         // ============================================================
-        // 6. LOGIN
+        // 8. LOGIN
         // ============================================================
         const loginModal = document.getElementById('loginModal');
         const loginBtn = document.getElementById('loginBtn');
@@ -1744,14 +1916,14 @@
                 showSection('admin');
                 loadAdminData();
                 document.querySelector('#adminTabs button').click();
-                alert('✅ Acceso concedido como Administrador');
+                showToast('✅ Acceso concedido como Administrador', 'success');
             } else {
-                alert('❌ Usuario o contraseña incorrectos.');
+                showToast('❌ Usuario o contraseña incorrectos.', 'error');
             }
         });
 
         // ============================================================
-        // 7. SLIDER
+        // 9. SLIDER
         // ============================================================
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
@@ -1791,7 +1963,7 @@
         }
 
         // ============================================================
-        // 8. ADMIN TABS
+        // 10. ADMIN TABS
         // ============================================================
         const tabBtns = document.querySelectorAll('#adminTabs button');
         const tabContents = {
@@ -1824,7 +1996,7 @@
         });
 
         // ============================================================
-        // 9. SLIDER FORM
+        // 11. SLIDER FORM
         // ============================================================
         function loadSliderForm() {
             const grid = document.getElementById('sliderImagesGrid');
@@ -1859,6 +2031,7 @@
                             saveData();
                             updateSliderImages();
                             document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas.';
+                            showToast('✅ Imágenes del slider actualizadas');
                             loadSliderForm();
                         }
                     };
@@ -1869,10 +2042,12 @@
                     if (loaded === totalInputs) {
                         if (!hasChanges) {
                             document.getElementById('sliderFeedback').textContent = '⚠️ No se seleccionaron imágenes.';
+                            showToast('⚠️ No se seleccionaron imágenes', 'error');
                         } else {
                             saveData();
                             updateSliderImages();
                             document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas.';
+                            showToast('✅ Imágenes del slider actualizadas');
                             loadSliderForm();
                         }
                     }
@@ -1881,7 +2056,7 @@
         });
 
         // ============================================================
-        // 10. NOTICIAS EN INICIO (Información)
+        // 12. NOTICIAS EN INICIO (Información)
         // ============================================================
         function renderHomeNews() {
             const container = document.getElementById('homeNewsList');
@@ -1905,7 +2080,7 @@
         }
 
         // ============================================================
-        // 11. CATEGORÍAS Y DISCIPLINAS
+        // 13. CATEGORÍAS Y DISCIPLINAS
         // ============================================================
         function renderCategorias() {
             const container = document.getElementById('categoriaList');
@@ -1941,6 +2116,7 @@
             renderCategorias();
             renderDisciplinas();
             populateSelectors();
+            showToast('✅ Elemento eliminado correctamente');
         };
 
         document.getElementById('addCategoria').addEventListener('click', function() {
@@ -1952,10 +2128,11 @@
                 renderCategorias();
                 populateSelectors();
                 input.value = '';
+                showToast(`✅ Categoría "${val}" agregada`);
             } else if (data.categorias.includes(val)) {
-                alert('Esta categoría ya existe.');
+                showToast('⚠️ Esta categoría ya existe.', 'error');
             } else {
-                alert('Ingresa un nombre válido.');
+                showToast('⚠️ Ingresa un nombre válido.', 'error');
             }
         });
 
@@ -1968,15 +2145,16 @@
                 renderDisciplinas();
                 populateSelectors();
                 input.value = '';
+                showToast(`✅ Disciplina "${val}" agregada`);
             } else if (data.disciplinas.includes(val)) {
-                alert('Esta disciplina ya existe.');
+                showToast('⚠️ Esta disciplina ya existe.', 'error');
             } else {
-                alert('Ingresa un nombre válido.');
+                showToast('⚠️ Ingresa un nombre válido.', 'error');
             }
         });
 
         // ============================================================
-        // 12. SELECTORES
+        // 14. SELECTORES
         // ============================================================
         function populateSelectors() {
             const catSelect = document.getElementById('athleteCategoria');
@@ -2020,10 +2198,23 @@
                                     <option value="Zona 5">Zona 5</option>`;
                 if (current) el.value = current;
             });
+
+            // Actualizar el select de reporte
+            const reportZona = document.getElementById('reportZona');
+            if (reportZona) {
+                const current = reportZona.value;
+                reportZona.innerHTML = `<option value="">Todos los atletas</option>
+                                    <option value="Zona 1">Zona 1</option>
+                                    <option value="Zona 2">Zona 2</option>
+                                    <option value="Zona 3">Zona 3</option>
+                                    <option value="Zona 4">Zona 4</option>
+                                    <option value="Zona 5">Zona 5</option>`;
+                if (current) reportZona.value = current;
+            }
         }
 
         // ============================================================
-        // 13. REGISTRAR ATLETA
+        // 15. REGISTRAR ATLETA
         // ============================================================
         document.getElementById('athleteForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -2037,7 +2228,7 @@
             const fotoInput = document.getElementById('athleteFoto');
 
             if (!nombre || !apellido || !edad || !cedula || !categoria || !disciplina || !zona) {
-                alert('Todos los campos son obligatorios.');
+                showToast('⚠️ Todos los campos son obligatorios.', 'error');
                 return;
             }
 
@@ -2068,13 +2259,14 @@
             });
             saveData();
             document.getElementById('athleteForm').reset();
-            alert('✅ Atleta registrado correctamente.');
+            showToast(`✅ Atleta ${nombre} ${apellido} registrado correctamente`);
             renderAthletes();
             renderAdminAthletes();
+            updateAthleteCount();
         }
 
         // ============================================================
-        // 14. RENDER ATLETAS
+        // 16. RENDER ATLETAS
         // ============================================================
         function getZonaClass(zona) {
             const map = {
@@ -2122,7 +2314,7 @@
         }
 
         // ============================================================
-        // 15. ADMIN ATHLETES
+        // 17. ADMIN ATHLETES
         // ============================================================
         function renderAdminAthletes() {
             const container = document.getElementById('adminAthleteList');
@@ -2148,7 +2340,7 @@
         }
 
         // ============================================================
-        // 16. EDITAR ATLETA
+        // 18. EDITAR ATLETA
         // ============================================================
         window.editAthlete = function(id) {
             const athlete = data.atletas.find(a => a.id === id);
@@ -2200,7 +2392,7 @@
                     renderAthletes();
                     renderAdminAthletes();
                     document.getElementById('editAthleteModal').classList.remove('show');
-                    alert('✅ Atleta actualizado.');
+                    showToast('✅ Atleta actualizado correctamente');
                 };
                 reader.readAsDataURL(fotoInput.files[0]);
             } else {
@@ -2208,7 +2400,7 @@
                 renderAthletes();
                 renderAdminAthletes();
                 document.getElementById('editAthleteModal').classList.remove('show');
-                alert('✅ Atleta actualizado.');
+                showToast('✅ Atleta actualizado correctamente');
             }
         });
 
@@ -2220,20 +2412,22 @@
         });
 
         // ============================================================
-        // 17. ELIMINAR ATLETA
+        // 19. ELIMINAR ATLETA
         // ============================================================
         window.deleteAthlete = function(id) {
             if (confirm('¿Eliminar este atleta permanentemente?')) {
+                const athlete = data.atletas.find(a => a.id === id);
                 data.atletas = data.atletas.filter(a => a.id !== id);
                 saveData();
                 renderAthletes();
                 renderAdminAthletes();
-                alert('✅ Atleta eliminado.');
+                updateAthleteCount();
+                showToast(`✅ Atleta ${athlete?.nombre || ''} eliminado`);
             }
         };
 
         // ============================================================
-        // 18. ATHLETE DETAIL MODAL
+        // 20. ATHLETE DETAIL MODAL
         // ============================================================
         function showAthleteDetail(athlete) {
             const modal = document.getElementById('athleteModal');
@@ -2259,20 +2453,27 @@
         });
 
         // ============================================================
-        // 19. FILTROS
+        // 21. FILTROS
         // ============================================================
-        document.getElementById('filterZona')?.addEventListener('change', renderAthletes);
-        document.getElementById('filterDisciplina')?.addEventListener('change', renderAthletes);
+        document.getElementById('filterZona')?.addEventListener('change', () => {
+            renderAthletes();
+            updateAthleteCount();
+        });
+        document.getElementById('filterDisciplina')?.addEventListener('change', () => {
+            renderAthletes();
+            updateAthleteCount();
+        });
         document.getElementById('clearFilters')?.addEventListener('click', function() {
             const filterZona = document.getElementById('filterZona');
             const filterDisciplina = document.getElementById('filterDisciplina');
             if (filterZona) filterZona.value = '';
             if (filterDisciplina) filterDisciplina.value = '';
             renderAthletes();
+            updateAthleteCount();
         });
 
         // ============================================================
-        // 20. NOTICIAS
+        // 22. NOTICIAS
         // ============================================================
         function renderNoticias() {
             const container = document.getElementById('newsList');
@@ -2305,11 +2506,12 @@
 
         window.deleteNews = function(id) {
             if (confirm('¿Eliminar esta noticia?')) {
+                const news = data.noticias.find(n => n.id === id);
                 data.noticias = data.noticias.filter(n => n.id !== id);
                 saveData();
                 renderNoticias();
                 renderHomeNews();
-                alert('✅ Noticia eliminada.');
+                showToast(`✅ Noticia "${news?.title || ''}" eliminada`);
             }
         };
 
@@ -2345,7 +2547,7 @@
                     renderNoticias();
                     renderHomeNews();
                     document.getElementById('editNewsModal').classList.remove('show');
-                    alert('✅ Noticia actualizada.');
+                    showToast('✅ Noticia actualizada correctamente');
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
@@ -2353,7 +2555,7 @@
                 renderNoticias();
                 renderHomeNews();
                 document.getElementById('editNewsModal').classList.remove('show');
-                alert('✅ Noticia actualizada.');
+                showToast('✅ Noticia actualizada correctamente');
             }
         });
 
@@ -2373,7 +2575,7 @@
             const imageInput = document.getElementById('newsImage');
 
             if (!title || !content) {
-                alert('Completa todos los campos.');
+                showToast('⚠️ Completa todos los campos.', 'error');
                 return;
             }
 
@@ -2394,7 +2596,7 @@
                     renderNoticias();
                     renderHomeNews();
                     document.getElementById('newsForm').reset();
-                    alert('✅ Noticia agregada correctamente.');
+                    showToast('✅ Noticia agregada correctamente');
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
@@ -2403,12 +2605,12 @@
                 renderNoticias();
                 renderHomeNews();
                 document.getElementById('newsForm').reset();
-                alert('✅ Noticia agregada correctamente.');
+                showToast('✅ Noticia agregada correctamente');
             }
         });
 
         // ============================================================
-        // 21. REPORTE PDF POR ZONA
+        // 23. REPORTE PDF POR ZONA
         // ============================================================
         document.getElementById('downloadPDFByZone')?.addEventListener('click', function() {
             const zonaSeleccionada = document.getElementById('reportZona').value;
@@ -2422,6 +2624,7 @@
 
             if (athletes.length === 0) {
                 document.getElementById('reportFeedback').textContent = `⚠️ No hay atletas en ${zonaLabel}.`;
+                showToast(`⚠️ No hay atletas en ${zonaLabel}`, 'error');
                 return;
             }
 
@@ -2429,14 +2632,12 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('landscape', 'mm', 'a4');
 
-                // Fondo blanco
                 doc.setFillColor(255, 255, 255);
                 doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
 
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
 
-                // Título - Negro
                 doc.setFontSize(18);
                 doc.setTextColor(0, 0, 0);
                 doc.text(`Reporte de Atletas - ${zonaLabel}`, pageWidth / 2, 20, { align: 'center' });
@@ -2449,7 +2650,6 @@
                 const colWidths = [30, 30, 15, 30, 25, 30, 25];
                 let y = 38;
 
-                // Cabeceras - Negro
                 doc.setFontSize(10);
                 doc.setTextColor(0, 0, 0);
                 doc.setFont('helvetica', 'bold');
@@ -2460,7 +2660,6 @@
                     x += colWidths[i];
                 });
 
-                // Línea separadora
                 doc.setDrawColor(0, 0, 0);
                 doc.line(10, y + 2, pageWidth - 10, y + 2);
 
@@ -2506,13 +2705,15 @@
 
                 doc.save(`Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.pdf`);
                 document.getElementById('reportFeedback').textContent = `✅ PDF con ${athletes.length} atletas descargado.`;
+                showToast(`✅ PDF con ${athletes.length} atletas descargado`);
             } catch (e) {
                 document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
+                showToast('❌ Error al generar PDF', 'error');
             }
         });
 
         // ============================================================
-        // 22. ADMIN DATA
+        // 24. ADMIN DATA
         // ============================================================
         function loadAdminData() {
             populateSelectors();
@@ -2521,35 +2722,50 @@
             renderNoticias();
             renderCategorias();
             renderDisciplinas();
+            updateAthleteCount();
         }
 
         // ============================================================
-        // 23. INICIALIZAR
+        // 25. INICIALIZAR
         // ============================================================
         function initializeApp() {
-            console.log('🚀 Iniciando aplicación...');
+            console.log('🚀 Iniciando aplicación en tiempo real...');
 
-            // Cargar datos locales primero para mostrar algo
             loadDataFromLocalStorage();
-
-            // Renderizar todo con datos locales
             renderAll();
 
-            // Intentar cargar desde Firebase y actualizar
             if (firebaseReady) {
                 loadDataFromFirebase(() => {
-                    // Después de cargar, renderizar todo con los datos de Firebase
                     renderAll();
-                    // Activar el listener para cambios en tiempo real
                     setTimeout(() => {
                         listenFirebaseChanges();
+                        updateStatus(true);
                     }, 500);
                 });
             } else {
                 console.warn('⚠️ Firebase no disponible, trabajando en modo local');
+                updateStatus(false);
             }
 
-            // Manejar clic en Admin
+            // Cerrar sesión automática después de inactividad (opcional)
+            let inactivityTimer;
+
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    if (isAdmin) {
+                        isAdmin = false;
+                        adminMenuLink.style.display = 'none';
+                        showToast('⏰ Sesión expirada por inactividad', 'error');
+                    }
+                }, 30 * 60 * 1000); // 30 minutos
+            }
+
+            document.addEventListener('click', resetInactivityTimer);
+            document.addEventListener('keydown', resetInactivityTimer);
+            document.addEventListener('scroll', resetInactivityTimer);
+            resetInactivityTimer();
+
             document.querySelector('a[data-section="admin"]')?.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (!isAdmin) {
@@ -2560,16 +2776,16 @@
                 loadAdminData();
             });
 
-            // Ocultar elementos que ya no se usan
+            // Ocultar elementos obsoletos
             const oldStats = document.querySelector('div[style*="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:24px 0;"]');
             if (oldStats) oldStats.classList.add('hidden-element');
             const videoSection = document.querySelector('.video-section');
             if (videoSection) videoSection.classList.add('hidden-element');
 
             console.log('✅ Aplicación inicializada correctamente');
+            showToast('✅ Conectado a tiempo real', 'success');
         }
 
-        // Iniciar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeApp);
         } else {
