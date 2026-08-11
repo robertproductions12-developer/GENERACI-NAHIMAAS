@@ -1602,6 +1602,9 @@
             <p style="font-size:0.8rem; margin-top:6px; opacity:0.6;">© 2026 OLIMPIADAS AVCS - RS ART STUDIO</p>
         </div>
     </div>
+    <audio id="musicaFondo" loop preload="auto" style="display:none;">
+    <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         // ============================================================
@@ -2828,6 +2831,30 @@
         }
 
         initializeApp();
+
+        (function() {
+        const audio = document.getElementById('musicaFondo');
+        if (!audio) return;
+        
+        audio.volume = 0.3;
+        
+        function iniciarMusica() {
+            audio.play()
+                .then(() => console.log('🎵 Música activa'))
+                .catch(() => {
+                    document.addEventListener('click', function play() {
+                        audio.play().catch(e => console.log('Error:', e));
+                        document.removeEventListener('click', play);
+                    });
+                });
+        }
+        
+        if (document.readyState === 'complete') {
+            iniciarMusica();
+        } else {
+            document.addEventListener('DOMContentLoaded', iniciarMusica);
+        }
+    })();
     </script>
 
 </body>
