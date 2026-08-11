@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>OLIMPIADAS 2026 AVCS - Tiempo Real</title>
+    <title>OLIMPIADAS 2026 AVCS - TIEMPO REAL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <!-- Firebase SDKs -->
@@ -16,22 +16,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
     </script>
     <style>
-        /* ===== ESTILOS MEJORADOS ===== */
+        /* ===== ESTILOS COMPACTOS Y OPTIMIZADOS ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background: #0a1628;
             color: #e8edf5;
             min-height: 100vh;
-            position: relative;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
-
         .bg-waves {
             position: fixed;
             inset: 0;
@@ -39,7 +37,6 @@
             pointer-events: none;
             overflow: hidden;
         }
-
         .wave-line {
             position: absolute;
             width: 200%;
@@ -48,7 +45,6 @@
             animation: waveMove linear infinite;
             border-radius: 50%;
         }
-
         .wave-line:nth-child(1) {
             top: 10%;
             animation-duration: 8s;
@@ -81,7 +77,6 @@
             animation-duration: 11s;
             animation-delay: 1.5s;
         }
-
         @keyframes waveMove {
             0% {
                 transform: translateX(-50%) scaleX(1);
@@ -96,15 +91,15 @@
                 opacity: 0.3;
             }
         }
-
         .container {
             position: relative;
             z-index: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 16px;
+            padding: 0 12px;
         }
 
+        /* NAVBAR */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -112,14 +107,14 @@
             background: rgba(10, 22, 40, 0.85);
             backdrop-filter: blur(12px);
             border-radius: 16px;
-            padding: 10px 18px;
-            margin-top: 10px;
+            padding: 8px 14px;
+            margin-top: 8px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             flex-wrap: wrap;
+            gap: 6px;
         }
-
         .logo {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 800;
             background: linear-gradient(135deg, #4ade80, #22d3ee);
             -webkit-background-clip: text;
@@ -127,107 +122,94 @@
             background-clip: text;
             flex-shrink: 0;
         }
-
         .hamburger {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
             background: none;
             border: none;
-            padding: 8px;
+            padding: 6px;
             z-index: 100;
         }
-
         .hamburger span {
             display: block;
-            width: 28px;
+            width: 26px;
             height: 3px;
             background: #b0c4de;
             border-radius: 4px;
             transition: 0.3s ease;
         }
-
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
+            transform: rotate(45deg) translate(5px, 5px);
         }
         .hamburger.active span:nth-child(2) {
             opacity: 0;
         }
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+            transform: rotate(-45deg) translate(5px, -5px);
         }
-
         .nav-menu {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
             flex-wrap: wrap;
             transition: all 0.3s ease;
         }
-
         .nav-menu a {
             text-decoration: none;
             color: #b0c4de;
             font-weight: 600;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 40px;
             transition: 0.3s;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             white-space: nowrap;
         }
-
         .nav-menu a:hover,
         .nav-menu a.active {
             background: rgba(74, 222, 128, 0.15);
             color: #4ade80;
         }
-
         .nav-menu .btn-login {
             background: linear-gradient(135deg, #4ade80, #22d3ee);
             color: #0a1628;
-            padding: 6px 18px;
+            padding: 5px 14px;
             border-radius: 40px;
             border: none;
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
-
         .nav-menu .btn-login:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
         }
-
         .status-indicator {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
+            gap: 4px;
+            font-size: 0.7rem;
             color: #8aa4c8;
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.05);
         }
-
         .status-indicator .dot-status {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             display: inline-block;
         }
-
         .status-indicator .dot-status.online {
             background: #4ade80;
             animation: pulse 2s infinite;
         }
-
         .status-indicator .dot-status.offline {
             background: #f87171;
         }
-
         @keyframes pulse {
             0%,
             100% {
@@ -238,6 +220,7 @@
             }
         }
 
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .hamburger {
                 display: flex;
@@ -247,10 +230,10 @@
                 width: 100%;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 6px;
-                padding-top: 12px;
+                gap: 4px;
+                padding-top: 10px;
                 border-top: 1px solid rgba(255, 255, 255, 0.06);
-                margin-top: 8px;
+                margin-top: 6px;
             }
             .nav-menu.open {
                 display: flex;
@@ -259,87 +242,87 @@
             .nav-menu .btn-login {
                 width: 100%;
                 text-align: center;
-                padding: 10px 14px;
-                font-size: 1rem;
+                padding: 8px 12px;
+                font-size: 0.95rem;
             }
             .logo {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
             .hero-slider {
-                height: 220px !important;
-                border-radius: 16px;
-                margin-top: 12px;
+                height: 200px !important;
+                border-radius: 14px;
+                margin-top: 10px;
             }
             .section {
-                padding: 16px !important;
-                margin: 16px 0 !important;
-                border-radius: 16px !important;
+                padding: 14px !important;
+                margin: 12px 0 !important;
+                border-radius: 14px !important;
             }
             .section-title {
-                font-size: 1.4rem !important;
+                font-size: 1.3rem !important;
             }
             .grid-2col {
                 grid-template-columns: 1fr !important;
-                gap: 12px !important;
+                gap: 10px !important;
             }
             .card {
-                padding: 16px !important;
+                padding: 14px !important;
             }
             .form-row {
                 grid-template-columns: 1fr !important;
-                gap: 8px !important;
+                gap: 6px !important;
             }
             .slider-controls {
-                bottom: 12px !important;
-                right: 12px !important;
+                bottom: 10px !important;
+                right: 10px !important;
             }
             .slider-btn {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 0.8rem !important;
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 0.7rem !important;
             }
             .slider-dots {
-                bottom: 14px !important;
-                left: 16px !important;
+                bottom: 12px !important;
+                left: 14px !important;
             }
             .dot {
                 width: 8px !important;
                 height: 8px !important;
             }
             .dot.active {
-                width: 20px !important;
+                width: 18px !important;
             }
             .slider-images-grid {
                 grid-template-columns: 1fr !important;
             }
             .admin-tabs {
-                gap: 6px !important;
+                gap: 4px !important;
             }
             .admin-tabs button {
-                padding: 6px 12px !important;
-                font-size: 0.75rem !important;
+                padding: 5px 10px !important;
+                font-size: 0.7rem !important;
             }
             .filter-bar select {
-                min-width: 120px !important;
-                font-size: 0.85rem !important;
-                padding: 8px 12px !important;
+                min-width: 100px !important;
+                font-size: 0.8rem !important;
+                padding: 6px 10px !important;
             }
             .athlete-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
-                gap: 12px !important;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+                gap: 10px !important;
             }
             .athlete-card img {
-                height: 140px !important;
+                height: 130px !important;
             }
             .athlete-card .athlete-name {
-                font-size: 0.9rem !important;
-                padding: 10px !important;
+                font-size: 0.85rem !important;
+                padding: 8px !important;
             }
             .btn-primary,
             .btn-secondary,
             .btn-success {
-                padding: 10px 18px !important;
-                font-size: 0.85rem !important;
+                padding: 8px 16px !important;
+                font-size: 0.8rem !important;
             }
             .report-section {
                 flex-direction: column;
@@ -349,192 +332,185 @@
                 min-width: 100% !important;
             }
             .modal {
-                padding: 24px !important;
-                margin: 10px !important;
+                padding: 20px !important;
+                margin: 8px !important;
             }
             .footer {
-                padding: 16px 0 !important;
-                font-size: 0.8rem !important;
-                border-radius: 16px 16px 0 0 !important;
+                padding: 14px 0 !important;
+                font-size: 0.75rem !important;
+                border-radius: 14px 14px 0 0 !important;
             }
             .info-card img {
-                height: 180px !important;
+                height: 160px !important;
             }
             .info-card .info-body {
-                padding: 16px !important;
+                padding: 14px !important;
             }
             .info-card .info-body h3 {
-                font-size: 1.2rem !important;
+                font-size: 1.1rem !important;
+            }
+            .status-indicator {
+                font-size: 0.6rem !important;
+                padding: 2px 8px !important;
             }
         }
-
         @media (max-width: 480px) {
             .hero-slider {
-                height: 180px !important;
+                height: 160px !important;
             }
             .container {
-                padding: 0 10px !important;
+                padding: 0 8px !important;
             }
             .navbar {
-                padding: 8px 12px !important;
+                padding: 6px 10px !important;
             }
             .logo {
-                font-size: 1rem !important;
+                font-size: 0.9rem !important;
             }
             .athlete-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
             }
             .athlete-card img {
-                height: 110px !important;
+                height: 100px !important;
             }
         }
 
+        /* HERO SLIDER */
         .hero-slider {
             position: relative;
             width: 100%;
-            height: 420px;
-            border-radius: 28px;
+            height: 380px;
+            border-radius: 24px;
             overflow: hidden;
-            margin-top: 24px;
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+            margin-top: 16px;
+            box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .slide {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.6s ease;
             background-size: cover;
             background-position: center;
         }
-
         .slide.active {
             opacity: 1;
         }
-
         .slider-controls {
             position: absolute;
-            bottom: 28px;
-            right: 32px;
+            bottom: 20px;
+            right: 24px;
             display: flex;
-            gap: 14px;
+            gap: 10px;
             z-index: 10;
         }
-
         .slider-btn {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 40px;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.25s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
         .slider-btn:hover {
             background: rgba(74, 222, 128, 0.3);
             transform: scale(1.05);
         }
-
         .slider-dots {
             position: absolute;
-            bottom: 32px;
-            left: 48px;
+            bottom: 24px;
+            left: 32px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
-
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.25);
             border: none;
             cursor: pointer;
             transition: 0.3s;
         }
-
         .dot.active {
             background: #4ade80;
-            width: 32px;
+            width: 28px;
         }
 
+        /* SECTIONS */
         .section {
             display: none;
-            margin: 32px 0;
+            margin: 24px 0;
             background: rgba(10, 22, 40, 0.5);
             backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 28px 32px;
+            border-radius: 24px;
+            padding: 20px 24px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .section.active {
             display: block;
         }
-
         .section-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             color: #e8edf5;
             background: linear-gradient(135deg, #4ade80, #22d3ee);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .card {
             background: rgba(255, 255, 255, 0.04);
-            border-radius: 24px;
-            padding: 24px 28px;
+            border-radius: 20px;
+            padding: 18px 22px;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             backdrop-filter: blur(4px);
         }
-
         .card h3 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             color: #e8edf5;
         }
 
+        /* FORMS */
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
-
         .form-group label {
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.4px;
             color: #8aa4c8;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
-
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 60px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.05);
             color: #e8edf5;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
         }
-
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -542,113 +518,110 @@
             border-color: #4ade80;
             box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
         }
-
         .form-group input::placeholder,
         .form-group textarea::placeholder {
             color: #5a7a9a;
         }
-
         .form-group textarea {
-            border-radius: 20px;
-            min-height: 80px;
+            border-radius: 16px;
+            min-height: 60px;
             resize: vertical;
         }
-
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 12px;
         }
 
+        /* BUTTONS */
         .btn-primary {
             background: linear-gradient(135deg, #4ade80, #22d3ee);
             color: #0a1628;
             border: none;
             font-weight: 700;
-            padding: 12px 32px;
+            padding: 10px 28px;
             border-radius: 60px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            touch-action: manipulation;
         }
-
         .btn-primary:hover {
             transform: scale(1.02);
             box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
         }
-
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
         .btn-danger {
             background: rgba(220, 50, 50, 0.8);
             color: white;
             border: none;
             font-weight: 600;
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: 0.2s;
+            touch-action: manipulation;
         }
-
         .btn-danger:hover {
             background: rgba(220, 50, 50, 1);
             transform: scale(1.05);
         }
-
         .btn-sm {
-            padding: 6px 16px;
-            font-size: 0.85rem;
+            padding: 5px 14px;
+            font-size: 0.8rem;
         }
-
         .btn-secondary {
             background: rgba(255, 255, 255, 0.08);
             color: #b0c4de;
             border: 1px solid rgba(255, 255, 255, 0.1);
             font-weight: 600;
-            padding: 10px 24px;
+            padding: 8px 20px;
             border-radius: 60px;
             cursor: pointer;
             transition: 0.2s;
+            touch-action: manipulation;
         }
-
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.15);
         }
-
         .btn-success {
             background: rgba(74, 222, 128, 0.2);
             color: #4ade80;
             border: 1px solid rgba(74, 222, 128, 0.3);
             font-weight: 600;
-            padding: 10px 24px;
+            padding: 8px 20px;
             border-radius: 60px;
             cursor: pointer;
             transition: 0.2s;
+            touch-action: manipulation;
         }
-
         .btn-success:hover {
             background: rgba(74, 222, 128, 0.3);
         }
 
+        /* ATHLETE CARDS */
         .athlete-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
         }
-
         .athlete-card {
             background: rgba(255, 255, 255, 0.04);
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
             border: 3px solid rgba(255, 255, 255, 0.1);
             transition: 0.3s;
             cursor: pointer;
             position: relative;
+            touch-action: manipulation;
         }
-
         .athlete-card.zona-1 {
             border-color: #4ade80;
         }
@@ -664,74 +637,70 @@
         .athlete-card.zona-5 {
             border-color: #22d3ee;
         }
-
         .athlete-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
         }
-
+        .athlete-card:active {
+            transform: scale(0.97);
+        }
         .athlete-card img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
             display: block;
         }
-
         .athlete-card .athlete-name {
-            padding: 16px;
+            padding: 12px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-align: center;
             background: rgba(10, 22, 40, 0.5);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             color: #e8edf5;
         }
-
         .athlete-card .athlete-name .sub {
             font-weight: 400;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #8aa4c8;
             display: block;
-            margin-top: 4px;
+            margin-top: 3px;
         }
-
         .athlete-card .admin-actions {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 6px;
+            right: 6px;
             display: flex;
-            gap: 6px;
+            gap: 4px;
             opacity: 0;
             transition: 0.3s;
         }
-
         .athlete-card:hover .admin-actions {
             opacity: 1;
         }
-
         .athlete-card .admin-actions button {
             background: rgba(10, 22, 40, 0.8);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             cursor: pointer;
             transition: 0.2s;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
+            touch-action: manipulation;
         }
-
         .athlete-card .admin-actions .edit-btn:hover {
             background: rgba(74, 222, 128, 0.3);
             border-color: #4ade80;
         }
-
         .athlete-card .admin-actions .delete-btn:hover {
             background: rgba(220, 50, 50, 0.4);
             border-color: #dc3232;
         }
 
+        /* MODALS */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -741,18 +710,16 @@
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
-
         .modal-overlay.show {
             display: flex;
         }
-
         .modal {
             background: rgba(10, 22, 40, 0.95);
-            border-radius: 32px;
-            padding: 40px;
-            max-width: 520px;
+            border-radius: 28px;
+            padding: 32px;
+            max-width: 480px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -760,91 +727,83 @@
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .modal .close-modal {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 12px;
+            right: 16px;
             background: none;
             border: none;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             cursor: pointer;
             color: #8aa4c8;
             transition: 0.2s;
+            touch-action: manipulation;
         }
-
         .modal .close-modal:hover {
             color: #4ade80;
             transform: rotate(90deg);
         }
-
         .modal .athlete-detail-img {
             width: 100%;
-            max-height: 280px;
+            max-height: 240px;
             object-fit: cover;
-            border-radius: 16px;
-            margin-bottom: 16px;
+            border-radius: 14px;
+            margin-bottom: 14px;
         }
-
         .modal .detail-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             color: #b0c4de;
+            font-size: 0.9rem;
         }
-
         .modal .detail-row .label {
             font-weight: 600;
             color: #8aa4c8;
         }
-
         .modal .detail-row .value {
             color: #e8edf5;
         }
 
+        /* FILTERS */
         .filter-bar {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             align-items: center;
         }
-
         .filter-bar select {
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 60px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.05);
             color: #e8edf5;
-            font-size: 0.95rem;
-            min-width: 160px;
+            font-size: 0.9rem;
+            min-width: 140px;
+            -webkit-appearance: none;
+            appearance: none;
         }
-
         .filter-bar select option {
             background: #0a1628;
             color: #e8edf5;
         }
-
-        .login-modal .modal {
-            max-width: 400px;
+        .filter-bar .athlete-count {
+            margin-left: auto;
+            color: #8aa4c8;
+            font-size: 0.85rem;
         }
 
-        .login-modal .modal h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #e8edf5;
-        }
-
+        /* ADMIN TABS */
         .admin-tabs {
             display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 8px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
         }
-
         .admin-tabs button {
-            padding: 10px 24px;
+            padding: 8px 18px;
             border-radius: 60px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(255, 255, 255, 0.04);
@@ -852,119 +811,259 @@
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            touch-action: manipulation;
         }
-
         .admin-tabs button.active {
             background: rgba(74, 222, 128, 0.15);
             color: #4ade80;
             border-color: rgba(74, 222, 128, 0.3);
         }
-
         .admin-tabs button:hover {
             background: rgba(74, 222, 128, 0.08);
         }
-
         .tab-content {
             display: none;
         }
-
         .tab-content.active {
             display: block;
         }
 
+        /* LIST ITEMS */
         .list-items {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 10px;
         }
-
         .list-items .item {
             background: rgba(255, 255, 255, 0.06);
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 40px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.85rem;
             color: #b0c4de;
         }
-
         .list-items .item .remove {
             color: #dc3232;
             cursor: pointer;
             font-weight: 700;
+            touch-action: manipulation;
         }
-
         .empty-message {
             color: #5a7a9a;
             font-style: italic;
-            padding: 16px 0;
+            padding: 12px 0;
         }
 
+        /* INFO CARDS */
         .info-card {
             background: rgba(255, 255, 255, 0.04);
-            border-radius: 28px;
+            border-radius: 24px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            margin-bottom: 24px;
+            margin-bottom: 18px;
             transition: 0.3s;
         }
-
         .info-card:hover {
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
-
         .info-card img {
             width: 100%;
-            height: 280px;
+            height: 240px;
             object-fit: cover;
         }
-
         .info-card .info-body {
-            padding: 24px 28px;
+            padding: 18px 22px;
         }
-
         .info-card .info-body h3 {
-            font-size: 1.6rem;
-            margin-bottom: 12px;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
             color: #e8edf5;
         }
-
         .info-card .info-body p {
             color: #b0c4de;
-            line-height: 1.6;
-            margin-bottom: 16px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
-
         .info-card .info-body .info-link {
             display: inline-block;
             color: #4ade80;
             font-weight: 600;
             text-decoration: none;
         }
-
         .info-card .info-body .info-link:hover {
             text-decoration: underline;
         }
 
+        /* NEWS */
+        .news-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border-left: 3px solid #4ade80;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .news-item .news-content {
+            flex: 1;
+        }
+        .news-item .news-content h4 {
+            font-size: 1rem;
+            color: #e8edf5;
+            margin-bottom: 3px;
+        }
+        .news-item .news-content p {
+            color: #b0c4de;
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+        .news-item .news-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .news-item .news-actions button {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: #b0c4de;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.75rem;
+            touch-action: manipulation;
+        }
+        .news-item .news-actions .delete-news:hover {
+            background: rgba(220, 50, 50, 0.3);
+            color: #dc3232;
+        }
+        .news-item .news-actions .edit-news:hover {
+            background: rgba(74, 222, 128, 0.3);
+            color: #4ade80;
+        }
+
+        /* VERSE */
+        .verse-box {
+            background: rgba(74, 222, 128, 0.08);
+            border: 1px solid rgba(74, 222, 128, 0.15);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin: 14px 0;
+            text-align: center;
+        }
+        .verse-box p {
+            font-size: 1rem;
+            font-style: italic;
+            color: #4ade80;
+            line-height: 1.5;
+        }
+        .verse-box .citation {
+            font-size: 0.8rem;
+            color: #8aa4c8;
+            font-style: normal;
+            margin-top: 3px;
+        }
+
+        /* LEADERS */
+        .leaders {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .leaders .leader {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+        .leaders .leader .name {
+            font-weight: 700;
+            color: #4ade80;
+        }
+        .leaders .leader .role {
+            font-size: 0.7rem;
+            color: #8aa4c8;
+        }
+
+        /* SLIDER IMAGES GRID */
+        .slider-images-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .slider-image-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .slider-image-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+        .slider-image-item .image-label {
+            font-size: 0.75rem;
+            color: #8aa4c8;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .slider-image-item input[type="file"] {
+            width: 100%;
+            padding: 4px;
+            color: #b0c4de;
+            font-size: 0.75rem;
+        }
+
+        /* REPORT */
+        .report-section {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .report-section select {
+            padding: 8px 14px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e8edf5;
+            font-size: 0.9rem;
+            min-width: 160px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* FOOTER */
         .footer {
             background: rgba(10, 22, 40, 0.8);
             backdrop-filter: blur(12px);
             color: #b0c4de;
-            padding: 24px 0;
-            margin-top: 40px;
-            border-radius: 28px 28px 0 0;
+            padding: 20px 0;
+            margin-top: 32px;
+            border-radius: 24px 24px 0 0;
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .footer p {
             font-weight: 500;
             letter-spacing: 0.5px;
+            font-size: 0.9rem;
         }
-
         .footer .studio {
             color: white;
             font-weight: 700;
@@ -974,228 +1073,59 @@
             background-clip: text;
         }
 
-        .slider-images-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .slider-image-item {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .slider-image-item img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            left: 16px;
+            max-width: 380px;
+            margin: 0 auto;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 222, 128, 0.3);
             border-radius: 12px;
-            margin-bottom: 8px;
-        }
-
-        .slider-image-item .image-label {
-            font-size: 0.8rem;
-            color: #8aa4c8;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .slider-image-item input[type="file"] {
-            width: 100%;
-            padding: 6px;
-            color: #b0c4de;
-            font-size: 0.8rem;
-        }
-
-        .report-section {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-top: 12px;
-        }
-
-        .report-section select {
-            padding: 10px 16px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 18px;
             color: #e8edf5;
-            font-size: 0.95rem;
-            min-width: 180px;
-        }
-
-        .news-item {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
-            border-left: 3px solid #4ade80;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .news-item .news-content {
-            flex: 1;
-        }
-
-        .news-item .news-content h4 {
-            font-size: 1.1rem;
-            color: #e8edf5;
-            margin-bottom: 4px;
-        }
-
-        .news-item .news-content p {
-            color: #b0c4de;
+            z-index: 3000;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
             font-size: 0.9rem;
-            margin-bottom: 4px;
-        }
-
-        .news-item .news-content .news-date {
-            font-size: 0.7rem;
-            color: #5a7a9a;
-        }
-
-        .news-item .news-actions {
             display: flex;
-            gap: 6px;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            border-color: #4ade80;
+        }
+        .toast.error {
+            border-color: #f87171;
+        }
+        .toast .toast-icon {
+            font-size: 1.2rem;
             flex-shrink: 0;
-        }
-
-        .news-item .news-actions button {
-            background: rgba(255, 255, 255, 0.06);
-            border: none;
-            color: #b0c4de;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.8rem;
-        }
-
-        .news-item .news-actions .delete-news:hover {
-            background: rgba(220, 50, 50, 0.3);
-            color: #dc3232;
-        }
-
-        .news-item .news-actions .edit-news:hover {
-            background: rgba(74, 222, 128, 0.3);
-            color: #4ade80;
-        }
-
-        .verse-box {
-            background: rgba(74, 222, 128, 0.08);
-            border: 1px solid rgba(74, 222, 128, 0.15);
-            border-radius: 16px;
-            padding: 16px 20px;
-            margin: 16px 0;
-            text-align: center;
-        }
-
-        .verse-box p {
-            font-size: 1.1rem;
-            font-style: italic;
-            color: #4ade80;
-            line-height: 1.6;
-        }
-
-        .verse-box .citation {
-            font-size: 0.85rem;
-            color: #8aa4c8;
-            font-style: normal;
-            margin-top: 4px;
-        }
-
-        .leaders {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 12px 0;
-        }
-
-        .leaders .leader {
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 12px;
-            padding: 12px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            text-align: center;
-        }
-
-        .leaders .leader .name {
-            font-weight: 700;
-            color: #4ade80;
-        }
-
-        .leaders .leader .role {
-            font-size: 0.75rem;
-            color: #8aa4c8;
         }
 
         .hidden-element {
             display: none !important;
         }
-
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-            color: #8aa4c8;
+        .login-modal .modal {
+            max-width: 380px;
         }
-
-        .loading-spinner i {
-            font-size: 2rem;
-            animation: spin 1s linear infinite;
-            margin-right: 12px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(10, 22, 40, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(74, 222, 128, 0.3);
-            border-radius: 12px;
-            padding: 14px 24px;
+        .login-modal .modal h2 {
+            text-align: center;
+            margin-bottom: 16px;
             color: #e8edf5;
-            z-index: 3000;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            max-width: 400px;
+            font-size: 1.3rem;
         }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            border-color: #4ade80;
-        }
-
-        .toast.error {
-            border-color: #f87171;
-        }
-
-        .toast .toast-icon {
-            margin-right: 10px;
+        .login-modal .modal .btn-primary {
+            width: 100%;
+            justify-content: center;
         }
     </style>
 </head>
@@ -1213,7 +1143,7 @@
 
     <!-- TOAST NOTIFICACIONES -->
     <div class="toast" id="toast">
-        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span class="toast-icon" id="toastIcon"><i class="fas fa-check-circle"></i></span>
         <span id="toastMessage">Mensaje</span>
     </div>
 
@@ -1231,9 +1161,9 @@
                     <label>Contraseña</label>
                     <input type="password" id="loginPass" placeholder="********" />
                 </div>
-                <button type="submit" class="btn-primary" style="width:100%; justify-content:center;"><i class="fas fa-sign-in-alt"></i> Ingresar</button>
+                <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Ingresar</button>
             </form>
-            <p style="text-align:center; margin-top:12px; font-size:0.8rem; color:#5a7a9a;">
+            <p style="text-align:center; margin-top:10px; font-size:0.75rem; color:#5a7a9a;">
                 Clave: <strong style="color:#4ade80;">admin2026</strong>
             </p>
         </div>
@@ -1251,7 +1181,7 @@
     <div class="modal-overlay" id="editAthleteModal">
         <div class="modal">
             <button class="close-modal" id="closeEditModal">&times;</button>
-            <h2 style="margin-bottom:20px; color:#e8edf5;"><i class="fas fa-edit"></i> Editar Atleta</h2>
+            <h2 style="margin-bottom:16px; color:#e8edf5; font-size:1.3rem;"><i class="fas fa-edit"></i> Editar Atleta</h2>
             <form id="editAthleteForm">
                 <input type="hidden" id="editAthleteId" />
                 <div class="form-row">
@@ -1285,7 +1215,7 @@
     <div class="modal-overlay" id="editNewsModal">
         <div class="modal">
             <button class="close-modal" id="closeEditNewsModal">&times;</button>
-            <h2 style="margin-bottom:20px; color:#e8edf5;"><i class="fas fa-edit"></i> Editar Noticia</h2>
+            <h2 style="margin-bottom:16px; color:#e8edf5; font-size:1.3rem;"><i class="fas fa-edit"></i> Editar Noticia</h2>
             <form id="editNewsForm">
                 <input type="hidden" id="editNewsId" />
                 <div class="form-group"><label>Título</label><input type="text" id="editNewsTitle" required /></div>
@@ -1301,7 +1231,7 @@
 
         <!-- NAVBAR -->
         <nav class="navbar">
-            <div class="logo">🏅 OLIMPIADAS 2026 · AVCS</div>
+            <div class="logo">🏅 OLIMPIADAS 2026</div>
             <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
                 <span></span>
                 <span></span>
@@ -1313,7 +1243,7 @@
                 <a data-section="admin" id="adminMenuLink" style="display:none;">Admin</a>
                 <span class="status-indicator" id="statusIndicator">
                     <span class="dot-status offline" id="statusDot"></span>
-                    <span id="statusText">Sin conexión</span>
+                    <span id="statusText">Conectando...</span>
                 </span>
                 <button class="btn-login" id="loginBtn"><i class="fas fa-user-cog"></i> Admin</button>
             </div>
@@ -1355,7 +1285,7 @@
             </div>
 
             <div id="homeNewsContainer">
-                <h3 style="color:#4ade80; margin-bottom:16px;">📰 Información</h3>
+                <h3 style="color:#4ade80; margin-bottom:14px;">📰 Información</h3>
                 <div id="homeNewsList"></div>
             </div>
         </div>
@@ -1366,8 +1296,8 @@
             <div class="filter-bar">
                 <select id="filterZona"><option value="">Todas las zonas</option></select>
                 <select id="filterDisciplina"><option value="">Todas las disciplinas</option></select>
-                <button class="btn-secondary btn-sm" id="clearFilters"><i class="fas fa-times"></i> Limpiar filtros</button>
-                <span id="athleteCount" style="margin-left:auto; color:#8aa4c8; font-size:0.9rem;"></span>
+                <button class="btn-secondary btn-sm" id="clearFilters"><i class="fas fa-times"></i> Limpiar</button>
+                <span class="athlete-count" id="athleteCount">0 atletas</span>
             </div>
             <div id="athleteDisplay" class="athlete-grid"></div>
         </div>
@@ -1378,21 +1308,21 @@
 
             <div class="admin-tabs" id="adminTabs">
                 <button class="active" data-tab="tabSlider">Slider</button>
-                <button data-tab="tabCategoriasDisciplinas">Categorías y Disciplinas</button>
-                <button data-tab="tabRegistrar">Registrar Atleta</button>
-                <button data-tab="tabAtletas">Gestionar Atletas</button>
+                <button data-tab="tabCategoriasDisciplinas">Categorías</button>
+                <button data-tab="tabRegistrar">Registrar</button>
+                <button data-tab="tabAtletas">Gestionar</button>
                 <button data-tab="tabNoticias">Noticias</button>
-                <button data-tab="tabReportes">Descargar PDF</button>
+                <button data-tab="tabReportes">PDF</button>
             </div>
 
             <!-- TAB SLIDER -->
             <div id="tabSlider" class="tab-content active">
                 <div class="card">
                     <h3>Editar Imágenes del Slider</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Sube nuevas imágenes para cada diapositiva del slider.</p>
+                    <p style="color:#8aa4c8; margin-bottom:14px;">Sube nuevas imágenes para cada diapositiva.</p>
                     <div class="slider-images-grid" id="sliderImagesGrid"></div>
-                    <button class="btn-primary" id="saveSliderImages"><i class="fas fa-save"></i> Guardar Imágenes</button>
-                    <div id="sliderFeedback" style="margin-top:12px; color:#4ade80;"></div>
+                    <button class="btn-primary" id="saveSliderImages" style="margin-top:12px;"><i class="fas fa-save"></i> Guardar Imágenes</button>
+                    <div id="sliderFeedback" style="margin-top:10px; color:#4ade80; font-size:0.9rem;"></div>
                 </div>
             </div>
 
@@ -1400,21 +1330,20 @@
             <div id="tabCategoriasDisciplinas" class="tab-content">
                 <div class="card">
                     <h3>Gestionar Categorías y Disciplinas</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Agrega o elimina categorías y disciplinas para los selectores.</p>
-
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+                    <p style="color:#8aa4c8; margin-bottom:14px;">Agrega o elimina categorías y disciplinas.</p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
                         <div>
-                            <h4 style="color:#b0c4de; margin-bottom:12px;">Categorías</h4>
-                            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
-                                <input type="text" id="newCategoria" placeholder="Nueva categoría" style="flex:1; min-width:150px; padding:8px 14px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#e8edf5;" />
+                            <h4 style="color:#b0c4de; margin-bottom:10px; font-size:1rem;">Categorías</h4>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
+                                <input type="text" id="newCategoria" placeholder="Nueva categoría" style="flex:1; min-width:120px; padding:6px 12px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#e8edf5; font-size:0.85rem;" />
                                 <button class="btn-primary btn-sm" id="addCategoria"><i class="fas fa-plus"></i></button>
                             </div>
                             <div id="categoriaList" class="list-items"></div>
                         </div>
                         <div>
-                            <h4 style="color:#b0c4de; margin-bottom:12px;">Disciplinas</h4>
-                            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
-                                <input type="text" id="newDisciplina" placeholder="Nueva disciplina" style="flex:1; min-width:150px; padding:8px 14px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#e8edf5;" />
+                            <h4 style="color:#b0c4de; margin-bottom:10px; font-size:1rem;">Disciplinas</h4>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;">
+                                <input type="text" id="newDisciplina" placeholder="Nueva disciplina" style="flex:1; min-width:120px; padding:6px 12px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#e8edf5; font-size:0.85rem;" />
                                 <button class="btn-primary btn-sm" id="addDisciplina"><i class="fas fa-plus"></i></button>
                             </div>
                             <div id="disciplinaList" class="list-items"></div>
@@ -1450,7 +1379,7 @@
                                 <option value="Zona 5">Zona 5</option>
                             </select>
                         </div>
-                        <div class="form-group"><label>Foto (desde dispositivo)</label><input type="file" id="athleteFoto" accept="image/*" /></div>
+                        <div class="form-group"><label>Foto</label><input type="file" id="athleteFoto" accept="image/*" /></div>
                         <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Registrar Atleta</button>
                     </form>
                 </div>
@@ -1460,7 +1389,7 @@
             <div id="tabAtletas" class="tab-content">
                 <div class="card">
                     <h3>Gestionar Atletas</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Aquí puedes ver, editar o eliminar atletas registrados.</p>
+                    <p style="color:#8aa4c8; margin-bottom:14px;">Edita o elimina atletas registrados.</p>
                     <div id="adminAthleteList" class="athlete-grid"></div>
                 </div>
             </div>
@@ -1469,18 +1398,16 @@
             <div id="tabNoticias" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-newspaper"></i> Gestionar Noticias</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Agrega nuevas noticias que se mostrarán en la página principal como "Información".</p>
-
+                    <p style="color:#8aa4c8; margin-bottom:14px;">Agrega nuevas noticias para la página principal.</p>
                     <form id="newsForm">
-                        <div class="form-group"><label>Título de la Noticia</label><input type="text" id="newsTitle" required placeholder="Ej: Inauguración de las Olimpiadas" /></div>
-                        <div class="form-group"><label>Descripción</label><textarea id="newsContent" required placeholder="Escribe la descripción de la noticia..."></textarea></div>
+                        <div class="form-group"><label>Título</label><input type="text" id="newsTitle" required placeholder="Ej: Inauguración" /></div>
+                        <div class="form-group"><label>Descripción</label><textarea id="newsContent" required placeholder="Descripción..."></textarea></div>
                         <div class="form-group"><label>Enlace (URL)</label><input type="url" id="newsLink" placeholder="https://ejemplo.com" /></div>
                         <div class="form-group"><label>Imagen</label><input type="file" id="newsImage" accept="image/*" /></div>
                         <button type="submit" class="btn-primary"><i class="fas fa-plus-circle"></i> Agregar Noticia</button>
                     </form>
-
-                    <div style="margin-top:24px;">
-                        <h4 style="color:#b0c4de; margin-bottom:12px;">Noticias Publicadas</h4>
+                    <div style="margin-top:18px;">
+                        <h4 style="color:#b0c4de; margin-bottom:10px;">Noticias Publicadas</h4>
                         <div id="newsList"></div>
                     </div>
                 </div>
@@ -1490,7 +1417,7 @@
             <div id="tabReportes" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-file-pdf"></i> Descargar PDF por Zona</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Selecciona una zona para descargar los atletas en PDF. Fondo blanco y letras negras.</p>
+                    <p style="color:#8aa4c8; margin-bottom:14px;">Selecciona una zona para descargar los atletas en PDF.</p>
                     <div class="report-section">
                         <select id="reportZona">
                             <option value="">Todos los atletas</option>
@@ -1502,7 +1429,7 @@
                         </select>
                         <button class="btn-success" id="downloadPDFByZone"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
                     </div>
-                    <div id="reportFeedback" style="margin-top:16px; color:#8aa4c8;"></div>
+                    <div id="reportFeedback" style="margin-top:12px; color:#8aa4c8; font-size:0.9rem;"></div>
                 </div>
             </div>
         </div>
@@ -1510,7 +1437,7 @@
         <!-- FOOTER -->
         <div class="footer">
             <p>Desarrollado por: <span class="studio">RS ART STUDIO</span></p>
-            <p style="font-size:0.8rem; margin-top:6px; opacity:0.6;">© 2026 OLIMPIADAS AVCS - Todos los derechos reservados</p>
+            <p style="font-size:0.75rem; margin-top:4px; opacity:0.6;">© 2026 OLIMPIADAS AVCS</p>
         </div>
     </div>
 
@@ -1528,17 +1455,19 @@
             appId: "1:854884058832:web:3946c71c4e33ff37f840d5"
         };
 
-        let firebaseApp, database;
+        let database = null;
         let firebaseReady = false;
         let isFirebaseConnected = false;
+        let isListenerActive = false;
+        let listenerRef = null;
 
         try {
-            firebaseApp = firebase.initializeApp(firebaseConfig);
-            database = firebase.database();
+            const app = firebase.initializeApp(firebaseConfig);
+            database = firebase.database(app);
             firebaseReady = true;
             console.log('🔥 Firebase conectado correctamente');
         } catch (e) {
-            console.warn('⚠️ Firebase no disponible', e);
+            console.warn('⚠️ Firebase no disponible:', e.message);
             firebaseReady = false;
         }
 
@@ -1561,21 +1490,25 @@
         let isAdmin = false;
         let nextId = 1;
         let nextNewsId = 1;
-        let isFirebaseListenerActive = false;
         let isInitialLoad = true;
+        let renderTimeout = null;
 
         // ============================================================
         // 3. TOAST NOTIFICATIONS
         // ============================================================
-        let toastTimeout;
+        let toastTimeout = null;
 
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
-            const icon = toast.querySelector('.toast-icon i');
+            const icon = document.getElementById('toastIcon');
+
+            if (!toast) return;
 
             toast.className = `toast ${type}`;
-            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            icon.innerHTML = type === 'success' ?
+                '<i class="fas fa-check-circle" style="color:#4ade80;"></i>' :
+                '<i class="fas fa-exclamation-circle" style="color:#f87171;"></i>';
             toastMessage.textContent = message;
 
             clearTimeout(toastTimeout);
@@ -1594,6 +1527,8 @@
             const dot = document.getElementById('statusDot');
             const text = document.getElementById('statusText');
 
+            if (!dot || !text) return;
+
             if (connected) {
                 dot.className = 'dot-status online';
                 text.textContent = 'Tiempo real';
@@ -1604,11 +1539,10 @@
         }
 
         // ============================================================
-        // 5. FUNCIONES DE PERSISTENCIA CON FIREBASE MEJORADAS
+        // 5. FUNCIONES DE PERSISTENCIA
         // ============================================================
         function saveDataToFirebase() {
             if (!firebaseReady || !database) {
-                console.warn('⚠️ Firebase no disponible, guardando en localStorage');
                 saveDataToLocalStorage();
                 return;
             }
@@ -1623,10 +1557,10 @@
                     sliderImages: data.sliderImages,
                     updatedAt: firebase.database.ServerValue.TIMESTAMP
                 }).then(() => {
-                    console.log('💾 Datos guardados en Firebase correctamente');
+                    console.log('💾 Datos guardados en Firebase');
                     updateStatus(true);
                 }).catch(err => {
-                    console.warn('⚠️ Error al guardar en Firebase:', err);
+                    console.warn('⚠️ Error guardando en Firebase:', err);
                     updateStatus(false);
                     saveDataToLocalStorage();
                 });
@@ -1639,7 +1573,6 @@
 
         function loadDataFromFirebase(callback) {
             if (!firebaseReady || !database) {
-                console.warn('⚠️ Firebase no disponible, cargando desde localStorage');
                 loadDataFromLocalStorage();
                 updateStatus(false);
                 if (callback) callback();
@@ -1661,7 +1594,7 @@
                         console.log('📥 Datos cargados desde Firebase');
                         updateStatus(true);
                     } else {
-                        console.log('📭 No hay datos en Firebase, guardando locales');
+                        console.log('📭 No hay datos en Firebase');
                         setTimeout(() => saveDataToFirebase(), 500);
                         updateStatus(false);
                     }
@@ -1681,10 +1614,12 @@
         }
 
         function listenFirebaseChanges() {
-            if (!firebaseReady || !database || isFirebaseListenerActive) return;
+            if (!firebaseReady || !database || isListenerActive) return;
 
             try {
                 const ref = database.ref('olimpiadas2026_final');
+                listenerRef = ref;
+
                 ref.on('value', (snapshot) => {
                     const val = snapshot.val();
                     if (!val) {
@@ -1692,7 +1627,6 @@
                         return;
                     }
 
-                    // Actualizar datos desde Firebase
                     const oldAthletes = JSON.stringify(data.atletas);
                     const oldNews = JSON.stringify(data.noticias);
 
@@ -1705,12 +1639,11 @@
                     updateIds();
                     saveDataToLocalStorage();
 
-                    // Solo renderizar si hubo cambios reales
                     const newAthletes = JSON.stringify(data.atletas);
                     const newNews = JSON.stringify(data.noticias);
 
                     if (oldAthletes !== newAthletes || oldNews !== newNews || isInitialLoad) {
-                        renderAll();
+                        scheduleRender();
                         if (!isInitialLoad) {
                             showToast('📡 Cambios detectados en tiempo real');
                         }
@@ -1720,23 +1653,36 @@
                     updateStatus(true);
                     console.log('🔄 Datos actualizados en tiempo real');
                 }, (error) => {
-                    console.warn('⚠️ Error en listener de Firebase:', error);
+                    console.warn('⚠️ Error en listener:', error);
                     updateStatus(false);
+                    // Reintentar después de 5 segundos
                     setTimeout(() => {
-                        isFirebaseListenerActive = false;
+                        isListenerActive = false;
                         listenFirebaseChanges();
                     }, 5000);
                 });
-                isFirebaseListenerActive = true;
+
+                isListenerActive = true;
                 console.log('👂 Listener activado correctamente');
+
             } catch (e) {
                 console.warn('⚠️ Error al activar listener:', e);
                 updateStatus(false);
                 setTimeout(() => {
-                    isFirebaseListenerActive = false;
+                    isListenerActive = false;
                     listenFirebaseChanges();
                 }, 3000);
             }
+        }
+
+        function scheduleRender() {
+            if (renderTimeout) {
+                clearTimeout(renderTimeout);
+            }
+            renderTimeout = setTimeout(() => {
+                renderAll();
+                renderTimeout = null;
+            }, 100);
         }
 
         function updateIds() {
@@ -1761,7 +1707,8 @@
             populateSelectors();
             updateAthleteCount();
 
-            if (document.getElementById('tabSlider').classList.contains('active')) {
+            const tabSlider = document.getElementById('tabSlider');
+            if (tabSlider && tabSlider.classList.contains('active')) {
                 loadSliderForm();
             }
         }
@@ -1832,7 +1779,7 @@
         function updateAthleteCount() {
             const countEl = document.getElementById('athleteCount');
             if (countEl) {
-                countEl.textContent = `${data.atletas.length} atletas registrados`;
+                countEl.textContent = `${data.atletas.length} atletas`;
             }
         }
 
@@ -1842,16 +1789,20 @@
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const navMenu = document.getElementById('navMenu');
 
-        hamburgerBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.classList.toggle('active');
-            navMenu.classList.toggle('open');
-        });
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+                navMenu.classList.toggle('open');
+            });
+        }
 
         document.querySelectorAll('.nav-menu a, .nav-menu .btn-login').forEach(item => {
             item.addEventListener('click', function() {
-                hamburgerBtn.classList.remove('active');
-                navMenu.classList.remove('open');
+                if (hamburgerBtn) {
+                    hamburgerBtn.classList.remove('active');
+                    navMenu.classList.remove('open');
+                }
             });
         });
 
@@ -1880,8 +1831,10 @@
                 updateAthleteCount();
             }
             if (sectionId === 'home') renderHomeNews();
-            hamburgerBtn.classList.remove('active');
-            navMenu.classList.remove('open');
+            if (hamburgerBtn) {
+                hamburgerBtn.classList.remove('active');
+                navMenu.classList.remove('open');
+            }
         }
 
         navLinks.forEach(link => {
@@ -1898,29 +1851,39 @@
         const loginBtn = document.getElementById('loginBtn');
         const closeLogin = document.getElementById('closeLogin');
 
-        loginBtn.addEventListener('click', () => loginModal.classList.add('show'));
-        closeLogin.addEventListener('click', () => loginModal.classList.remove('show'));
-        loginModal.addEventListener('click', (e) => {
-            if (e.target === loginModal) loginModal.classList.remove('show');
-        });
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => loginModal.classList.add('show'));
+        }
+        if (closeLogin) {
+            closeLogin.addEventListener('click', () => loginModal.classList.remove('show'));
+        }
+        if (loginModal) {
+            loginModal.addEventListener('click', (e) => {
+                if (e.target === loginModal) loginModal.classList.remove('show');
+            });
+        }
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const user = document.getElementById('loginUser').value.trim();
-            const pass = document.getElementById('loginPass').value.trim();
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const user = document.getElementById('loginUser').value.trim();
+                const pass = document.getElementById('loginPass').value.trim();
 
-            if (user === 'admin' && pass === 'admin2026') {
-                isAdmin = true;
-                loginModal.classList.remove('show');
-                adminMenuLink.style.display = 'inline';
-                showSection('admin');
-                loadAdminData();
-                document.querySelector('#adminTabs button').click();
-                showToast('✅ Acceso concedido como Administrador', 'success');
-            } else {
-                showToast('❌ Usuario o contraseña incorrectos.', 'error');
-            }
-        });
+                if (user === 'admin' && pass === 'admin2026') {
+                    isAdmin = true;
+                    loginModal.classList.remove('show');
+                    if (adminMenuLink) adminMenuLink.style.display = 'inline';
+                    showSection('admin');
+                    loadAdminData();
+                    const firstTab = document.querySelector('#adminTabs button');
+                    if (firstTab) firstTab.click();
+                    showToast('✅ Acceso concedido como Administrador');
+                } else {
+                    showToast('❌ Usuario o contraseña incorrectos.', 'error');
+                }
+            });
+        }
 
         // ============================================================
         // 9. SLIDER
@@ -1947,8 +1910,10 @@
             currentIndex = index;
         }
 
-        if (prevBtn && nextBtn) {
+        if (prevBtn) {
             prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+        }
+        if (nextBtn) {
             nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
         }
         dots.forEach((dot, idx) => dot.addEventListener('click', () => showSlide(idx)));
@@ -1959,6 +1924,23 @@
             slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
             slider.addEventListener('mouseleave', () => {
                 slideInterval = setInterval(() => showSlide(currentIndex + 1), 5000);
+            });
+            // Touch events para móviles
+            let touchStartX = 0;
+            let touchEndX = 0;
+            slider.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            slider.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        showSlide(currentIndex + 1);
+                    } else {
+                        showSlide(currentIndex - 1);
+                    }
+                }
             });
         }
 
@@ -2010,53 +1992,59 @@
                 `).join('');
         }
 
-        document.getElementById('saveSliderImages').addEventListener('click', function() {
-            const inputs = document.querySelectorAll('.slider-image-input');
-            let hasChanges = false;
-            let loaded = 0;
-            const totalInputs = inputs.length;
+        const saveSliderBtn = document.getElementById('saveSliderImages');
+        if (saveSliderBtn) {
+            saveSliderBtn.addEventListener('click', function() {
+                const inputs = document.querySelectorAll('.slider-image-input');
+                let hasChanges = false;
+                let loaded = 0;
+                const totalInputs = inputs.length;
 
-            if (totalInputs === 0) {
-                document.getElementById('sliderFeedback').textContent = '⚠️ No hay imágenes para actualizar.';
-                return;
-            }
+                if (totalInputs === 0) {
+                    document.getElementById('sliderFeedback').textContent = '⚠️ No hay imágenes para actualizar.';
+                    return;
+                }
 
-            inputs.forEach((input, i) => {
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        data.sliderImages[i] = e.target.result;
+                inputs.forEach((input, i) => {
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            data.sliderImages[i] = e.target.result;
+                            loaded++;
+                            if (loaded === totalInputs) {
+                                saveData();
+                                updateSliderImages();
+                                document.getElementById('sliderFeedback').textContent =
+                                    '✅ Imágenes del slider actualizadas.';
+                                showToast('✅ Imágenes del slider actualizadas');
+                                loadSliderForm();
+                            }
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                        hasChanges = true;
+                    } else {
                         loaded++;
                         if (loaded === totalInputs) {
-                            saveData();
-                            updateSliderImages();
-                            document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas.';
-                            showToast('✅ Imágenes del slider actualizadas');
-                            loadSliderForm();
-                        }
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                    hasChanges = true;
-                } else {
-                    loaded++;
-                    if (loaded === totalInputs) {
-                        if (!hasChanges) {
-                            document.getElementById('sliderFeedback').textContent = '⚠️ No se seleccionaron imágenes.';
-                            showToast('⚠️ No se seleccionaron imágenes', 'error');
-                        } else {
-                            saveData();
-                            updateSliderImages();
-                            document.getElementById('sliderFeedback').textContent = '✅ Imágenes del slider actualizadas.';
-                            showToast('✅ Imágenes del slider actualizadas');
-                            loadSliderForm();
+                            if (!hasChanges) {
+                                document.getElementById('sliderFeedback').textContent =
+                                '⚠️ No se seleccionaron imágenes.';
+                                showToast('⚠️ No se seleccionaron imágenes', 'error');
+                            } else {
+                                saveData();
+                                updateSliderImages();
+                                document.getElementById('sliderFeedback').textContent =
+                                    '✅ Imágenes del slider actualizadas.';
+                                showToast('✅ Imágenes del slider actualizadas');
+                                loadSliderForm();
+                            }
                         }
                     }
-                }
+                });
             });
-        });
+        }
 
         // ============================================================
-        // 12. NOTICIAS EN INICIO (Información)
+        // 12. NOTICIAS EN INICIO
         // ============================================================
         function renderHomeNews() {
             const container = document.getElementById('homeNewsList');
@@ -2068,7 +2056,7 @@
             }
 
             container.innerHTML = data.noticias.map(n => `
-                    <div class="info-card" style="margin-bottom:16px;">
+                    <div class="info-card" style="margin-bottom:14px;">
                         ${n.image ? `<img src="${n.image}" alt="${n.title}" />` : ''}
                         <div class="info-body">
                             <h3>${n.title}</h3>
@@ -2116,42 +2104,48 @@
             renderCategorias();
             renderDisciplinas();
             populateSelectors();
-            showToast('✅ Elemento eliminado correctamente');
+            showToast('✅ Elemento eliminado');
         };
 
-        document.getElementById('addCategoria').addEventListener('click', function() {
-            const input = document.getElementById('newCategoria');
-            const val = input.value.trim();
-            if (val && !data.categorias.includes(val)) {
-                data.categorias.push(val);
-                saveData();
-                renderCategorias();
-                populateSelectors();
-                input.value = '';
-                showToast(`✅ Categoría "${val}" agregada`);
-            } else if (data.categorias.includes(val)) {
-                showToast('⚠️ Esta categoría ya existe.', 'error');
-            } else {
-                showToast('⚠️ Ingresa un nombre válido.', 'error');
-            }
-        });
+        const addCategoriaBtn = document.getElementById('addCategoria');
+        if (addCategoriaBtn) {
+            addCategoriaBtn.addEventListener('click', function() {
+                const input = document.getElementById('newCategoria');
+                const val = input.value.trim();
+                if (val && !data.categorias.includes(val)) {
+                    data.categorias.push(val);
+                    saveData();
+                    renderCategorias();
+                    populateSelectors();
+                    input.value = '';
+                    showToast(`✅ Categoría "${val}" agregada`);
+                } else if (data.categorias.includes(val)) {
+                    showToast('⚠️ Esta categoría ya existe.', 'error');
+                } else {
+                    showToast('⚠️ Ingresa un nombre válido.', 'error');
+                }
+            });
+        }
 
-        document.getElementById('addDisciplina').addEventListener('click', function() {
-            const input = document.getElementById('newDisciplina');
-            const val = input.value.trim();
-            if (val && !data.disciplinas.includes(val)) {
-                data.disciplinas.push(val);
-                saveData();
-                renderDisciplinas();
-                populateSelectors();
-                input.value = '';
-                showToast(`✅ Disciplina "${val}" agregada`);
-            } else if (data.disciplinas.includes(val)) {
-                showToast('⚠️ Esta disciplina ya existe.', 'error');
-            } else {
-                showToast('⚠️ Ingresa un nombre válido.', 'error');
-            }
-        });
+        const addDisciplinaBtn = document.getElementById('addDisciplina');
+        if (addDisciplinaBtn) {
+            addDisciplinaBtn.addEventListener('click', function() {
+                const input = document.getElementById('newDisciplina');
+                const val = input.value.trim();
+                if (val && !data.disciplinas.includes(val)) {
+                    data.disciplinas.push(val);
+                    saveData();
+                    renderDisciplinas();
+                    populateSelectors();
+                    input.value = '';
+                    showToast(`✅ Disciplina "${val}" agregada`);
+                } else if (data.disciplinas.includes(val)) {
+                    showToast('⚠️ Esta disciplina ya existe.', 'error');
+                } else {
+                    showToast('⚠️ Ingresa un nombre válido.', 'error');
+                }
+            });
+        }
 
         // ============================================================
         // 14. SELECTORES
@@ -2199,7 +2193,6 @@
                 if (current) el.value = current;
             });
 
-            // Actualizar el select de reporte
             const reportZona = document.getElementById('reportZona');
             if (reportZona) {
                 const current = reportZona.value;
@@ -2216,34 +2209,37 @@
         // ============================================================
         // 15. REGISTRAR ATLETA
         // ============================================================
-        document.getElementById('athleteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nombre = document.getElementById('athleteNombre').value.trim();
-            const apellido = document.getElementById('athleteApellido').value.trim();
-            const edad = parseInt(document.getElementById('athleteEdad').value);
-            const cedula = document.getElementById('athleteCedula').value.trim();
-            const categoria = document.getElementById('athleteCategoria').value;
-            const disciplina = document.getElementById('athleteDisciplina').value;
-            const zona = document.getElementById('athleteZona').value;
-            const fotoInput = document.getElementById('athleteFoto');
+        const athleteForm = document.getElementById('athleteForm');
+        if (athleteForm) {
+            athleteForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const nombre = document.getElementById('athleteNombre').value.trim();
+                const apellido = document.getElementById('athleteApellido').value.trim();
+                const edad = parseInt(document.getElementById('athleteEdad').value);
+                const cedula = document.getElementById('athleteCedula').value.trim();
+                const categoria = document.getElementById('athleteCategoria').value;
+                const disciplina = document.getElementById('athleteDisciplina').value;
+                const zona = document.getElementById('athleteZona').value;
+                const fotoInput = document.getElementById('athleteFoto');
 
-            if (!nombre || !apellido || !edad || !cedula || !categoria || !disciplina || !zona) {
-                showToast('⚠️ Todos los campos son obligatorios.', 'error');
-                return;
-            }
+                if (!nombre || !apellido || !edad || !cedula || !categoria || !disciplina || !zona) {
+                    showToast('⚠️ Todos los campos son obligatorios.', 'error');
+                    return;
+                }
 
-            let foto = '';
-            if (fotoInput.files && fotoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    foto = e.target.result;
-                    saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto);
-                };
-                reader.readAsDataURL(fotoInput.files[0]);
-            } else {
-                saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, '');
-            }
-        });
+                let foto = '';
+                if (fotoInput.files && fotoInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        foto = e.target.result;
+                        saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto);
+                    };
+                    reader.readAsDataURL(fotoInput.files[0]);
+                } else {
+                    saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, '');
+                }
+            });
+        }
 
         function saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto) {
             data.atletas.push({
@@ -2258,8 +2254,9 @@
                 foto
             });
             saveData();
-            document.getElementById('athleteForm').reset();
-            showToast(`✅ Atleta ${nombre} ${apellido} registrado correctamente`);
+            const form = document.getElementById('athleteForm');
+            if (form) form.reset();
+            showToast(`✅ Atleta ${nombre} ${apellido} registrado`);
             renderAthletes();
             renderAdminAthletes();
             updateAthleteCount();
@@ -2282,6 +2279,7 @@
         function renderAthletes() {
             const container = document.getElementById('athleteDisplay');
             if (!container) return;
+
             const zonaFilter = document.getElementById('filterZona')?.value || '';
             const disFilter = document.getElementById('filterDisciplina')?.value || '';
 
@@ -2296,7 +2294,7 @@
 
             container.innerHTML = filtered.map(a => `
                     <div class="athlete-card ${getZonaClass(a.zona)}" data-id="${a.id}">
-                        ${a.foto ? `<img src="${a.foto}" alt="${a.nombre} ${a.apellido}" />` : `<img src="https://ui-avatars.com/api/?name=${a.nombre}+${a.apellido}&background=1a2f52&color=4ade80&size=200&font-size=0.5" alt="${a.nombre}" />`}
+                        ${a.foto ? `<img src="${a.foto}" alt="${a.nombre} ${a.apellido}" loading="lazy" />` : `<img src="https://ui-avatars.com/api/?name=${encodeURIComponent(a.nombre)}+${encodeURIComponent(a.apellido)}&background=1a2f52&color=4ade80&size=200&font-size=0.5" alt="${a.nombre}" loading="lazy" />`}
                         <div class="athlete-name">
                             ${a.nombre} ${a.apellido}
                             <span class="sub">${a.disciplina} · ${a.zona}</span>
@@ -2326,7 +2324,7 @@
 
             container.innerHTML = data.atletas.map(a => `
                     <div class="athlete-card ${getZonaClass(a.zona)}" data-id="${a.id}">
-                        ${a.foto ? `<img src="${a.foto}" alt="${a.nombre} ${a.apellido}" />` : `<img src="https://ui-avatars.com/api/?name=${a.nombre}+${a.apellido}&background=1a2f52&color=4ade80&size=200&font-size=0.5" alt="${a.nombre}" />`}
+                        ${a.foto ? `<img src="${a.foto}" alt="${a.nombre} ${a.apellido}" loading="lazy" />` : `<img src="https://ui-avatars.com/api/?name=${encodeURIComponent(a.nombre)}+${encodeURIComponent(a.apellido)}&background=1a2f52&color=4ade80&size=200&font-size=0.5" alt="${a.nombre}" loading="lazy" />`}
                         <div class="athlete-name">
                             ${a.nombre} ${a.apellido}
                             <span class="sub">${a.disciplina} · ${a.zona}</span>
@@ -2369,47 +2367,56 @@
             document.getElementById('editAthleteModal').classList.add('show');
         };
 
-        document.getElementById('editAthleteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editAthleteId').value);
-            const athlete = data.atletas.find(a => a.id === id);
-            if (!athlete) return;
+        const editAthleteForm = document.getElementById('editAthleteForm');
+        if (editAthleteForm) {
+            editAthleteForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const id = parseInt(document.getElementById('editAthleteId').value);
+                const athlete = data.atletas.find(a => a.id === id);
+                if (!athlete) return;
 
-            athlete.nombre = document.getElementById('editNombre').value.trim();
-            athlete.apellido = document.getElementById('editApellido').value.trim();
-            athlete.edad = parseInt(document.getElementById('editEdad').value);
-            athlete.cedula = document.getElementById('editCedula').value.trim();
-            athlete.categoria = document.getElementById('editCategoria').value;
-            athlete.disciplina = document.getElementById('editDisciplina').value;
-            athlete.zona = document.getElementById('editZona').value;
+                athlete.nombre = document.getElementById('editNombre').value.trim();
+                athlete.apellido = document.getElementById('editApellido').value.trim();
+                athlete.edad = parseInt(document.getElementById('editEdad').value);
+                athlete.cedula = document.getElementById('editCedula').value.trim();
+                athlete.categoria = document.getElementById('editCategoria').value;
+                athlete.disciplina = document.getElementById('editDisciplina').value;
+                athlete.zona = document.getElementById('editZona').value;
 
-            const fotoInput = document.getElementById('editFoto');
-            if (fotoInput.files && fotoInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    athlete.foto = e.target.result;
+                const fotoInput = document.getElementById('editFoto');
+                if (fotoInput.files && fotoInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        athlete.foto = e.target.result;
+                        saveData();
+                        renderAthletes();
+                        renderAdminAthletes();
+                        document.getElementById('editAthleteModal').classList.remove('show');
+                        showToast('✅ Atleta actualizado');
+                    };
+                    reader.readAsDataURL(fotoInput.files[0]);
+                } else {
                     saveData();
                     renderAthletes();
                     renderAdminAthletes();
                     document.getElementById('editAthleteModal').classList.remove('show');
-                    showToast('✅ Atleta actualizado correctamente');
-                };
-                reader.readAsDataURL(fotoInput.files[0]);
-            } else {
-                saveData();
-                renderAthletes();
-                renderAdminAthletes();
-                document.getElementById('editAthleteModal').classList.remove('show');
-                showToast('✅ Atleta actualizado correctamente');
-            }
-        });
+                    showToast('✅ Atleta actualizado');
+                }
+            });
+        }
 
-        document.getElementById('closeEditModal').addEventListener('click', function() {
-            document.getElementById('editAthleteModal').classList.remove('show');
-        });
-        document.getElementById('editAthleteModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('show');
-        });
+        const closeEditModal = document.getElementById('closeEditModal');
+        if (closeEditModal) {
+            closeEditModal.addEventListener('click', function() {
+                document.getElementById('editAthleteModal').classList.remove('show');
+            });
+        }
+        const editAthleteModal = document.getElementById('editAthleteModal');
+        if (editAthleteModal) {
+            editAthleteModal.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+        }
 
         // ============================================================
         // 19. ELIMINAR ATLETA
@@ -2434,8 +2441,8 @@
             const content = document.getElementById('athleteDetailContent');
             if (!modal || !content) return;
             content.innerHTML = `
-                    ${athlete.foto ? `<img src="${athlete.foto}" alt="${athlete.nombre} ${athlete.apellido}" class="athlete-detail-img" />` : `<div style="text-align:center; padding:20px; background:rgba(255,255,255,0.04); border-radius:16px; margin-bottom:16px;"><i class="fas fa-user-circle" style="font-size:80px; color:#4ade80;"></i></div>`}
-                    <h2 style="text-align:center; margin-bottom:16px; color:#e8edf5;">${athlete.nombre} ${athlete.apellido}</h2>
+                    ${athlete.foto ? `<img src="${athlete.foto}" alt="${athlete.nombre} ${athlete.apellido}" class="athlete-detail-img" />` : `<div style="text-align:center; padding:16px; background:rgba(255,255,255,0.04); border-radius:14px; margin-bottom:14px;"><i class="fas fa-user-circle" style="font-size:70px; color:#4ade80;"></i></div>`}
+                    <h2 style="text-align:center; margin-bottom:14px; color:#e8edf5; font-size:1.4rem;">${athlete.nombre} ${athlete.apellido}</h2>
                     <div class="detail-row"><span class="label">Cédula</span><span class="value">${athlete.cedula}</span></div>
                     <div class="detail-row"><span class="label">Edad</span><span class="value">${athlete.edad} años</span></div>
                     <div class="detail-row"><span class="label">Categoría</span><span class="value">${athlete.categoria}</span></div>
@@ -2445,32 +2452,38 @@
             modal.classList.add('show');
         }
 
-        document.getElementById('closeAthleteModal').addEventListener('click', function() {
-            document.getElementById('athleteModal').classList.remove('show');
-        });
-        document.getElementById('athleteModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('show');
-        });
+        const closeAthleteModal = document.getElementById('closeAthleteModal');
+        if (closeAthleteModal) {
+            closeAthleteModal.addEventListener('click', function() {
+                document.getElementById('athleteModal').classList.remove('show');
+            });
+        }
+        const athleteModal = document.getElementById('athleteModal');
+        if (athleteModal) {
+            athleteModal.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+        }
 
         // ============================================================
         // 21. FILTROS
         // ============================================================
-        document.getElementById('filterZona')?.addEventListener('change', () => {
-            renderAthletes();
-            updateAthleteCount();
-        });
-        document.getElementById('filterDisciplina')?.addEventListener('change', () => {
-            renderAthletes();
-            updateAthleteCount();
-        });
-        document.getElementById('clearFilters')?.addEventListener('click', function() {
-            const filterZona = document.getElementById('filterZona');
-            const filterDisciplina = document.getElementById('filterDisciplina');
-            if (filterZona) filterZona.value = '';
-            if (filterDisciplina) filterDisciplina.value = '';
-            renderAthletes();
-            updateAthleteCount();
-        });
+        const filterZona = document.getElementById('filterZona');
+        const filterDisciplina = document.getElementById('filterDisciplina');
+        if (filterZona) filterZona.addEventListener('change', () => { renderAthletes();
+            updateAthleteCount(); });
+        if (filterDisciplina) filterDisciplina.addEventListener('change', () => { renderAthletes();
+            updateAthleteCount(); });
+
+        const clearFilters = document.getElementById('clearFilters');
+        if (clearFilters) {
+            clearFilters.addEventListener('click', function() {
+                if (filterZona) filterZona.value = '';
+                if (filterDisciplina) filterDisciplina.value = '';
+                renderAthletes();
+                updateAthleteCount();
+            });
+        }
 
         // ============================================================
         // 22. NOTICIAS
@@ -2489,14 +2502,14 @@
                         <div class="news-content">
                             <h4>${n.title}</h4>
                             <p>${n.content}</p>
-                            ${n.link ? `<a href="${n.link}" target="_blank" style="color:#4ade80; font-size:0.85rem; display:inline-block; margin-top:4px;">Ver enlace <i class="fas fa-external-link-alt"></i></a>` : ''}
-                            ${n.image ? `<div style="margin-top:8px;"><img src="${n.image}" style="max-height:80px; border-radius:8px; object-fit:cover;" /></div>` : ''}
+                            ${n.link ? `<a href="${n.link}" target="_blank" style="color:#4ade80; font-size:0.8rem; display:inline-block; margin-top:3px;">Ver enlace <i class="fas fa-external-link-alt"></i></a>` : ''}
+                            ${n.image ? `<div style="margin-top:6px;"><img src="${n.image}" style="max-height:60px; border-radius:8px; object-fit:cover;" /></div>` : ''}
                         </div>
                         <div class="news-actions">
-                            <button class="edit-news" onclick="editNews(${n.id})" title="Editar noticia">
+                            <button class="edit-news" onclick="editNews(${n.id})" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="delete-news" onclick="deleteNews(${n.id})" title="Eliminar noticia">
+                            <button class="delete-news" onclick="deleteNews(${n.id})" title="Eliminar">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -2528,189 +2541,208 @@
             document.getElementById('editNewsModal').classList.add('show');
         };
 
-        document.getElementById('editNewsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editNewsId').value);
-            const news = data.noticias.find(n => n.id === id);
-            if (!news) return;
+        const editNewsForm = document.getElementById('editNewsForm');
+        if (editNewsForm) {
+            editNewsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const id = parseInt(document.getElementById('editNewsId').value);
+                const news = data.noticias.find(n => n.id === id);
+                if (!news) return;
 
-            news.title = document.getElementById('editNewsTitle').value.trim();
-            news.content = document.getElementById('editNewsContent').value.trim();
-            news.link = document.getElementById('editNewsLink').value.trim();
+                news.title = document.getElementById('editNewsTitle').value.trim();
+                news.content = document.getElementById('editNewsContent').value.trim();
+                news.link = document.getElementById('editNewsLink').value.trim();
 
-            const imageInput = document.getElementById('editNewsImage');
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    news.image = e.target.result;
+                const imageInput = document.getElementById('editNewsImage');
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        news.image = e.target.result;
+                        saveData();
+                        renderNoticias();
+                        renderHomeNews();
+                        document.getElementById('editNewsModal').classList.remove('show');
+                        showToast('✅ Noticia actualizada');
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                } else {
                     saveData();
                     renderNoticias();
                     renderHomeNews();
                     document.getElementById('editNewsModal').classList.remove('show');
-                    showToast('✅ Noticia actualizada correctamente');
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                saveData();
-                renderNoticias();
-                renderHomeNews();
+                    showToast('✅ Noticia actualizada');
+                }
+            });
+        }
+
+        const closeEditNewsModal = document.getElementById('closeEditNewsModal');
+        if (closeEditNewsModal) {
+            closeEditNewsModal.addEventListener('click', function() {
                 document.getElementById('editNewsModal').classList.remove('show');
-                showToast('✅ Noticia actualizada correctamente');
-            }
-        });
+            });
+        }
+        const editNewsModal = document.getElementById('editNewsModal');
+        if (editNewsModal) {
+            editNewsModal.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('show');
+            });
+        }
 
-        document.getElementById('closeEditNewsModal').addEventListener('click', function() {
-            document.getElementById('editNewsModal').classList.remove('show');
-        });
-        document.getElementById('editNewsModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('show');
-        });
+        const newsForm = document.getElementById('newsForm');
+        if (newsForm) {
+            newsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-        document.getElementById('newsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+                const title = document.getElementById('newsTitle').value.trim();
+                const content = document.getElementById('newsContent').value.trim();
+                const link = document.getElementById('newsLink').value.trim();
+                const imageInput = document.getElementById('newsImage');
 
-            const title = document.getElementById('newsTitle').value.trim();
-            const content = document.getElementById('newsContent').value.trim();
-            const link = document.getElementById('newsLink').value.trim();
-            const imageInput = document.getElementById('newsImage');
+                if (!title || !content) {
+                    showToast('⚠️ Completa todos los campos.', 'error');
+                    return;
+                }
 
-            if (!title || !content) {
-                showToast('⚠️ Completa todos los campos.', 'error');
-                return;
-            }
+                const newNews = {
+                    id: nextNewsId++,
+                    title: title,
+                    content: content,
+                    link: link || '',
+                    image: ''
+                };
 
-            const newNews = {
-                id: nextNewsId++,
-                title: title,
-                content: content,
-                link: link || '',
-                image: ''
-            };
-
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    newNews.image = e.target.result;
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        newNews.image = e.target.result;
+                        data.noticias.push(newNews);
+                        saveData();
+                        renderNoticias();
+                        renderHomeNews();
+                        newsForm.reset();
+                        showToast('✅ Noticia agregada');
+                    };
+                    reader.readAsDataURL(imageInput.files[0]);
+                } else {
                     data.noticias.push(newNews);
                     saveData();
                     renderNoticias();
                     renderHomeNews();
-                    document.getElementById('newsForm').reset();
-                    showToast('✅ Noticia agregada correctamente');
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                data.noticias.push(newNews);
-                saveData();
-                renderNoticias();
-                renderHomeNews();
-                document.getElementById('newsForm').reset();
-                showToast('✅ Noticia agregada correctamente');
-            }
-        });
+                    newsForm.reset();
+                    showToast('✅ Noticia agregada');
+                }
+            });
+        }
 
         // ============================================================
         // 23. REPORTE PDF POR ZONA
         // ============================================================
-        document.getElementById('downloadPDFByZone')?.addEventListener('click', function() {
-            const zonaSeleccionada = document.getElementById('reportZona').value;
-            let athletes = data.atletas || [];
+        const downloadPDFBtn = document.getElementById('downloadPDFByZone');
+        if (downloadPDFBtn) {
+            downloadPDFBtn.addEventListener('click', function() {
+                const zonaSeleccionada = document.getElementById('reportZona').value;
+                let athletes = data.atletas || [];
 
-            if (zonaSeleccionada) {
-                athletes = athletes.filter(a => a.zona === zonaSeleccionada);
-            }
+                if (zonaSeleccionada) {
+                    athletes = athletes.filter(a => a.zona === zonaSeleccionada);
+                }
 
-            const zonaLabel = zonaSeleccionada || 'Todos';
+                const zonaLabel = zonaSeleccionada || 'Todos';
 
-            if (athletes.length === 0) {
-                document.getElementById('reportFeedback').textContent = `⚠️ No hay atletas en ${zonaLabel}.`;
-                showToast(`⚠️ No hay atletas en ${zonaLabel}`, 'error');
-                return;
-            }
+                if (athletes.length === 0) {
+                    document.getElementById('reportFeedback').textContent =
+                    `⚠️ No hay atletas en ${zonaLabel}.`;
+                    showToast(`⚠️ No hay atletas en ${zonaLabel}`, 'error');
+                    return;
+                }
 
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('landscape', 'mm', 'a4');
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('landscape', 'mm', 'a4');
 
-                doc.setFillColor(255, 255, 255);
-                doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+                    doc.setFillColor(255, 255, 255);
+                    doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(),
+                    'F');
 
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
 
-                doc.setFontSize(18);
-                doc.setTextColor(0, 0, 0);
-                doc.text(`Reporte de Atletas - ${zonaLabel}`, pageWidth / 2, 20, { align: 'center' });
+                    doc.setFontSize(18);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(`Reporte de Atletas - ${zonaLabel}`, pageWidth / 2, 20, { align: 'center' });
 
-                doc.setFontSize(10);
-                doc.setTextColor(100, 100, 100);
-                doc.text(`Generado: ${new Date().toLocaleString()}`, pageWidth / 2, 28, { align: 'center' });
+                    doc.setFontSize(10);
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(`Generado: ${new Date().toLocaleString()}`, pageWidth / 2, 28, { align: 'center' });
 
-                const headers = ['Nombre', 'Apellido', 'Edad', 'Cédula', 'Categoría', 'Disciplina', 'Zona'];
-                const colWidths = [30, 30, 15, 30, 25, 30, 25];
-                let y = 38;
+                    const headers = ['Nombre', 'Apellido', 'Edad', 'Cédula', 'Categoría', 'Disciplina', 'Zona'];
+                    const colWidths = [30, 30, 15, 30, 25, 30, 25];
+                    let y = 38;
 
-                doc.setFontSize(10);
-                doc.setTextColor(0, 0, 0);
-                doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont('helvetica', 'bold');
 
-                let x = 10;
-                headers.forEach((h, i) => {
-                    doc.text(h, x, y);
-                    x += colWidths[i];
-                });
-
-                doc.setDrawColor(0, 0, 0);
-                doc.line(10, y + 2, pageWidth - 10, y + 2);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setTextColor(0, 0, 0);
-                y += 8;
-
-                athletes.forEach((a) => {
-                    if (y > pageHeight - 20) {
-                        doc.addPage();
-                        doc.setFillColor(255, 255, 255);
-                        doc.rect(0, 0, pageWidth, pageHeight, 'F');
-                        y = 20;
-
-                        doc.setFontSize(10);
-                        doc.setTextColor(0, 0, 0);
-                        doc.setFont('helvetica', 'bold');
-                        let xHead = 10;
-                        headers.forEach((h, i) => {
-                            doc.text(h, xHead, y);
-                            xHead += colWidths[i];
-                        });
-                        doc.setDrawColor(0, 0, 0);
-                        doc.line(10, y + 2, pageWidth - 10, y + 2);
-                        doc.setFont('helvetica', 'normal');
-                        y += 8;
-                    }
-
-                    const row = [a.nombre || '', a.apellido || '', String(a.edad || ''), a.cedula || '', a.categoria || '',
-                        a.disciplina || '', a.zona || ''
-                    ];
-                    let xPos = 10;
-                    row.forEach((cell, i) => {
-                        doc.text(String(cell), xPos, y);
-                        xPos += colWidths[i];
+                    let x = 10;
+                    headers.forEach((h, i) => {
+                        doc.text(h, x, y);
+                        x += colWidths[i];
                     });
-                    y += 6;
-                });
 
-                doc.setFontSize(10);
-                doc.setTextColor(0, 0, 0);
-                doc.text(`Total de atletas: ${athletes.length}`, pageWidth - 30, pageHeight - 10);
+                    doc.setDrawColor(0, 0, 0);
+                    doc.line(10, y + 2, pageWidth - 10, y + 2);
 
-                doc.save(`Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.pdf`);
-                document.getElementById('reportFeedback').textContent = `✅ PDF con ${athletes.length} atletas descargado.`;
-                showToast(`✅ PDF con ${athletes.length} atletas descargado`);
-            } catch (e) {
-                document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
-                showToast('❌ Error al generar PDF', 'error');
-            }
-        });
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(0, 0, 0);
+                    y += 8;
+
+                    athletes.forEach((a) => {
+                        if (y > pageHeight - 20) {
+                            doc.addPage();
+                            doc.setFillColor(255, 255, 255);
+                            doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                            y = 20;
+
+                            doc.setFontSize(10);
+                            doc.setTextColor(0, 0, 0);
+                            doc.setFont('helvetica', 'bold');
+                            let xHead = 10;
+                            headers.forEach((h, i) => {
+                                doc.text(h, xHead, y);
+                                xHead += colWidths[i];
+                            });
+                            doc.setDrawColor(0, 0, 0);
+                            doc.line(10, y + 2, pageWidth - 10, y + 2);
+                            doc.setFont('helvetica', 'normal');
+                            y += 8;
+                        }
+
+                        const row = [a.nombre || '', a.apellido || '', String(a.edad || ''), a.cedula || '',
+                            a.categoria || '',
+                            a.disciplina || '', a.zona || ''
+                        ];
+                        let xPos = 10;
+                        row.forEach((cell, i) => {
+                            doc.text(String(cell), xPos, y);
+                            xPos += colWidths[i];
+                        });
+                        y += 6;
+                    });
+
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(`Total de atletas: ${athletes.length}`, pageWidth - 30, pageHeight - 10);
+
+                    doc.save(`Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.pdf`);
+                    document.getElementById('reportFeedback').textContent =
+                        `✅ PDF con ${athletes.length} atletas descargado.`;
+                    showToast(`✅ PDF con ${athletes.length} atletas descargado`);
+                } catch (e) {
+                    document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
+                    showToast('❌ Error al generar PDF', 'error');
+                }
+            });
+        }
 
         // ============================================================
         // 24. ADMIN DATA
@@ -2731,61 +2763,53 @@
         function initializeApp() {
             console.log('🚀 Iniciando aplicación en tiempo real...');
 
+            // Cargar datos locales primero
             loadDataFromLocalStorage();
+
+            // Renderizar con datos locales
             renderAll();
 
+            // Si Firebase está disponible, cargar datos y activar listener
             if (firebaseReady) {
                 loadDataFromFirebase(() => {
                     renderAll();
+                    // Activar listener después de cargar datos
                     setTimeout(() => {
                         listenFirebaseChanges();
                         updateStatus(true);
+                        showToast('✅ Conectado a tiempo real');
                     }, 500);
                 });
             } else {
-                console.warn('⚠️ Firebase no disponible, trabajando en modo local');
+                console.warn('⚠️ Firebase no disponible, modo local');
                 updateStatus(false);
+                showToast('⚠️ Modo sin conexión', 'error');
             }
 
-            // Cerrar sesión automática después de inactividad (opcional)
-            let inactivityTimer;
-
-            function resetInactivityTimer() {
-                clearTimeout(inactivityTimer);
-                inactivityTimer = setTimeout(() => {
-                    if (isAdmin) {
-                        isAdmin = false;
-                        adminMenuLink.style.display = 'none';
-                        showToast('⏰ Sesión expirada por inactividad', 'error');
+            // Manejar clic en Admin
+            const adminLink = document.querySelector('a[data-section="admin"]');
+            if (adminLink) {
+                adminLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!isAdmin) {
+                        loginModal.classList.add('show');
+                        return;
                     }
-                }, 30 * 60 * 1000); // 30 minutos
+                    showSection('admin');
+                    loadAdminData();
+                });
             }
-
-            document.addEventListener('click', resetInactivityTimer);
-            document.addEventListener('keydown', resetInactivityTimer);
-            document.addEventListener('scroll', resetInactivityTimer);
-            resetInactivityTimer();
-
-            document.querySelector('a[data-section="admin"]')?.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (!isAdmin) {
-                    loginModal.classList.add('show');
-                    return;
-                }
-                showSection('admin');
-                loadAdminData();
-            });
 
             // Ocultar elementos obsoletos
-            const oldStats = document.querySelector('div[style*="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:24px 0;"]');
+            const oldStats = document.querySelector(
+                'div[style*="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:24px 0;"]'
+                );
             if (oldStats) oldStats.classList.add('hidden-element');
-            const videoSection = document.querySelector('.video-section');
-            if (videoSection) videoSection.classList.add('hidden-element');
 
-            console.log('✅ Aplicación inicializada correctamente');
-            showToast('✅ Conectado a tiempo real', 'success');
+            console.log('✅ Aplicación inicializada');
         }
 
+        // Iniciar cuando el DOM esté listo
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeApp);
         } else {
