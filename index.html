@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
     </script>
     <style>
-        /* ===== ESTILOS COMPLETOS ===== */
+        /* ===== ESTILOS COMPLETOS (sin cambios) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -1208,7 +1208,6 @@
             color: #8aa4c8;
         }
 
-        /* Estilos para la configuración de categorías y disciplinas */
         .config-item {
             display: flex;
             justify-content: space-between;
@@ -1637,8 +1636,8 @@
         // 2. DATA PRINCIPAL
         // ============================================================
         let data = {
-            disciplinas: ['100 MTS', '400 MTS', '50 MTS', '100 MTS', '100 MTS'],
-            categorias: ['Infantil', 'Juvenil', 'Adulto', 'Máster'],
+            disciplinas: ['Atletismo', 'Natación', 'Fútbol', 'Baloncesto'],
+            categorias: ['Infantil', 'Juvenil', 'Adulto'],
             atletas: [],
             noticias: [],
             sliderImages: [
@@ -1661,17 +1660,21 @@
             if (!firebaseReady || !database) return;
             try {
                 const ref = database.ref('olimpiadas2026_simplified');
-                ref.update({
-                    disciplinas: data.disciplinas,
-                    categorias: data.categorias,
-                    atletas: data.atletas,
-                    noticias: data.noticias,
-                    sliderImages: data.sliderImages
-                }).then(() => {
-                    console.log('💾 Datos guardados en Firebase correctamente');
-                }).catch(err => {
-                    console.warn('⚠️ Error al guardar en Firebase:', err);
-                });
+                // Limpiar datos vacíos y asegurar estructura
+                const cleanData = {
+                    disciplinas: data.disciplinas || [],
+                    categorias: data.categorias || [],
+                    atletas: data.atletas || [],
+                    noticias: data.noticias || [],
+                    sliderImages: data.sliderImages || []
+                };
+                ref.set(cleanData)
+                    .then(() => {
+                        console.log('💾 Datos guardados en Firebase correctamente');
+                    })
+                    .catch(err => {
+                        console.warn('⚠️ Error al guardar en Firebase:', err);
+                    });
             } catch (e) {
                 console.warn('⚠️ Error en saveDataToFirebase:', e);
             }
@@ -1693,17 +1696,25 @@
                         data.atletas = val.atletas || [];
                         data.noticias = val.noticias || [];
                         data.sliderImages = val.sliderImages || data.sliderImages;
+                        
+                        // Actualizar contadores
                         if (data.atletas.length > 0) {
                             const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                             nextId = maxId + 1;
+                        } else {
+                            nextId = 1;
                         }
                         if (data.noticias.length > 0) {
                             const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
                             nextNewsId = maxNewsId + 1;
+                        } else {
+                            nextNewsId = 1;
                         }
+                        
                         saveDataToLocalStorage();
                         if (callback) callback();
                     } else {
+                        // Si no hay datos en Firebase, guardar los datos locales
                         loadDataFromLocalStorage();
                         setTimeout(() => saveDataToFirebase(), 500);
                         if (callback) callback();
@@ -1729,30 +1740,57 @@
                     const val = snapshot.val();
                     if (!val) return;
 
+                    // Solo actualizar si hay cambios reales
+                    const oldAtletas = JSON.stringify(data.atletas);
+                    const oldNoticias = JSON.stringify(data.noticias);
+                    const oldSliderImages = JSON.stringify(data.sliderImages);
+                    const oldDisciplinas = JSON.stringify(data.disciplinas);
+                    const oldCategorias = JSON.stringify(data.categorias);
+
                     data.disciplinas = val.disciplinas || data.disciplinas;
                     data.categorias = val.categorias || data.categorias;
                     data.atletas = val.atletas || [];
                     data.noticias = val.noticias || [];
                     data.sliderImages = val.sliderImages || data.sliderImages;
 
+                    // Actualizar contadores
                     if (data.atletas.length > 0) {
                         const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                         nextId = maxId + 1;
+                    } else {
+                        nextId = 1;
                     }
                     if (data.noticias.length > 0) {
                         const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
                         nextNewsId = maxNewsId + 1;
+                    } else {
+                        nextNewsId = 1;
                     }
 
-                    saveDataToLocalStorage();
-                    renderHomeNews();
-                    renderAthletes();
-                    renderAdminAthletes();
-                    renderNoticias();
-                    renderConfigLists();
-                    updateSliderImages();
-                    populateSelectors();
-                    console.log('🔄 Datos actualizados en tiempo real');
+                    const newAtletas = JSON.stringify(data.atletas);
+                    const newNoticias = JSON.stringify(data.noticias);
+                    const newSliderImages = JSON.stringify(data.sliderImages);
+                    const newDisciplinas = JSON.stringify(data.disciplinas);
+                    const newCategorias = JSON.stringify(data.categorias);
+
+                    // Verificar si hay cambios
+                    const hasChanges = oldAtletas !== newAtletas || 
+                                     oldNoticias !== newNoticias || 
+                                     oldSliderImages !== newSliderImages ||
+                                     oldDisciplinas !== newDisciplinas ||
+                                     oldCategorias !== newCategorias;
+
+                    if (hasChanges) {
+                        saveDataToLocalStorage();
+                        renderHomeNews();
+                        renderAthletes();
+                        renderAdminAthletes();
+                        renderNoticias();
+                        renderConfigLists();
+                        updateSliderImages();
+                        populateSelectors();
+                        console.log('🔄 Datos actualizados en tiempo real');
+                    }
                 });
                 isFirebaseListenerActive = true;
                 console.log('👂 Listener activado');
@@ -1777,15 +1815,21 @@
                     data.atletas = parsed.atletas || [];
                     data.noticias = parsed.noticias || [];
                     data.sliderImages = parsed.sliderImages || data.sliderImages;
+                    
                     if (data.atletas.length > 0) {
                         const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                         nextId = maxId + 1;
+                    } else {
+                        nextId = 1;
                     }
                     if (data.noticias.length > 0) {
                         const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
                         nextNewsId = maxNewsId + 1;
+                    } else {
+                        nextNewsId = 1;
                     }
                 } else {
+                    // Datos de ejemplo iniciales
                     data.atletas = [{
                         id: 1,
                         nombre: 'Carlos',
@@ -1814,11 +1858,15 @@
                         link: 'https://olimpiadasavcs.com',
                         image: 'https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=800&h=400&fit=crop'
                     }];
+                    data.disciplinas = ['Atletismo', 'Natación', 'Fútbol', 'Baloncesto'];
+                    data.categorias = ['Infantil', 'Juvenil', 'Adulto'];
                     nextId = 3;
                     nextNewsId = 2;
                     saveDataToLocalStorage();
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.warn('Error cargando datos locales:', e);
+            }
         }
 
         function saveData() {
@@ -2071,14 +2119,16 @@
             const editCat = document.getElementById('editCategoria');
             const editDis = document.getElementById('editDisciplina');
 
-            const selects = [catSelect, filterZona, editCat];
+            const selects = [catSelect, editCat];
             selects.forEach(el => {
                 if (!el) return;
                 const current = el.value;
                 el.innerHTML = '<option value="">Seleccionar</option>';
-                data.categorias.forEach(c => {
-                    el.innerHTML += `<option value="${c}">${c}</option>`;
-                });
+                if (data.categorias && data.categorias.length > 0) {
+                    data.categorias.forEach(c => {
+                        el.innerHTML += `<option value="${c}">${c}</option>`;
+                    });
+                }
                 if (current && data.categorias.includes(current)) el.value = current;
             });
 
@@ -2087,9 +2137,11 @@
                 if (!el) return;
                 const current = el.value;
                 el.innerHTML = '<option value="">Seleccionar</option>';
-                data.disciplinas.forEach(d => {
-                    el.innerHTML += `<option value="${d}">${d}</option>`;
-                });
+                if (data.disciplinas && data.disciplinas.length > 0) {
+                    data.disciplinas.forEach(d => {
+                        el.innerHTML += `<option value="${d}">${d}</option>`;
+                    });
+                }
                 if (current && data.disciplinas.includes(current)) el.value = current;
             });
 
@@ -2140,7 +2192,7 @@
         });
 
         function saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto) {
-            data.atletas.push({
+            const newAthlete = {
                 id: nextId++,
                 nombre,
                 apellido,
@@ -2150,7 +2202,8 @@
                 disciplina,
                 zona,
                 foto
-            });
+            };
+            data.atletas.push(newAthlete);
             saveData();
             document.getElementById('athleteForm').reset();
             alert('✅ Atleta registrado correctamente.');
@@ -2540,11 +2593,9 @@
                 `).join('');
         }
 
-        // Eliminar categoría o disciplina
         window.deleteConfigItem = function(type, value) {
             if (type === 'categoria') {
                 if (!confirm(`¿Eliminar la categoría "${value}"?`)) return;
-                // Verificar si algún atleta la usa
                 const inUse = data.atletas.some(a => a.categoria === value);
                 if (inUse) {
                     alert('❌ No se puede eliminar porque hay atletas usando esta categoría.');
@@ -2566,14 +2617,12 @@
             alert('✅ Eliminado correctamente.');
         };
 
-        // Editar categoría o disciplina
         window.editConfigItem = function(type, oldValue) {
             document.getElementById('editConfigType').value = type;
             document.getElementById('editConfigOldValue').value = oldValue;
             document.getElementById('editConfigNewValue').value = oldValue;
             document.getElementById('editConfigModal').classList.add('show');
 
-            // Actualizar título del modal
             const title = type === 'categoria' ? 'Editar Categoría' : 'Editar Disciplina';
             document.querySelector('#editConfigModal h2').textContent = title;
         };
@@ -2590,12 +2639,10 @@
             }
 
             if (type === 'categoria') {
-                // Verificar duplicado
                 if (data.categorias.includes(newValue) && newValue !== oldValue) {
                     alert('❌ Ya existe una categoría con ese nombre.');
                     return;
                 }
-                // Actualizar en atletas
                 data.atletas.forEach(a => {
                     if (a.categoria === oldValue) a.categoria = newValue;
                 });
@@ -2625,7 +2672,6 @@
             if (e.target === this) this.classList.remove('show');
         });
 
-        // Agregar categoría
         document.getElementById('addCategoriaBtn').addEventListener('click', function() {
             const input = document.getElementById('newCategoriaInput');
             const value = input.value.trim();
@@ -2645,7 +2691,6 @@
             alert('✅ Categoría agregada.');
         });
 
-        // Agregar disciplina
         document.getElementById('addDisciplinaBtn').addEventListener('click', function() {
             const input = document.getElementById('newDisciplinaInput');
             const value = input.value.trim();
@@ -2665,7 +2710,6 @@
             alert('✅ Disciplina agregada.');
         });
 
-        // Enter key para agregar
         document.getElementById('newCategoriaInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') document.getElementById('addCategoriaBtn').click();
         });
@@ -2688,14 +2732,12 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('landscape', 'mm', 'a4');
 
-                // Fondo blanco
                 doc.setFillColor(255, 255, 255);
                 doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
 
                 const pageWidth = doc.internal.pageSize.getWidth();
                 const pageHeight = doc.internal.pageSize.getHeight();
 
-                // Título - Negro
                 doc.setFontSize(18);
                 doc.setTextColor(0, 0, 0);
                 doc.text('Reporte de Atletas - Olimpiadas AVCS 2026', pageWidth / 2, 20, { align: 'center' });
@@ -2708,7 +2750,6 @@
                 const colWidths = [30, 30, 15, 30, 25, 30, 25];
                 let y = 38;
 
-                // Cabeceras - Negro
                 doc.setFontSize(10);
                 doc.setTextColor(0, 0, 0);
                 doc.setFont('helvetica', 'bold');
@@ -2719,7 +2760,6 @@
                     x += colWidths[i];
                 });
 
-                // Línea separadora
                 doc.setDrawColor(0, 0, 0);
                 doc.line(10, y + 2, pageWidth - 10, y + 2);
 
@@ -2730,12 +2770,10 @@
                 athletes.forEach((a, index) => {
                     if (y > pageHeight - 20) {
                         doc.addPage();
-                        // Fondo blanco en página nueva
                         doc.setFillColor(255, 255, 255);
                         doc.rect(0, 0, pageWidth, pageHeight, 'F');
                         y = 20;
 
-                        // Repetir cabeceras en cada página
                         doc.setFontSize(10);
                         doc.setTextColor(0, 0, 0);
                         doc.setFont('helvetica', 'bold');
@@ -2761,7 +2799,6 @@
                     y += 6;
                 });
 
-                // Contador de atletas - Negro
                 doc.setFontSize(10);
                 doc.setTextColor(0, 0, 0);
                 doc.text(`Total de atletas: ${athletes.length}`, pageWidth - 30, pageHeight - 10);
