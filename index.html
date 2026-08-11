@@ -1468,13 +1468,18 @@
         let isFirebaseListenerActive = false;
 
         // ============================================================
-        // 3. FUNCIONES DE PERSISTENCIA
+        // 3. FUNCIONES DE PERSISTENCIA CON FIREBASE MEJORADAS
         // ============================================================
         function saveDataToFirebase() {
-            if (!firebaseReady || !database) return;
+            if (!firebaseReady || !database) {
+                console.warn('⚠️ Firebase no disponible, guardando en localStorage');
+                saveDataToLocalStorage();
+                return;
+            }
             try {
                 const ref = database.ref('olimpiadas2026_final');
-                ref.update({
+                // Usar set en lugar de update para asegurar que todos los datos se guarden
+                ref.set({
                     disciplinas: data.disciplinas,
                     categorias: data.categorias,
                     atletas: data.atletas,
@@ -1484,40 +1489,39 @@
                     console.log('💾 Datos guardados en Firebase correctamente');
                 }).catch(err => {
                     console.warn('⚠️ Error al guardar en Firebase:', err);
+                    saveDataToLocalStorage();
                 });
             } catch (e) {
                 console.warn('⚠️ Error en saveDataToFirebase:', e);
+                saveDataToLocalStorage();
             }
         }
 
         function loadDataFromFirebase(callback) {
             if (!firebaseReady || !database) {
+                console.warn('⚠️ Firebase no disponible, cargando desde localStorage');
                 loadDataFromLocalStorage();
                 if (callback) callback();
                 return;
             }
             try {
                 const ref = database.ref('olimpiadas2026_final');
-                ref.once('value', (snapshot) => {
+                ref.once('value').then((snapshot) => {
                     const val = snapshot.val();
                     if (val) {
+                        // Actualizar solo si hay datos en Firebase
                         data.disciplinas = val.disciplinas || data.disciplinas;
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
                         data.noticias = val.noticias || [];
                         data.sliderImages = val.sliderImages || data.sliderImages;
-                        if (data.atletas.length > 0) {
-                            const maxId = Math.max(...data.atletas.map(a => a.id || 0));
-                            nextId = maxId + 1;
-                        }
-                        if (data.noticias.length > 0) {
-                            const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
-                            nextNewsId = maxNewsId + 1;
-                        }
+                        updateIds();
                         saveDataToLocalStorage();
+                        console.log('📥 Datos cargados desde Firebase');
                         if (callback) callback();
                     } else {
-                        loadDataFromLocalStorage();
+                        // Si no hay datos en Firebase, guardar los locales
+                        console.log('📭 No hay datos en Firebase, guardando locales');
                         setTimeout(() => saveDataToFirebase(), 500);
                         if (callback) callback();
                     }
@@ -1542,43 +1546,70 @@
                     const val = snapshot.val();
                     if (!val) return;
 
+                    // Actualizar datos desde Firebase
                     data.disciplinas = val.disciplinas || data.disciplinas;
                     data.categorias = val.categorias || data.categorias;
                     data.atletas = val.atletas || [];
                     data.noticias = val.noticias || [];
                     data.sliderImages = val.sliderImages || data.sliderImages;
 
-                    if (data.atletas.length > 0) {
-                        const maxId = Math.max(...data.atletas.map(a => a.id || 0));
-                        nextId = maxId + 1;
-                    }
-                    if (data.noticias.length > 0) {
-                        const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
-                        nextNewsId = maxNewsId + 1;
-                    }
-
+                    updateIds();
                     saveDataToLocalStorage();
-                    renderHomeNews();
-                    renderAthletes();
-                    renderAdminAthletes();
-                    renderNoticias();
-                    renderCategorias();
-                    renderDisciplinas();
-                    updateSliderImages();
-                    populateSelectors();
+
+                    // Actualizar toda la UI
+                    renderAll();
                     console.log('🔄 Datos actualizados en tiempo real');
+                }, (error) => {
+                    console.warn('⚠️ Error en listener de Firebase:', error);
+                    // Reintentar después de 5 segundos
+                    setTimeout(() => {
+                        isFirebaseListenerActive = false;
+                        listenFirebaseChanges();
+                    }, 5000);
                 });
                 isFirebaseListenerActive = true;
-                console.log('👂 Listener activado');
+                console.log('👂 Listener activado correctamente');
             } catch (e) {
                 console.warn('⚠️ Error al activar listener:', e);
+                setTimeout(() => {
+                    isFirebaseListenerActive = false;
+                    listenFirebaseChanges();
+                }, 3000);
+            }
+        }
+
+        function updateIds() {
+            if (data.atletas.length > 0) {
+                const maxId = Math.max(...data.atletas.map(a => a.id || 0));
+                nextId = maxId + 1;
+            }
+            if (data.noticias.length > 0) {
+                const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
+                nextNewsId = maxNewsId + 1;
+            }
+        }
+
+        function renderAll() {
+            renderHomeNews();
+            renderAthletes();
+            renderAdminAthletes();
+            renderNoticias();
+            renderCategorias();
+            renderDisciplinas();
+            updateSliderImages();
+            populateSelectors();
+            // Actualizar el formulario de slider si está visible
+            if (document.getElementById('tabSlider').classList.contains('active')) {
+                loadSliderForm();
             }
         }
 
         function saveDataToLocalStorage() {
             try {
                 localStorage.setItem('olimpiadas2026_final_data', JSON.stringify(data));
-            } catch (e) {}
+            } catch (e) {
+                console.warn('⚠️ Error guardando en localStorage:', e);
+            }
         }
 
         function loadDataFromLocalStorage() {
@@ -1591,15 +1622,9 @@
                     data.atletas = parsed.atletas || [];
                     data.noticias = parsed.noticias || [];
                     data.sliderImages = parsed.sliderImages || data.sliderImages;
-                    if (data.atletas.length > 0) {
-                        const maxId = Math.max(...data.atletas.map(a => a.id || 0));
-                        nextId = maxId + 1;
-                    }
-                    if (data.noticias.length > 0) {
-                        const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
-                        nextNewsId = maxNewsId + 1;
-                    }
+                    updateIds();
                 } else {
+                    // Datos de ejemplo
                     data.atletas = [{
                         id: 1,
                         nombre: 'Carlos',
@@ -1632,7 +1657,9 @@
                     nextNewsId = 2;
                     saveDataToLocalStorage();
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.warn('⚠️ Error cargando desde localStorage:', e);
+            }
         }
 
         function saveData() {
@@ -2502,35 +2529,27 @@
         function initializeApp() {
             console.log('🚀 Iniciando aplicación...');
 
+            // Cargar datos locales primero para mostrar algo
             loadDataFromLocalStorage();
 
-            renderHomeNews();
-            renderAthletes();
-            populateSelectors();
-            loadSliderForm();
-            renderAdminAthletes();
-            renderNoticias();
-            renderCategorias();
-            renderDisciplinas();
-            updateSliderImages();
+            // Renderizar todo con datos locales
+            renderAll();
 
+            // Intentar cargar desde Firebase y actualizar
             if (firebaseReady) {
                 loadDataFromFirebase(() => {
-                    renderHomeNews();
-                    renderAthletes();
-                    populateSelectors();
-                    loadSliderForm();
-                    renderAdminAthletes();
-                    renderNoticias();
-                    renderCategorias();
-                    renderDisciplinas();
-                    updateSliderImages();
+                    // Después de cargar, renderizar todo con los datos de Firebase
+                    renderAll();
+                    // Activar el listener para cambios en tiempo real
                     setTimeout(() => {
                         listenFirebaseChanges();
-                    }, 1000);
+                    }, 500);
                 });
+            } else {
+                console.warn('⚠️ Firebase no disponible, trabajando en modo local');
             }
 
+            // Manejar clic en Admin
             document.querySelector('a[data-section="admin"]')?.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (!isAdmin) {
@@ -2542,13 +2561,20 @@
             });
 
             // Ocultar elementos que ya no se usan
-            document.querySelector('div[style*="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:24px 0;"]')?.classList.add('hidden-element');
-            document.querySelector('.video-section')?.classList.add('hidden-element');
+            const oldStats = document.querySelector('div[style*="background:rgba(255,255,255,0.04); border-radius:28px; padding:24px 32px; margin:24px 0;"]');
+            if (oldStats) oldStats.classList.add('hidden-element');
+            const videoSection = document.querySelector('.video-section');
+            if (videoSection) videoSection.classList.add('hidden-element');
 
             console.log('✅ Aplicación inicializada correctamente');
         }
 
-        initializeApp();
+        // Iniciar cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
     </script>
 
 </body>
