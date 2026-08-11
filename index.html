@@ -1654,155 +1654,268 @@
         let isFirebaseListenerActive = false;
 
         // ============================================================
-        // 3. FUNCIONES DE PERSISTENCIA
+        // 3. FUNCIONES DE PERSISTENCIA - FIREBASE ROBUSTO Y TIEMPO REAL
         // ============================================================
-        function saveDataToFirebase() {
-            if (!firebaseReady || !database) return;
+        const FIREBASE_DATA_PATH = 'olimpiadas2026_simplified';
+        let lastSyncedData = null;
+        let firebaseWriteInProgress = false;
+
+        function cloneData(value) {
+            return JSON.parse(JSON.stringify(value));
+        }
+
+        function normalizeArray(value) {
+            if (!value) return [];
+            if (Array.isArray(value)) return value;
+            if (typeof value === 'object') return Object.keys(value).map(k => value[k]).filter(v => v != null);
+            return [];
+        }
+
+        function normalizeFirebaseData(value) {
+            value = value || {};
+            return {
+                disciplinas: normalizeArray(value.disciplinas),
+                categorias: normalizeArray(value.categorias),
+                atletas: normalizeArray(value.atletas),
+                noticias: normalizeArray(value.noticias),
+                sliderImages: normalizeArray(value.sliderImages)
+            };
+        }
+
+        function updateNextIds() {
+            const athleteIds = (data.atletas || []).map(a => Number(a.id) || 0);
+            const newsIds = (data.noticias || []).map(n => Number(n.id) || 0);
+            nextId = athleteIds.length ? Math.max(...athleteIds) + 1 : 1;
+            nextNewsId = newsIds.length ? Math.max(...newsIds) + 1 : 1;
+        }
+
+        function sameObject(a, b) {
+            return JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+        }
+
+        // Hace un merge de tres estados: lo que el dispositivo conocía,
+        // lo que el usuario modificó y lo que actualmente existe en Firebase.
+        // Esto evita que dos dispositivos se pisen entre sí con ref.set().
+        function mergeCollection(remote, base, local) {
+            const remoteMap = new Map(normalizeArray(remote).map(item => [String(item.id), item]));
+            const baseMap = new Map(normalizeArray(base).map(item => [String(item.id), item]));
+            const localItems = normalizeArray(local);
+            const localMap = new Map(localItems.map(item => [String(item.id), item]));
+
+            // Aplicar ediciones y eliminaciones hechas desde este dispositivo.
+            baseMap.forEach((baseItem, id) => {
+                const localItem = localMap.get(id);
+                if (!localItem) {
+                    remoteMap.delete(id);
+                } else if (!sameObject(baseItem, localItem)) {
+                    remoteMap.set(id, cloneData(localItem));
+                }
+            });
+
+            // Agregar nuevos registros creados desde este dispositivo.
+            localItems.forEach(localItem => {
+                const id = String(localItem.id);
+                if (!baseMap.has(id)) {
+                    remoteMap.set(id, cloneData(localItem));
+                }
+            });
+
+            return Array.from(remoteMap.values());
+        }
+
+        function mergeStringList(remote, base, local) {
+            const remoteSet = new Set(normalizeArray(remote).map(String));
+            const baseSet = new Set(normalizeArray(base).map(String));
+            const localSet = new Set(normalizeArray(local).map(String));
+
+            // Solo eliminamos del servidor elementos que realmente fueron
+            // eliminados en este dispositivo desde la última sincronización.
+            baseSet.forEach(value => {
+                if (!localSet.has(value)) remoteSet.delete(value);
+            });
+
+            // Y solo agregamos los nuevos elementos creados localmente.
+            localSet.forEach(value => {
+                if (!baseSet.has(value)) remoteSet.add(value);
+            });
+
+            // Conservamos el orden local cuando no hay conflicto; los nuevos
+            // elementos remotos también permanecen en la lista.
+            const result = [];
+            normalizeArray(remote).forEach(value => {
+                const str = String(value);
+                if (remoteSet.has(str) && !result.includes(str)) result.push(str);
+            });
+            localSet.forEach(value => {
+                if (!result.includes(value)) result.push(value);
+            });
+            return result;
+        }
+
+        function mergeSliderImages(remote, base, local) {
+            const result = normalizeArray(remote).slice();
+            const baseArr = normalizeArray(base);
+            const localArr = normalizeArray(local);
+            const max = Math.max(result.length, baseArr.length, localArr.length);
+
+            for (let i = 0; i < max; i++) {
+                const baseValue = baseArr[i];
+                const localValue = localArr[i];
+                if (!sameObject(baseValue, localValue)) {
+                    if (localValue === undefined || localValue === null || localValue === '') {
+                        result[i] = result[i] || '';
+                    } else {
+                        result[i] = localValue;
+                    }
+                }
+            }
+            return result.slice(0, Math.max(result.length, localArr.length));
+        }
+
+        async function saveDataToFirebase() {
+            if (!firebaseReady || !database) {
+                throw new Error('Firebase no está conectado. Verifica la configuración y las reglas de Realtime Database.');
+            }
+
+            const ref = database.ref(FIREBASE_DATA_PATH);
+            const base = cloneData(lastSyncedData || data);
+            const local = cloneData(data);
+            firebaseWriteInProgress = true;
+
             try {
-                const ref = database.ref('olimpiadas2026_simplified');
-                // Limpiar datos vacíos y asegurar estructura
-                const cleanData = {
-                    disciplinas: data.disciplinas || [],
-                    categorias: data.categorias || [],
-                    atletas: data.atletas || [],
-                    noticias: data.noticias || [],
-                    sliderImages: data.sliderImages || []
-                };
-                ref.set(cleanData)
-                    .then(() => {
-                        console.log('💾 Datos guardados en Firebase correctamente');
-                    })
-                    .catch(err => {
-                        console.warn('⚠️ Error al guardar en Firebase:', err);
-                    });
-            } catch (e) {
-                console.warn('⚠️ Error en saveDataToFirebase:', e);
+                const result = await ref.transaction(current => {
+                    const remote = normalizeFirebaseData(current);
+                    return {
+                        disciplinas: mergeStringList(remote.disciplinas, base.disciplinas, local.disciplinas),
+                        categorias: mergeStringList(remote.categorias, base.categorias, local.categorias),
+                        atletas: mergeCollection(remote.atletas, base.atletas, local.atletas),
+                        noticias: mergeCollection(remote.noticias, base.noticias, local.noticias),
+                        sliderImages: mergeSliderImages(remote.sliderImages, base.sliderImages, local.sliderImages)
+                    };
+                });
+
+                if (!result.committed) {
+                    throw new Error('Firebase no confirmó la escritura. Intenta nuevamente.');
+                }
+
+                const saved = normalizeFirebaseData(result.snapshot.val());
+                data.disciplinas = saved.disciplinas;
+                data.categorias = saved.categorias;
+                data.atletas = saved.atletas;
+                data.noticias = saved.noticias;
+                data.sliderImages = saved.sliderImages;
+                updateNextIds();
+                lastSyncedData = cloneData(data);
+                saveDataToLocalStorage();
+
+                console.log('💾 Firebase confirmó la escritura:', new Date().toLocaleString());
+                return true;
+            } catch (err) {
+                console.error('❌ Error real de Firebase al guardar:', err);
+                throw err;
+            } finally {
+                firebaseWriteInProgress = false;
             }
         }
 
-        function loadDataFromFirebase(callback) {
+        async function loadDataFromFirebase(callback) {
             if (!firebaseReady || !database) {
                 loadDataFromLocalStorage();
                 if (callback) callback();
                 return;
             }
+
             try {
-                const ref = database.ref('olimpiadas2026_simplified');
-                ref.once('value', (snapshot) => {
-                    const val = snapshot.val();
-                    if (val) {
-                        data.disciplinas = val.disciplinas || data.disciplinas;
-                        data.categorias = val.categorias || data.categorias;
-                        data.atletas = val.atletas || [];
-                        data.noticias = val.noticias || [];
-                        data.sliderImages = val.sliderImages || data.sliderImages;
-                        
-                        // Actualizar contadores
-                        if (data.atletas.length > 0) {
-                            const maxId = Math.max(...data.atletas.map(a => a.id || 0));
-                            nextId = maxId + 1;
-                        } else {
-                            nextId = 1;
-                        }
-                        if (data.noticias.length > 0) {
-                            const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
-                            nextNewsId = maxNewsId + 1;
-                        } else {
-                            nextNewsId = 1;
-                        }
-                        
-                        saveDataToLocalStorage();
-                        if (callback) callback();
-                    } else {
-                        // Si no hay datos en Firebase, guardar los datos locales
-                        loadDataFromLocalStorage();
-                        setTimeout(() => saveDataToFirebase(), 500);
-                        if (callback) callback();
-                    }
-                }).catch((err) => {
-                    console.warn('⚠️ Error al cargar desde Firebase:', err);
-                    loadDataFromLocalStorage();
-                    if (callback) callback();
-                });
-            } catch (e) {
-                console.warn('⚠️ Error en loadDataFromFirebase:', e);
+                const ref = database.ref(FIREBASE_DATA_PATH);
+                const snapshot = await ref.once('value');
+                const val = snapshot.val();
+
+                if (val) {
+                    const serverData = normalizeFirebaseData(val);
+                    data.disciplinas = serverData.disciplinas.length ? serverData.disciplinas : data.disciplinas;
+                    data.categorias = serverData.categorias.length ? serverData.categorias : data.categorias;
+                    data.atletas = serverData.atletas;
+                    data.noticias = serverData.noticias;
+                    data.sliderImages = serverData.sliderImages.length ? serverData.sliderImages : data.sliderImages;
+                    updateNextIds();
+                    lastSyncedData = cloneData(data);
+                    saveDataToLocalStorage();
+                } else {
+                    // Primera instalación: Firebase está vacío, por lo que se
+                    // inicializa una sola vez con los datos locales actuales.
+                    lastSyncedData = cloneData(data);
+                    await saveDataToFirebase();
+                }
+
+                if (callback) callback();
+            } catch (err) {
+                console.error('❌ Error al cargar desde Firebase:', err);
+                // Importante: no escribimos datos locales sobre Firebase si hubo
+                // un error de lectura. Eso podría borrar datos de otros equipos.
                 loadDataFromLocalStorage();
                 if (callback) callback();
             }
+        }
+
+        function refreshAllViews() {
+            renderHomeNews();
+            renderAthletes();
+            renderAdminAthletes();
+            renderNoticias();
+            renderConfigLists();
+            updateSliderImages();
+            populateSelectors();
         }
 
         function listenFirebaseChanges() {
             if (!firebaseReady || !database || isFirebaseListenerActive) return;
 
             try {
-                const ref = database.ref('olimpiadas2026_simplified');
-                ref.on('value', (snapshot) => {
+                const ref = database.ref(FIREBASE_DATA_PATH);
+                ref.on('value', snapshot => {
                     const val = snapshot.val();
                     if (!val) return;
 
-                    // Solo actualizar si hay cambios reales
-                    const oldAtletas = JSON.stringify(data.atletas);
-                    const oldNoticias = JSON.stringify(data.noticias);
-                    const oldSliderImages = JSON.stringify(data.sliderImages);
-                    const oldDisciplinas = JSON.stringify(data.disciplinas);
-                    const oldCategorias = JSON.stringify(data.categorias);
+                    const serverData = normalizeFirebaseData(val);
+                    const incoming = {
+                        disciplinas: serverData.disciplinas.length ? serverData.disciplinas : data.disciplinas,
+                        categorias: serverData.categorias.length ? serverData.categorias : data.categorias,
+                        atletas: serverData.atletas,
+                        noticias: serverData.noticias,
+                        sliderImages: serverData.sliderImages.length ? serverData.sliderImages : data.sliderImages
+                    };
 
-                    data.disciplinas = val.disciplinas || data.disciplinas;
-                    data.categorias = val.categorias || data.categorias;
-                    data.atletas = val.atletas || [];
-                    data.noticias = val.noticias || [];
-                    data.sliderImages = val.sliderImages || data.sliderImages;
+                    const changed = !sameObject(lastSyncedData, incoming);
+                    data.disciplinas = incoming.disciplinas;
+                    data.categorias = incoming.categorias;
+                    data.atletas = incoming.atletas;
+                    data.noticias = incoming.noticias;
+                    data.sliderImages = incoming.sliderImages;
+                    updateNextIds();
+                    lastSyncedData = cloneData(data);
+                    saveDataToLocalStorage();
 
-                    // Actualizar contadores
-                    if (data.atletas.length > 0) {
-                        const maxId = Math.max(...data.atletas.map(a => a.id || 0));
-                        nextId = maxId + 1;
-                    } else {
-                        nextId = 1;
+                    if (changed) {
+                        refreshAllViews();
+                        console.log('🔄 Cambio recibido de Firebase en tiempo real');
                     }
-                    if (data.noticias.length > 0) {
-                        const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
-                        nextNewsId = maxNewsId + 1;
-                    } else {
-                        nextNewsId = 1;
-                    }
-
-                    const newAtletas = JSON.stringify(data.atletas);
-                    const newNoticias = JSON.stringify(data.noticias);
-                    const newSliderImages = JSON.stringify(data.sliderImages);
-                    const newDisciplinas = JSON.stringify(data.disciplinas);
-                    const newCategorias = JSON.stringify(data.categorias);
-
-                    // Verificar si hay cambios
-                    const hasChanges = oldAtletas !== newAtletas || 
-                                     oldNoticias !== newNoticias || 
-                                     oldSliderImages !== newSliderImages ||
-                                     oldDisciplinas !== newDisciplinas ||
-                                     oldCategorias !== newCategorias;
-
-                    if (hasChanges) {
-                        saveDataToLocalStorage();
-                        renderHomeNews();
-                        renderAthletes();
-                        renderAdminAthletes();
-                        renderNoticias();
-                        renderConfigLists();
-                        updateSliderImages();
-                        populateSelectors();
-                        console.log('🔄 Datos actualizados en tiempo real');
-                    }
+                }, error => {
+                    console.error('❌ Listener Firebase:', error);
                 });
+
                 isFirebaseListenerActive = true;
-                console.log('👂 Listener activado');
+                console.log('👂 Listener Firebase activado correctamente');
             } catch (e) {
-                console.warn('⚠️ Error al activar listener:', e);
+                console.error('❌ Error al activar listener:', e);
             }
         }
 
         function saveDataToLocalStorage() {
             try {
                 localStorage.setItem('olimpiadas2026_simplified_data', JSON.stringify(data));
-            } catch (e) {}
+            } catch (e) {
+                console.warn('⚠️ No se pudo guardar localStorage:', e);
+            }
         }
 
         function loadDataFromLocalStorage() {
@@ -1815,19 +1928,7 @@
                     data.atletas = parsed.atletas || [];
                     data.noticias = parsed.noticias || [];
                     data.sliderImages = parsed.sliderImages || data.sliderImages;
-                    
-                    if (data.atletas.length > 0) {
-                        const maxId = Math.max(...data.atletas.map(a => a.id || 0));
-                        nextId = maxId + 1;
-                    } else {
-                        nextId = 1;
-                    }
-                    if (data.noticias.length > 0) {
-                        const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
-                        nextNewsId = maxNewsId + 1;
-                    } else {
-                        nextNewsId = 1;
-                    }
+                    updateNextIds();
                 } else {
                     // Datos de ejemplo iniciales
                     data.atletas = [{
@@ -1865,13 +1966,22 @@
                     saveDataToLocalStorage();
                 }
             } catch (e) {
-                console.warn('Error cargando datos locales:', e);
+                console.warn('⚠️ Error cargando datos locales:', e);
             }
         }
 
-        function saveData() {
+        async function saveData() {
             saveDataToLocalStorage();
-            saveDataToFirebase();
+            if (!firebaseReady || !database) {
+                console.warn('⚠️ Cambio guardado solo localmente porque Firebase no está disponible.');
+                return false;
+            }
+            try {
+                return await saveDataToFirebase();
+            } catch (err) {
+                alert('❌ No se pudo guardar en Firebase. El cambio NO se considerará sincronizado.\n\n' + err.message);
+                return false;
+            }
         }
 
         // ============================================================
@@ -2193,7 +2303,7 @@
 
         function saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto) {
             const newAthlete = {
-                id: nextId++,
+                id: Date.now() + Math.floor(Math.random() * 1000),
                 nombre,
                 apellido,
                 edad,
@@ -2516,7 +2626,7 @@
             }
 
             const newNews = {
-                id: nextNewsId++,
+                id: Date.now() + Math.floor(Math.random() * 1000),
                 title: title,
                 content: content,
                 link: link || '',
