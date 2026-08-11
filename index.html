@@ -50,17 +50,56 @@
             border-radius: 50%;
         }
 
-        .wave-line:nth-child(1) { top: 10%; animation-duration: 8s; animation-delay: 0s; height: 3px; }
-        .wave-line:nth-child(2) { top: 25%; animation-duration: 12s; animation-delay: 1s; height: 2px; }
-        .wave-line:nth-child(3) { top: 40%; animation-duration: 10s; animation-delay: 2s; height: 4px; }
-        .wave-line:nth-child(4) { top: 55%; animation-duration: 14s; animation-delay: 0.5s; height: 2px; }
-        .wave-line:nth-child(5) { top: 70%; animation-duration: 9s; animation-delay: 3s; height: 3px; }
-        .wave-line:nth-child(6) { top: 85%; animation-duration: 11s; animation-delay: 1.5s; height: 2px; }
+        .wave-line:nth-child(1) {
+            top: 10%;
+            animation-duration: 8s;
+            animation-delay: 0s;
+            height: 3px;
+        }
+        .wave-line:nth-child(2) {
+            top: 25%;
+            animation-duration: 12s;
+            animation-delay: 1s;
+            height: 2px;
+        }
+        .wave-line:nth-child(3) {
+            top: 40%;
+            animation-duration: 10s;
+            animation-delay: 2s;
+            height: 4px;
+        }
+        .wave-line:nth-child(4) {
+            top: 55%;
+            animation-duration: 14s;
+            animation-delay: 0.5s;
+            height: 2px;
+        }
+        .wave-line:nth-child(5) {
+            top: 70%;
+            animation-duration: 9s;
+            animation-delay: 3s;
+            height: 3px;
+        }
+        .wave-line:nth-child(6) {
+            top: 85%;
+            animation-duration: 11s;
+            animation-delay: 1.5s;
+            height: 2px;
+        }
 
         @keyframes waveMove {
-            0% { transform: translateX(-50%) scaleX(1); opacity: 0.3; }
-            50% { transform: translateX(0%) scaleX(1.2); opacity: 0.8; }
-            100% { transform: translateX(50%) scaleX(1); opacity: 0.3; }
+            0% {
+                transform: translateX(-50%) scaleX(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateX(0%) scaleX(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(50%) scaleX(1);
+                opacity: 0.3;
+            }
         }
 
         .container {
@@ -242,9 +281,6 @@
             .slider-images-grid {
                 grid-template-columns: 1fr !important;
             }
-            .video-wrapper {
-                padding-bottom: 50% !important;
-            }
             .admin-tabs {
                 gap: 6px !important;
             }
@@ -312,9 +348,6 @@
         @media (max-width: 480px) {
             .hero-slider {
                 height: 180px !important;
-            }
-            .slide {
-                padding: 0 20px !important;
             }
             .container {
                 padding: 0 10px !important;
@@ -599,11 +632,21 @@
             position: relative;
         }
 
-        .athlete-card.zona-1 { border-color: #4ade80; }
-        .athlete-card.zona-2 { border-color: #f472b6; }
-        .athlete-card.zona-3 { border-color: #fb923c; }
-        .athlete-card.zona-4 { border-color: #a78bfa; }
-        .athlete-card.zona-5 { border-color: #22d3ee; }
+        .athlete-card.zona-1 {
+            border-color: #4ade80;
+        }
+        .athlete-card.zona-2 {
+            border-color: #f472b6;
+        }
+        .athlete-card.zona-3 {
+            border-color: #fb923c;
+        }
+        .athlete-card.zona-4 {
+            border-color: #a78bfa;
+        }
+        .athlete-card.zona-5 {
+            border-color: #22d3ee;
+        }
 
         .athlete-card:hover {
             transform: translateY(-4px);
@@ -792,6 +835,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 0.85rem;
         }
 
         .admin-tabs button.active {
@@ -802,10 +846,6 @@
 
         .admin-tabs button:hover {
             background: rgba(74, 222, 128, 0.08);
-        }
-
-        .admin-tabs button.hidden-tab {
-            display: none;
         }
 
         .tab-content {
@@ -1106,47 +1146,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
-            background: rgba(10, 22, 40, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 50px;
-            padding: 10px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .music-player button {
-            background: none;
-            border: none;
-            color: #4ade80;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 4px 8px;
-            transition: 0.2s;
-        }
-
-        .music-player button:hover {
-            color: #22d3ee;
-            transform: scale(1.1);
-        }
-
-        .music-player .music-label {
-            font-size: 0.7rem;
-            color: #8aa4c8;
-            max-width: 80px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .verse-box {
@@ -1211,14 +1213,6 @@
         <div class="wave-line"></div>
     </div>
 
-    <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
-    <div class="music-player" id="musicPlayer">
-        <button id="musicToggle" title="Reproducir/Pausar música">
-            <i class="fas fa-play"></i>
-        </button>
-        <span class="music-label">🎵 Himno AVCS</span>
-    </div>
-
     <!-- MODAL LOGIN -->
     <div class="modal-overlay login-modal" id="loginModal">
         <div class="modal">
@@ -1233,17 +1227,10 @@
                     <label>Contraseña</label>
                     <input type="password" id="loginPass" placeholder="********" />
                 </div>
-                <div class="form-group">
-                    <label>Rol</label>
-                    <select id="loginRole">
-                        <option value="coordinator">Coordinador</option>
-                        <option value="official">Oficial</option>
-                    </select>
-                </div>
                 <button type="submit" class="btn-primary" style="width:100%; justify-content:center;"><i class="fas fa-sign-in-alt"></i> Ingresar</button>
             </form>
             <p style="text-align:center; margin-top:12px; font-size:0.8rem; color:#5a7a9a;">
-                Coordinador: clave <strong style="color:#4ade80;">coord2026</strong> | Oficial: clave <strong style="color:#22d3ee;">oficial2026</strong>
+                Clave: <strong style="color:#4ade80;">admin2026</strong>
             </p>
         </div>
     </div>
@@ -1290,19 +1277,18 @@
         </div>
     </div>
 
-    <!-- MODAL EDITAR INFORMACIÓN -->
-    <div class="modal-overlay" id="editInfoModal">
+    <!-- MODAL EDITAR NOTICIA -->
+    <div class="modal-overlay" id="editNewsModal">
         <div class="modal">
-            <button class="close-modal" id="closeEditInfoModal">&times;</button>
-            <h2 style="margin-bottom:20px; color:#e8edf5;"><i class="fas fa-edit"></i> Editar Información</h2>
-            <form id="editInfoForm">
-                <input type="hidden" id="editInfoId" />
-                <div class="form-group"><label>Título</label><input type="text" id="editInfoTitle" required /></div>
-                <div class="form-group"><label>Descripción</label><textarea id="editInfoDesc" required></textarea></div>
-                <div class="form-group"><label>Enlace (URL)</label><input type="url" id="editInfoLink" placeholder="https://ejemplo.com" /></div>
-                <div class="form-group"><label>Texto del Enlace</label><input type="text" id="editInfoLinkText" placeholder="Ver más" /></div>
-                <div class="form-group"><label>Cambiar Imagen</label><input type="file" id="editInfoImage" accept="image/*" /></div>
-                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Actualizar</button>
+            <button class="close-modal" id="closeEditNewsModal">&times;</button>
+            <h2 style="margin-bottom:20px; color:#e8edf5;"><i class="fas fa-edit"></i> Editar Noticia</h2>
+            <form id="editNewsForm">
+                <input type="hidden" id="editNewsId" />
+                <div class="form-group"><label>Título</label><input type="text" id="editNewsTitle" required /></div>
+                <div class="form-group"><label>Descripción</label><textarea id="editNewsContent" required></textarea></div>
+                <div class="form-group"><label>Enlace (URL)</label><input type="url" id="editNewsLink" placeholder="https://ejemplo.com" /></div>
+                <div class="form-group"><label>Imagen</label><input type="file" id="editNewsImage" accept="image/*" /></div>
+                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Actualizar Noticia</button>
             </form>
         </div>
     </div>
@@ -1319,7 +1305,6 @@
             </button>
             <div class="nav-menu" id="navMenu">
                 <a class="active" data-section="home">Inicio</a>
-                <a data-section="info">Información</a>
                 <a data-section="athletes">Atletas</a>
                 <a data-section="admin" id="adminMenuLink" style="display:none;">Admin</a>
                 <button class="btn-login" id="loginBtn"><i class="fas fa-user-cog"></i> Admin</button>
@@ -1369,13 +1354,11 @@
                 </div>
             </div>
 
-            <div class="grid-2col" id="homeCards">
-                <div class="card"><h3 id="card1Title" style="color:#4ade80;">500+</h3><p style="font-weight:600; font-size:1.2rem; color:#b0c4de;" id="card1Desc">Atletas inscritos</p></div>
-                <div class="card"><h3 id="card2Title" style="color:#4ade80;">20+</h3><p style="font-weight:600; font-size:1.2rem; color:#b0c4de;" id="card2Desc">Entrenadores profesionales</p></div>
-                <div class="card"><h3 id="card3Title" style="color:#4ade80;">🏅 Entrenamiento de Élite</h3><p id="card3Desc" style="color:#b0c4de;">Técnica avanzada y preparación física de alto rendimiento.</p></div>
-                <div class="card"><h3 id="card4Title" style="color:#4ade80;">🔥 Competencia y Fe</h3><p id="card4Desc" style="color:#b0c4de;">Formando atletas con valores y espíritu de superación.</p></div>
+            <!-- NOTICIAS EN INICIO -->
+            <div id="homeNewsContainer">
+                <h3 style="color:#4ade80; margin-bottom:16px;">📰 Últimas Noticias</h3>
+                <div id="homeNewsList"></div>
             </div>
-            <button class="btn-primary" id="homeBtn"><i class="fas fa-calendar-check"></i> <span id="homeBtnText">Inscríbete ahora</span></button>
 
             <div class="video-section">
                 <h3><i class="fas fa-video" style="color:#4ade80;"></i> Nuestros Patrocinantes</h3>
@@ -1387,12 +1370,6 @@
                 </div>
                 <p style="margin-top:12px; color:#5a7a9a; font-size:0.9rem; text-align:center;">Video horizontal - Patrocinantes oficiales</p>
             </div>
-        </div>
-
-        <!-- SECCIÓN INFORMACIÓN -->
-        <div id="section-info" class="section">
-            <h2 class="section-title"><i class="fas fa-info-circle"></i> Información</h2>
-            <div id="infoContainer"></div>
         </div>
 
         <!-- SECCIÓN ATLETAS -->
@@ -1411,53 +1388,15 @@
             <h2 class="section-title"><i class="fas fa-shield-alt"></i> Panel Administrador</h2>
 
             <div class="admin-tabs" id="adminTabs">
-                <button class="active" data-tab="tabInicio">Inicio</button>
-                <button data-tab="tabSlider">Slider</button>
-                <button data-tab="tabInfo">Información</button>
-                <button data-tab="tabDisciplinas">Disciplinas</button>
-                <button data-tab="tabCategorias">Categorías</button>
+                <button class="active" data-tab="tabSlider">Slider</button>
                 <button data-tab="tabRegistrar">Registrar Atleta</button>
-                <button data-tab="tabAtletas" id="tabAtletasBtn" class="hidden-tab">Gestionar Atletas</button>
-                <button data-tab="tabReportes" id="tabReportesBtn" class="hidden-tab">Descargar Reportes</button>
-                <button data-tab="tabNoticias" id="tabNoticiasBtn" class="hidden-tab">Noticias</button>
-            </div>
-
-            <!-- TAB INICIO -->
-            <div id="tabInicio" class="tab-content active">
-                <div class="card">
-                    <h3>Editar Contenido de Inicio</h3>
-                    <form id="editHomeForm">
-                        <div class="form-group"><label>Título Principal</label><input type="text" id="editHomeTitle" /></div>
-                        <div class="form-group"><label>Subtítulo</label><input type="text" id="editHomeSubtitle" /></div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Años de excelencia</label><input type="text" id="editStatYears" /></div>
-                            <div class="form-group"><label>Entrenadores</label><input type="text" id="editStatCoaches" /></div>
-                        </div>
-                        <div class="form-group"><label>Instalaciones</label><input type="text" id="editStatFacilities" /></div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Tarjeta 1 Título</label><input type="text" id="editCard1Title" /></div>
-                            <div class="form-group"><label>Tarjeta 1 Descripción</label><input type="text" id="editCard1Desc" /></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Tarjeta 2 Título</label><input type="text" id="editCard2Title" /></div>
-                            <div class="form-group"><label>Tarjeta 2 Descripción</label><input type="text" id="editCard2Desc" /></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Tarjeta 3 Título</label><input type="text" id="editCard3Title" /></div>
-                            <div class="form-group"><label>Tarjeta 3 Descripción</label><input type="text" id="editCard3Desc" /></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Tarjeta 4 Título</label><input type="text" id="editCard4Title" /></div>
-                            <div class="form-group"><label>Tarjeta 4 Descripción</label><input type="text" id="editCard4Desc" /></div>
-                        </div>
-                        <div class="form-group"><label>Texto Botón</label><input type="text" id="editHomeBtn" /></div>
-                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar Cambios</button>
-                    </form>
-                </div>
+                <button data-tab="tabAtletas">Gestionar Atletas</button>
+                <button data-tab="tabNoticias">Noticias</button>
+                <button data-tab="tabReportes">Descargar PDF</button>
             </div>
 
             <!-- TAB SLIDER -->
-            <div id="tabSlider" class="tab-content">
+            <div id="tabSlider" class="tab-content active">
                 <div class="card">
                     <h3>Editar Imágenes del Slider</h3>
                     <p style="color:#8aa4c8; margin-bottom:16px;">Sube nuevas imágenes para cada diapositiva del slider.</p>
@@ -1467,53 +1406,7 @@
                 </div>
             </div>
 
-            <!-- TAB INFORMACIÓN -->
-            <div id="tabInfo" class="tab-content">
-                <div class="card">
-                    <h3>Gestionar Información</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Crea, edita o elimina secciones de información.</p>
-
-                    <form id="infoForm">
-                        <div class="form-group"><label>Título</label><input type="text" id="infoTitle" required /></div>
-                        <div class="form-group"><label>Descripción</label><textarea id="infoDesc" required></textarea></div>
-                        <div class="form-group"><label>Enlace (URL)</label><input type="url" id="infoLink" placeholder="https://ejemplo.com" /></div>
-                        <div class="form-group"><label>Texto del Enlace</label><input type="text" id="infoLinkText" placeholder="Ver más" /></div>
-                        <div class="form-group"><label>Imagen</label><input type="file" id="infoImage" accept="image/*" /></div>
-                        <button type="submit" class="btn-primary"><i class="fas fa-plus-circle"></i> Agregar Información</button>
-                    </form>
-
-                    <div style="margin-top:24px;">
-                        <h4 style="color:#b0c4de; margin-bottom:12px;">Secciones de Información</h4>
-                        <div id="infoList"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DISCIPLINAS -->
-            <div id="tabDisciplinas" class="tab-content">
-                <div class="card">
-                    <h3>Gestionar Disciplinas</h3>
-                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                        <input type="text" id="newDisciplina" placeholder="Nueva disciplina" style="flex:1; min-width:180px; padding:10px 16px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#e8edf5;" />
-                        <button class="btn-primary btn-sm" id="addDisciplina"><i class="fas fa-plus"></i> Agregar</button>
-                    </div>
-                    <div id="disciplinaList" class="list-items"></div>
-                </div>
-            </div>
-
-            <!-- CATEGORÍAS -->
-            <div id="tabCategorias" class="tab-content">
-                <div class="card">
-                    <h3>Gestionar Categorías</h3>
-                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                        <input type="text" id="newCategoria" placeholder="Nueva categoría" style="flex:1; min-width:180px; padding:10px 16px; border-radius:60px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); color:#e8edf5;" />
-                        <button class="btn-primary btn-sm" id="addCategoria"><i class="fas fa-plus"></i> Agregar</button>
-                    </div>
-                    <div id="categoriaList" class="list-items"></div>
-                </div>
-            </div>
-
-            <!-- REGISTRAR ATLETA -->
+            <!-- TAB REGISTRAR ATLETA -->
             <div id="tabRegistrar" class="tab-content">
                 <div class="card">
                     <h3>Registrar Nuevo Atleta</h3>
@@ -1546,7 +1439,7 @@
                 </div>
             </div>
 
-            <!-- GESTIONAR ATLETAS -->
+            <!-- TAB GESTIONAR ATLETAS -->
             <div id="tabAtletas" class="tab-content">
                 <div class="card">
                     <h3>Gestionar Atletas</h3>
@@ -1555,36 +1448,17 @@
                 </div>
             </div>
 
-            <!-- DESCARGAR REPORTES -->
-            <div id="tabReportes" class="tab-content">
-                <div class="card">
-                    <h3><i class="fas fa-download"></i> Descargar Reportes por Zona</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Selecciona una zona para descargar todos los atletas registrados en Excel o PDF.</p>
-                    <div class="report-section">
-                        <select id="reportZona">
-                            <option value="">Todas las zonas</option>
-                            <option value="Zona 1">Zona 1</option>
-                            <option value="Zona 2">Zona 2</option>
-                            <option value="Zona 3">Zona 3</option>
-                            <option value="Zona 4">Zona 4</option>
-                            <option value="Zona 5">Zona 5</option>
-                        </select>
-                        <button class="btn-success" id="downloadExcel"><i class="fas fa-file-excel"></i> Descargar Excel</button>
-                        <button class="btn-success" id="downloadPDF"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
-                    </div>
-                    <div id="reportFeedback" style="margin-top:16px; color:#8aa4c8;"></div>
-                </div>
-            </div>
-
-            <!-- NOTICIAS -->
+            <!-- TAB NOTICIAS -->
             <div id="tabNoticias" class="tab-content">
                 <div class="card">
                     <h3><i class="fas fa-newspaper"></i> Gestionar Noticias</h3>
-                    <p style="color:#8aa4c8; margin-bottom:16px;">Agrega nuevas noticias que se mostrarán en la sección de información.</p>
+                    <p style="color:#8aa4c8; margin-bottom:16px;">Agrega nuevas noticias que se mostrarán en la página principal.</p>
 
                     <form id="newsForm">
                         <div class="form-group"><label>Título de la Noticia</label><input type="text" id="newsTitle" required placeholder="Ej: Inauguración de las Olimpiadas" /></div>
-                        <div class="form-group"><label>Contenido</label><textarea id="newsContent" required placeholder="Escribe el contenido de la noticia..."></textarea></div>
+                        <div class="form-group"><label>Descripción</label><textarea id="newsContent" required placeholder="Escribe la descripción de la noticia..."></textarea></div>
+                        <div class="form-group"><label>Enlace (URL)</label><input type="url" id="newsLink" placeholder="https://ejemplo.com" /></div>
+                        <div class="form-group"><label>Imagen</label><input type="file" id="newsImage" accept="image/*" /></div>
                         <button type="submit" class="btn-primary"><i class="fas fa-plus-circle"></i> Agregar Noticia</button>
                     </form>
 
@@ -1592,6 +1466,18 @@
                         <h4 style="color:#b0c4de; margin-bottom:12px;">Noticias Publicadas</h4>
                         <div id="newsList"></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- TAB REPORTES PDF -->
+            <div id="tabReportes" class="tab-content">
+                <div class="card">
+                    <h3><i class="fas fa-file-pdf"></i> Descargar PDF - Todos los Atletas</h3>
+                    <p style="color:#8aa4c8; margin-bottom:16px;">Descarga un PDF con todos los atletas registrados. Fondo blanco y letras negras.</p>
+                    <div class="report-section">
+                        <button class="btn-success" id="downloadPDFAll"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                    </div>
+                    <div id="reportFeedback" style="margin-top:16px; color:#8aa4c8;"></div>
                 </div>
             </div>
         </div>
@@ -1605,7 +1491,7 @@
 
     <script>
         // ============================================================
-        // 1. CONFIGURACIÓN DE FIREBASE - VERSIÓN SIMPLIFICADA
+        // 1. CONFIGURACIÓN DE FIREBASE
         // ============================================================
         const firebaseConfig = {
             apiKey: "AIzaSyArpLZEujMXkXYYn8B1WyXH5jGMnBQhQUY",
@@ -1638,23 +1524,6 @@
             categorias: ['Infantil', 'Juvenil', 'Adulto', 'Máster'],
             atletas: [],
             noticias: [],
-            infoItems: [],
-            homeContent: {
-                title: 'OLIMPIADAS 2026 · AVCS',
-                subtitle: 'Fe, Disciplina y Excelencia Deportiva',
-                statYears: '15',
-                statCoaches: 'Entrenadores certificados',
-                statFacilities: 'Instalaciones modernas',
-                card1Title: '500+',
-                card1Desc: 'Atletas inscritos',
-                card2Title: '20+',
-                card2Desc: 'Entrenadores profesionales',
-                card3Title: '🏅 Entrenamiento de Élite',
-                card3Desc: 'Técnica avanzada y preparación física de alto rendimiento.',
-                card4Title: '🔥 Competencia y Fe',
-                card4Desc: 'Formando atletas con valores y espíritu de superación.',
-                btnText: 'Inscríbete ahora'
-            },
             sliderImages: [
                 'https://images.unsplash.com/photo-1534430480872-5d04dc3d84e7?w=1200&h=600&fit=crop&crop=center',
                 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=1200&h=600&fit=crop&crop=center',
@@ -1663,35 +1532,23 @@
             ]
         };
 
-        let currentRole = 'coordinator';
         let isAdmin = false;
-        let nextId = 3;
-        let nextInfoId = 1;
-        let nextNewsId = 100;
+        let nextId = 1;
+        let nextNewsId = 1;
         let isFirebaseListenerActive = false;
 
         // ============================================================
-        // 3. FUNCIÓN SEGURA PARA ACTUALIZAR UI
-        // ============================================================
-        function safeSetText(id, text) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = text;
-        }
-
-        // ============================================================
-        // 4. PERSISTENCIA
+        // 3. FUNCIONES DE PERSISTENCIA
         // ============================================================
         function saveDataToFirebase() {
             if (!firebaseReady || !database) return;
             try {
-                const ref = database.ref('olimpiadas2026_v2');
+                const ref = database.ref('olimpiadas2026_simplified');
                 ref.update({
                     disciplinas: data.disciplinas,
                     categorias: data.categorias,
                     atletas: data.atletas,
                     noticias: data.noticias,
-                    infoItems: data.infoItems,
-                    homeContent: data.homeContent,
                     sliderImages: data.sliderImages
                 }).then(() => {
                     console.log('💾 Datos guardados en Firebase correctamente');
@@ -1710,7 +1567,7 @@
                 return;
             }
             try {
-                const ref = database.ref('olimpiadas2026_v2');
+                const ref = database.ref('olimpiadas2026_simplified');
                 ref.once('value', (snapshot) => {
                     const val = snapshot.val();
                     if (val) {
@@ -1718,16 +1575,14 @@
                         data.categorias = val.categorias || data.categorias;
                         data.atletas = val.atletas || [];
                         data.noticias = val.noticias || [];
-                        data.infoItems = val.infoItems || [];
-                        data.homeContent = val.homeContent || data.homeContent;
                         data.sliderImages = val.sliderImages || data.sliderImages;
                         if (data.atletas.length > 0) {
                             const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                             nextId = maxId + 1;
                         }
-                        if (data.infoItems.length > 0) {
-                            const maxInfoId = Math.max(...data.infoItems.map(i => i.id || 0));
-                            nextInfoId = maxInfoId + 1;
+                        if (data.noticias.length > 0) {
+                            const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
+                            nextNewsId = maxNewsId + 1;
                         }
                         saveDataToLocalStorage();
                         if (callback) callback();
@@ -1752,7 +1607,7 @@
             if (!firebaseReady || !database || isFirebaseListenerActive) return;
 
             try {
-                const ref = database.ref('olimpiadas2026_v2');
+                const ref = database.ref('olimpiadas2026_simplified');
                 ref.on('value', (snapshot) => {
                     const val = snapshot.val();
                     if (!val) return;
@@ -1761,26 +1616,22 @@
                     data.categorias = val.categorias || data.categorias;
                     data.atletas = val.atletas || [];
                     data.noticias = val.noticias || [];
-                    data.infoItems = val.infoItems || [];
-                    data.homeContent = val.homeContent || data.homeContent;
                     data.sliderImages = val.sliderImages || data.sliderImages;
 
                     if (data.atletas.length > 0) {
                         const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                         nextId = maxId + 1;
                     }
-                    if (data.infoItems.length > 0) {
-                        const maxInfoId = Math.max(...data.infoItems.map(i => i.id || 0));
-                        nextInfoId = maxInfoId + 1;
+                    if (data.noticias.length > 0) {
+                        const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
+                        nextNewsId = maxNewsId + 1;
                     }
 
                     saveDataToLocalStorage();
-                    applyHomeContent();
-                    renderInfo();
+                    renderHomeNews();
                     renderAthletes();
                     renderAdminAthletes();
                     renderNoticias();
-                    renderInfoList();
                     updateSliderImages();
                     populateSelectors();
                     console.log('🔄 Datos actualizados en tiempo real');
@@ -1794,29 +1645,27 @@
 
         function saveDataToLocalStorage() {
             try {
-                localStorage.setItem('olimpiadas2026_data_v7', JSON.stringify(data));
+                localStorage.setItem('olimpiadas2026_simplified_data', JSON.stringify(data));
             } catch (e) {}
         }
 
         function loadDataFromLocalStorage() {
             try {
-                const stored = localStorage.getItem('olimpiadas2026_data_v7');
+                const stored = localStorage.getItem('olimpiadas2026_simplified_data');
                 if (stored) {
                     const parsed = JSON.parse(stored);
                     data.disciplinas = parsed.disciplinas || data.disciplinas;
                     data.categorias = parsed.categorias || data.categorias;
                     data.atletas = parsed.atletas || [];
                     data.noticias = parsed.noticias || [];
-                    data.infoItems = parsed.infoItems || [];
-                    data.homeContent = parsed.homeContent || data.homeContent;
                     data.sliderImages = parsed.sliderImages || data.sliderImages;
                     if (data.atletas.length > 0) {
                         const maxId = Math.max(...data.atletas.map(a => a.id || 0));
                         nextId = maxId + 1;
                     }
-                    if (data.infoItems.length > 0) {
-                        const maxInfoId = Math.max(...data.infoItems.map(i => i.id || 0));
-                        nextInfoId = maxInfoId + 1;
+                    if (data.noticias.length > 0) {
+                        const maxNewsId = Math.max(...data.noticias.map(n => n.id || 0));
+                        nextNewsId = maxNewsId + 1;
                     }
                 } else {
                     data.atletas = [{
@@ -1844,18 +1693,11 @@
                         id: 1,
                         title: 'Inauguración de las Olimpiadas AVCS 2026',
                         content: 'El próximo 15 de agosto daremos inicio al evento deportivo más importante del año.',
-                        date: new Date().toLocaleDateString()
-                    }];
-                    data.infoItems = [{
-                        id: 1,
-                        title: 'Bienvenidos a las Olimpiadas AVCS 2026',
-                        desc: 'Las Olimpiadas AVCS son el evento deportivo más importante de la región.',
                         link: 'https://olimpiadasavcs.com',
-                        linkText: 'Conoce más',
                         image: 'https://images.unsplash.com/photo-1461896836934-b0b52d5d3997?w=800&h=400&fit=crop'
                     }];
                     nextId = 3;
-                    nextInfoId = 2;
+                    nextNewsId = 2;
                     saveDataToLocalStorage();
                 }
             } catch (e) {}
@@ -1867,7 +1709,7 @@
         }
 
         // ============================================================
-        // 5. MENÚ HAMBURGUESA
+        // 4. MENÚ HAMBURGUESA
         // ============================================================
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const navMenu = document.getElementById('navMenu');
@@ -1886,11 +1728,10 @@
         });
 
         // ============================================================
-        // 6. NAVEGACIÓN
+        // 5. NAVEGACIÓN
         // ============================================================
         const sections = {
             home: document.getElementById('section-home'),
-            info: document.getElementById('section-info'),
             athletes: document.getElementById('section-athletes'),
             admin: document.getElementById('section-admin')
         };
@@ -1907,8 +1748,7 @@
                 link.classList.toggle('active', link.dataset.section === sectionId);
             });
             if (sectionId === 'athletes') renderAthletes();
-            if (sectionId === 'info') renderInfo();
-            if (sectionId === 'home') applyHomeContent();
+            if (sectionId === 'home') renderHomeNews();
             hamburgerBtn.classList.remove('active');
             navMenu.classList.remove('open');
         }
@@ -1921,7 +1761,7 @@
         });
 
         // ============================================================
-        // 7. LOGIN
+        // 6. LOGIN
         // ============================================================
         const loginModal = document.getElementById('loginModal');
         const loginBtn = document.getElementById('loginBtn');
@@ -1937,28 +1777,22 @@
             e.preventDefault();
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
-            const role = document.getElementById('loginRole').value;
 
-            let valid = false;
-            if (role === 'coordinator' && pass === 'coord2026') valid = true;
-            if (role === 'official' && pass === 'oficial2026') valid = true;
-
-            if (user === 'admin' && valid) {
+            if (user === 'admin' && pass === 'admin2026') {
                 isAdmin = true;
-                currentRole = role;
                 loginModal.classList.remove('show');
                 adminMenuLink.style.display = 'inline';
                 showSection('admin');
                 loadAdminData();
-                updateAdminTabs();
-                alert(`✅ Acceso concedido como ${role === 'coordinator' ? 'Coordinador' : 'Oficial'}`);
+                document.querySelector('#adminTabs button').click();
+                alert('✅ Acceso concedido como Administrador');
             } else {
-                alert('❌ Usuario o contraseña incorrectos para el rol seleccionado.');
+                alert('❌ Usuario o contraseña incorrectos.');
             }
         });
 
         // ============================================================
-        // 8. SLIDER
+        // 7. SLIDER
         // ============================================================
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
@@ -1998,184 +1832,19 @@
         }
 
         // ============================================================
-        // 9. HOME CONTENT
-        // ============================================================
-        function applyHomeContent() {
-            const hc = data.homeContent;
-            if (!hc) return;
-
-            safeSetText('homeTitle', hc.title || 'OLIMPIADAS 2026 · AVCS');
-            safeSetText('homeSubtitle', hc.subtitle || 'Fe, Disciplina y Excelencia Deportiva');
-            safeSetText('statYears', hc.statYears || '15');
-            safeSetText('statCoaches', hc.statCoaches || 'Entrenadores certificados');
-            safeSetText('statFacilities', hc.statFacilities || 'Instalaciones modernas');
-            safeSetText('card1Title', hc.card1Title || '500+');
-            safeSetText('card1Desc', hc.card1Desc || 'Atletas inscritos');
-            safeSetText('card2Title', hc.card2Title || '20+');
-            safeSetText('card2Desc', hc.card2Desc || 'Entrenadores profesionales');
-            safeSetText('card3Title', hc.card3Title || '🏅 Entrenamiento de Élite');
-            safeSetText('card3Desc', hc.card3Desc || 'Técnica avanzada y preparación física de alto rendimiento.');
-            safeSetText('card4Title', hc.card4Title || '🔥 Competencia y Fe');
-            safeSetText('card4Desc', hc.card4Desc || 'Formando atletas con valores y espíritu de superación.');
-            safeSetText('homeBtnText', hc.btnText || 'Inscríbete ahora');
-        }
-
-        // ============================================================
-        // 10. INFO
-        // ============================================================
-        function renderInfo() {
-            const container = document.getElementById('infoContainer');
-            if (!container) return;
-            let html = '';
-
-            if (data.infoItems && data.infoItems.length > 0) {
-                data.infoItems.forEach(item => {
-                    html += `
-                        <div class="info-card">
-                            ${item.image ? `<img src="${item.image}" alt="${item.title}" />` : ''}
-                            <div class="info-body">
-                                <h3>${item.title}</h3>
-                                <p>${item.desc}</p>
-                                ${item.link ? `<a href="${item.link}" target="_blank" class="info-link">${item.linkText || 'Ver más'} <i class="fas fa-arrow-right"></i></a>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            if (data.noticias && data.noticias.length > 0) {
-                html += `<div style="margin-top:24px;"><h3 style="color:#4ade80; margin-bottom:16px;">📰 Últimas Noticias</h3>`;
-                data.noticias.forEach(n => {
-                    html += `
-                        <div class="news-item" style="border-left-color: #22d3ee;">
-                            <div class="news-content">
-                                <h4>${n.title}</h4>
-                                <p>${n.content}</p>
-                                <span class="news-date">${n.date || ''}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                html += `</div>`;
-            }
-
-            container.innerHTML = html || '<div class="empty-message">No hay información disponible.</div>';
-        }
-
-        function renderInfoList() {
-            const container = document.getElementById('infoList');
-            if (!container) return;
-
-            if (!data.infoItems || data.infoItems.length === 0) {
-                container.innerHTML = '<div class="empty-message">No hay secciones de información creadas.</div>';
-                return;
-            }
-
-            container.innerHTML = data.infoItems.map(item => `
-                    <div class="info-card" style="padding:16px 20px;">
-                        <div class="info-body" style="padding:0;">
-                            <h4 style="font-size:1.1rem; color:#e8edf5; margin-bottom:4px;">${item.title}</h4>
-                            <p style="color:#b0c4de; font-size:0.9rem; margin-bottom:8px;">${item.desc.substring(0, 100)}${item.desc.length > 100 ? '...' : ''}</p>
-                            ${item.image ? `<div style="margin-bottom:8px;"><img src="${item.image}" style="max-height:60px; border-radius:8px; object-fit:cover;" /></div>` : ''}
-                            <div class="info-item-actions">
-                                <button class="edit-info-btn" onclick="editInfoItem(${item.id})"><i class="fas fa-edit"></i> Editar</button>
-                                <button class="delete-info-btn" onclick="deleteInfoItem(${item.id})"><i class="fas fa-trash"></i> Eliminar</button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-        }
-
-        window.editInfoItem = function(id) {
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden editar información.');
-                return;
-            }
-            const item = data.infoItems.find(i => i.id === id);
-            if (!item) return;
-
-            document.getElementById('editInfoId').value = id;
-            document.getElementById('editInfoTitle').value = item.title || '';
-            document.getElementById('editInfoDesc').value = item.desc || '';
-            document.getElementById('editInfoLink').value = item.link || '';
-            document.getElementById('editInfoLinkText').value = item.linkText || '';
-            document.getElementById('editInfoImage').value = '';
-
-            document.getElementById('editInfoModal').classList.add('show');
-        };
-
-        document.getElementById('editInfoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editInfoId').value);
-            const item = data.infoItems.find(i => i.id === id);
-            if (!item) return;
-
-            item.title = document.getElementById('editInfoTitle').value.trim();
-            item.desc = document.getElementById('editInfoDesc').value.trim();
-            item.link = document.getElementById('editInfoLink').value.trim();
-            item.linkText = document.getElementById('editInfoLinkText').value.trim();
-
-            const imageInput = document.getElementById('editInfoImage');
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    item.image = e.target.result;
-                    saveData();
-                    renderInfo();
-                    renderInfoList();
-                    document.getElementById('editInfoModal').classList.remove('show');
-                    alert('✅ Información actualizada.');
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                saveData();
-                renderInfo();
-                renderInfoList();
-                document.getElementById('editInfoModal').classList.remove('show');
-                alert('✅ Información actualizada.');
-            }
-        });
-
-        window.deleteInfoItem = function(id) {
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden eliminar información.');
-                return;
-            }
-            if (confirm('¿Eliminar esta sección de información?')) {
-                data.infoItems = data.infoItems.filter(i => i.id !== id);
-                saveData();
-                renderInfo();
-                renderInfoList();
-                alert('✅ Información eliminada.');
-            }
-        };
-
-        document.getElementById('closeEditInfoModal').addEventListener('click', function() {
-            document.getElementById('editInfoModal').classList.remove('show');
-        });
-        document.getElementById('editInfoModal').addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('show');
-        });
-
-        // ============================================================
-        // 11. ADMIN TABS
+        // 8. ADMIN TABS
         // ============================================================
         const tabBtns = document.querySelectorAll('#adminTabs button');
         const tabContents = {
-            tabInicio: document.getElementById('tabInicio'),
             tabSlider: document.getElementById('tabSlider'),
-            tabInfo: document.getElementById('tabInfo'),
-            tabDisciplinas: document.getElementById('tabDisciplinas'),
-            tabCategorias: document.getElementById('tabCategorias'),
             tabRegistrar: document.getElementById('tabRegistrar'),
             tabAtletas: document.getElementById('tabAtletas'),
-            tabReportes: document.getElementById('tabReportes'),
-            tabNoticias: document.getElementById('tabNoticias')
+            tabNoticias: document.getElementById('tabNoticias'),
+            tabReportes: document.getElementById('tabReportes')
         };
 
         tabBtns.forEach(btn => {
             btn.addEventListener('click', function() {
-                if (this.classList.contains('hidden-tab')) return;
                 tabBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 Object.keys(tabContents).forEach(key => {
@@ -2184,9 +1853,6 @@
                     }
                 });
                 if (this.dataset.tab === 'tabRegistrar') populateSelectors();
-                if (this.dataset.tab === 'tabInicio') loadHomeForm();
-                if (this.dataset.tab === 'tabInfo') { loadInfoForm();
-                    renderInfoList(); }
                 if (this.dataset.tab === 'tabSlider') loadSliderForm();
                 if (this.dataset.tab === 'tabAtletas') renderAdminAthletes();
                 if (this.dataset.tab === 'tabNoticias') renderNoticias();
@@ -2194,7 +1860,7 @@
         });
 
         // ============================================================
-        // 12. SLIDER FORM
+        // 9. SLIDER FORM
         // ============================================================
         function loadSliderForm() {
             const grid = document.getElementById('sliderImagesGrid');
@@ -2251,131 +1917,31 @@
         });
 
         // ============================================================
-        // 13. ADMIN DATA
+        // 10. NOTICIAS EN INICIO
         // ============================================================
-        function loadAdminData() {
-            renderDisciplinas();
-            renderCategorias();
-            populateSelectors();
-            loadHomeForm();
-            loadInfoForm();
-            loadSliderForm();
-            renderAdminAthletes();
-            renderNoticias();
-            renderInfoList();
-            updateAdminTabs();
-        }
-
-        function updateAdminTabs() {
-            const allTabs = document.querySelectorAll('#adminTabs button');
-
-            if (currentRole === 'coordinator') {
-                allTabs.forEach(tab => {
-                    const tabId = tab.dataset.tab;
-                    if (tabId === 'tabRegistrar') {
-                        tab.classList.remove('hidden-tab');
-                    } else {
-                        tab.classList.add('hidden-tab');
-                    }
-                });
-            } else {
-                allTabs.forEach(tab => {
-                    tab.classList.remove('hidden-tab');
-                });
-            }
-
-            const visibleTabs = document.querySelectorAll('#adminTabs button:not(.hidden-tab)');
-            if (visibleTabs.length > 0) {
-                visibleTabs.forEach(t => t.classList.remove('active'));
-                visibleTabs[0].classList.add('active');
-                const firstTab = visibleTabs[0].dataset.tab;
-                Object.keys(tabContents).forEach(key => {
-                    if (tabContents[key]) {
-                        tabContents[key].classList.toggle('active', key === firstTab);
-                    }
-                });
-            }
-        }
-
-        // ============================================================
-        // 14. DISCIPLINAS Y CATEGORÍAS
-        // ============================================================
-        function renderDisciplinas() {
-            const container = document.getElementById('disciplinaList');
+        function renderHomeNews() {
+            const container = document.getElementById('homeNewsList');
             if (!container) return;
-            if (data.disciplinas.length === 0) {
-                container.innerHTML = '<span class="empty-message">No hay disciplinas.</span>';
+
+            if (!data.noticias || data.noticias.length === 0) {
+                container.innerHTML = '<div class="empty-message">No hay noticias disponibles.</div>';
                 return;
             }
-            container.innerHTML = data.disciplinas.map((d, i) =>
-                `<span class="item">${d} <span class="remove" data-index="${i}" data-type="disciplina"><i class="fas fa-times"></i></span></span>`
-            ).join('');
-            container.querySelectorAll('.remove').forEach(el => {
-                el.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index);
-                    data.disciplinas.splice(idx, 1);
-                    saveData();
-                    renderDisciplinas();
-                    populateSelectors();
-                });
-            });
+
+            container.innerHTML = data.noticias.map(n => `
+                    <div class="info-card" style="margin-bottom:16px;">
+                        ${n.image ? `<img src="${n.image}" alt="${n.title}" />` : ''}
+                        <div class="info-body">
+                            <h3>${n.title}</h3>
+                            <p>${n.content}</p>
+                            ${n.link ? `<a href="${n.link}" target="_blank" class="info-link">Ver más <i class="fas fa-arrow-right"></i></a>` : ''}
+                        </div>
+                    </div>
+                `).join('');
         }
-
-        function renderCategorias() {
-            const container = document.getElementById('categoriaList');
-            if (!container) return;
-            if (data.categorias.length === 0) {
-                container.innerHTML = '<span class="empty-message">No hay categorías.</span>';
-                return;
-            }
-            container.innerHTML = data.categorias.map((c, i) =>
-                `<span class="item">${c} <span class="remove" data-index="${i}" data-type="categoria"><i class="fas fa-times"></i></span></span>`
-            ).join('');
-            container.querySelectorAll('.remove').forEach(el => {
-                el.addEventListener('click', function() {
-                    const idx = parseInt(this.dataset.index);
-                    data.categorias.splice(idx, 1);
-                    saveData();
-                    renderCategorias();
-                    populateSelectors();
-                });
-            });
-        }
-
-        document.getElementById('addDisciplina').addEventListener('click', function() {
-            const input = document.getElementById('newDisciplina');
-            const val = input.value.trim();
-            if (val && !data.disciplinas.includes(val)) {
-                data.disciplinas.push(val);
-                saveData();
-                renderDisciplinas();
-                populateSelectors();
-                input.value = '';
-            } else if (data.disciplinas.includes(val)) {
-                alert('Esta disciplina ya existe.');
-            } else {
-                alert('Ingresa un nombre válido.');
-            }
-        });
-
-        document.getElementById('addCategoria').addEventListener('click', function() {
-            const input = document.getElementById('newCategoria');
-            const val = input.value.trim();
-            if (val && !data.categorias.includes(val)) {
-                data.categorias.push(val);
-                saveData();
-                renderCategorias();
-                populateSelectors();
-                input.value = '';
-            } else if (data.categorias.includes(val)) {
-                alert('Esta categoría ya existe.');
-            } else {
-                alert('Ingresa un nombre válido.');
-            }
-        });
 
         // ============================================================
-        // 15. SELECTORES
+        // 11. SELECTORES
         // ============================================================
         function populateSelectors() {
             const catSelect = document.getElementById('athleteCategoria');
@@ -2422,112 +1988,7 @@
         }
 
         // ============================================================
-        // 16. HOME FORM
-        // ============================================================
-        function loadHomeForm() {
-            const hc = data.homeContent;
-            if (!hc) return;
-            document.getElementById('editHomeTitle').value = hc.title || '';
-            document.getElementById('editHomeSubtitle').value = hc.subtitle || '';
-            document.getElementById('editStatYears').value = hc.statYears || '';
-            document.getElementById('editStatCoaches').value = hc.statCoaches || '';
-            document.getElementById('editStatFacilities').value = hc.statFacilities || '';
-            document.getElementById('editCard1Title').value = hc.card1Title || '';
-            document.getElementById('editCard1Desc').value = hc.card1Desc || '';
-            document.getElementById('editCard2Title').value = hc.card2Title || '';
-            document.getElementById('editCard2Desc').value = hc.card2Desc || '';
-            document.getElementById('editCard3Title').value = hc.card3Title || '';
-            document.getElementById('editCard3Desc').value = hc.card3Desc || '';
-            document.getElementById('editCard4Title').value = hc.card4Title || '';
-            document.getElementById('editCard4Desc').value = hc.card4Desc || '';
-            document.getElementById('editHomeBtn').value = hc.btnText || '';
-        }
-
-        document.getElementById('editHomeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            data.homeContent = {
-                title: document.getElementById('editHomeTitle').value.trim(),
-                subtitle: document.getElementById('editHomeSubtitle').value.trim(),
-                statYears: document.getElementById('editStatYears').value.trim(),
-                statCoaches: document.getElementById('editStatCoaches').value.trim(),
-                statFacilities: document.getElementById('editStatFacilities').value.trim(),
-                card1Title: document.getElementById('editCard1Title').value.trim(),
-                card1Desc: document.getElementById('editCard1Desc').value.trim(),
-                card2Title: document.getElementById('editCard2Title').value.trim(),
-                card2Desc: document.getElementById('editCard2Desc').value.trim(),
-                card3Title: document.getElementById('editCard3Title').value.trim(),
-                card3Desc: document.getElementById('editCard3Desc').value.trim(),
-                card4Title: document.getElementById('editCard4Title').value.trim(),
-                card4Desc: document.getElementById('editCard4Desc').value.trim(),
-                btnText: document.getElementById('editHomeBtn').value.trim()
-            };
-            saveData();
-            applyHomeContent();
-            alert('✅ Contenido de inicio actualizado.');
-        });
-
-        // ============================================================
-        // 17. INFO FORM
-        // ============================================================
-        function loadInfoForm() {
-            document.getElementById('infoTitle').value = '';
-            document.getElementById('infoDesc').value = '';
-            document.getElementById('infoLink').value = '';
-            document.getElementById('infoLinkText').value = '';
-            document.getElementById('infoImage').value = '';
-        }
-
-        document.getElementById('infoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden agregar información.');
-                return;
-            }
-
-            const title = document.getElementById('infoTitle').value.trim();
-            const desc = document.getElementById('infoDesc').value.trim();
-            const link = document.getElementById('infoLink').value.trim();
-            const linkText = document.getElementById('infoLinkText').value.trim();
-            const imageInput = document.getElementById('infoImage');
-
-            if (!title || !desc) {
-                alert('Título y descripción son obligatorios.');
-                return;
-            }
-
-            const newItem = {
-                id: nextInfoId++,
-                title: title,
-                desc: desc,
-                link: link || '',
-                linkText: linkText || '',
-                image: ''
-            };
-
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    newItem.image = e.target.result;
-                    data.infoItems.push(newItem);
-                    saveData();
-                    renderInfo();
-                    renderInfoList();
-                    document.getElementById('infoForm').reset();
-                    alert('✅ Información agregada correctamente.');
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                data.infoItems.push(newItem);
-                saveData();
-                renderInfo();
-                renderInfoList();
-                document.getElementById('infoForm').reset();
-                alert('✅ Información agregada correctamente.');
-            }
-        });
-
-        // ============================================================
-        // 18. REGISTRAR ATLETA
+        // 12. REGISTRAR ATLETA
         // ============================================================
         document.getElementById('athleteForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -2578,7 +2039,7 @@
         }
 
         // ============================================================
-        // 19. RENDER ATLETAS
+        // 13. RENDER ATLETAS
         // ============================================================
         function getZonaClass(zona) {
             const map = {
@@ -2626,7 +2087,7 @@
         }
 
         // ============================================================
-        // 20. ADMIN ATHLETES
+        // 14. ADMIN ATHLETES
         // ============================================================
         function renderAdminAthletes() {
             const container = document.getElementById('adminAthleteList');
@@ -2652,13 +2113,9 @@
         }
 
         // ============================================================
-        // 21. EDITAR ATLETA
+        // 15. EDITAR ATLETA
         // ============================================================
         window.editAthlete = function(id) {
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden editar atletas.');
-                return;
-            }
             const athlete = data.atletas.find(a => a.id === id);
             if (!athlete) return;
 
@@ -2728,13 +2185,9 @@
         });
 
         // ============================================================
-        // 22. ELIMINAR ATLETA
+        // 16. ELIMINAR ATLETA
         // ============================================================
         window.deleteAthlete = function(id) {
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden eliminar atletas.');
-                return;
-            }
             if (confirm('¿Eliminar este atleta permanentemente?')) {
                 data.atletas = data.atletas.filter(a => a.id !== id);
                 saveData();
@@ -2745,7 +2198,7 @@
         };
 
         // ============================================================
-        // 23. ATHLETE DETAIL MODAL
+        // 17. ATHLETE DETAIL MODAL
         // ============================================================
         function showAthleteDetail(athlete) {
             const modal = document.getElementById('athleteModal');
@@ -2771,7 +2224,7 @@
         });
 
         // ============================================================
-        // 24. FILTROS
+        // 18. FILTROS
         // ============================================================
         document.getElementById('filterZona')?.addEventListener('change', renderAthletes);
         document.getElementById('filterDisciplina')?.addEventListener('change', renderAthletes);
@@ -2784,110 +2237,7 @@
         });
 
         // ============================================================
-        // 25. REPORTES
-        // ============================================================
-        function getAthletesByZona(zona) {
-            if (!zona) return data.atletas || [];
-            return (data.atletas || []).filter(a => a.zona === zona);
-        }
-
-        function generateReportData(zona) {
-            const athletes = getAthletesByZona(zona);
-            return athletes.map(a => ({
-                'Nombre': a.nombre || '',
-                'Apellido': a.apellido || '',
-                'Edad': a.edad || '',
-                'Cédula': a.cedula || '',
-                'Categoría': a.categoria || '',
-                'Disciplina': a.disciplina || '',
-                'Zona': a.zona || ''
-            }));
-        }
-
-        document.getElementById('downloadExcel')?.addEventListener('click', function() {
-            const zona = document.getElementById('reportZona')?.value || '';
-            const zonaLabel = zona || 'Todas';
-            const dataExcel = generateReportData(zona);
-
-            if (dataExcel.length === 0) {
-                document.getElementById('reportFeedback').textContent = `⚠️ No hay atletas en ${zonaLabel}.`;
-                return;
-            }
-
-            try {
-                const wb = XLSX.utils.book_new();
-                const ws = XLSX.utils.json_to_sheet(dataExcel);
-                XLSX.utils.book_append_sheet(wb, ws, 'Atletas');
-                XLSX.writeFile(wb, `Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.xlsx`);
-                document.getElementById('reportFeedback').textContent = `✅ Excel de ${zonaLabel} descargado.`;
-            } catch (e) {
-                document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
-            }
-        });
-
-        document.getElementById('downloadPDF')?.addEventListener('click', function() {
-            const zona = document.getElementById('reportZona')?.value || '';
-            const zonaLabel = zona || 'Todas';
-            const athletes = getAthletesByZona(zona);
-
-            if (athletes.length === 0) {
-                document.getElementById('reportFeedback').textContent = `⚠️ No hay atletas en ${zonaLabel}.`;
-                return;
-            }
-
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('landscape', 'mm', 'a4');
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
-
-                doc.setFontSize(18);
-                doc.setTextColor(74, 222, 128);
-                doc.text(`Reporte de Atletas - ${zonaLabel}`, pageWidth / 2, 20, { align: 'center' });
-                doc.setTextColor(200, 200, 200);
-                doc.setFontSize(10);
-                doc.text(`Generado: ${new Date().toLocaleString()}`, pageWidth / 2, 28, { align: 'center' });
-
-                const headers = ['Nombre', 'Apellido', 'Edad', 'Cédula', 'Categoría', 'Disciplina', 'Zona'];
-                const colWidths = [30, 30, 15, 30, 25, 30, 25];
-                let y = 38;
-                doc.setFontSize(10);
-                doc.setTextColor(74, 222, 128);
-
-                let x = 10;
-                headers.forEach((h, i) => {
-                    doc.text(h, x, y);
-                    x += colWidths[i];
-                });
-
-                doc.setTextColor(200, 200, 200);
-                y += 6;
-
-                athletes.forEach((a) => {
-                    if (y > pageHeight - 20) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    const row = [a.nombre || '', a.apellido || '', a.edad || '', a.cedula || '', a.categoria || '',
-                        a.disciplina || '', a.zona || ''
-                    ];
-                    let xPos = 10;
-                    row.forEach((cell, i) => {
-                        doc.text(String(cell), xPos, y);
-                        xPos += colWidths[i];
-                    });
-                    y += 6;
-                });
-
-                doc.save(`Atletas_${zonaLabel}_${new Date().toISOString().slice(0,10)}.pdf`);
-                document.getElementById('reportFeedback').textContent = `✅ PDF de ${zonaLabel} descargado.`;
-            } catch (e) {
-                document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
-            }
-        });
-
-        // ============================================================
-        // 26. NOTICIAS
+        // 19. NOTICIAS
         // ============================================================
         function renderNoticias() {
             const container = document.getElementById('newsList');
@@ -2903,9 +2253,13 @@
                         <div class="news-content">
                             <h4>${n.title}</h4>
                             <p>${n.content}</p>
-                            <span class="news-date">${n.date || ''}</span>
+                            ${n.link ? `<a href="${n.link}" target="_blank" style="color:#4ade80; font-size:0.85rem; display:inline-block; margin-top:4px;">Ver enlace <i class="fas fa-external-link-alt"></i></a>` : ''}
+                            ${n.image ? `<div style="margin-top:8px;"><img src="${n.image}" style="max-height:80px; border-radius:8px; object-fit:cover;" /></div>` : ''}
                         </div>
                         <div class="news-actions">
+                            <button class="edit-news" onclick="editNews(${n.id})" title="Editar noticia" style="background:rgba(74,222,128,0.2); color:#4ade80;">
+                                <i class="fas fa-edit"></i>
+                            </button>
                             <button class="delete-news" onclick="deleteNews(${n.id})" title="Eliminar noticia">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -2915,28 +2269,73 @@
         }
 
         window.deleteNews = function(id) {
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden eliminar noticias.');
-                return;
-            }
             if (confirm('¿Eliminar esta noticia?')) {
                 data.noticias = data.noticias.filter(n => n.id !== id);
                 saveData();
                 renderNoticias();
-                renderInfo();
+                renderHomeNews();
                 alert('✅ Noticia eliminada.');
             }
         };
 
+        window.editNews = function(id) {
+            const news = data.noticias.find(n => n.id === id);
+            if (!news) return;
+
+            document.getElementById('editNewsId').value = id;
+            document.getElementById('editNewsTitle').value = news.title || '';
+            document.getElementById('editNewsContent').value = news.content || '';
+            document.getElementById('editNewsLink').value = news.link || '';
+            document.getElementById('editNewsImage').value = '';
+
+            document.getElementById('editNewsModal').classList.add('show');
+        };
+
+        document.getElementById('editNewsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('editNewsId').value);
+            const news = data.noticias.find(n => n.id === id);
+            if (!news) return;
+
+            news.title = document.getElementById('editNewsTitle').value.trim();
+            news.content = document.getElementById('editNewsContent').value.trim();
+            news.link = document.getElementById('editNewsLink').value.trim();
+
+            const imageInput = document.getElementById('editNewsImage');
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    news.image = e.target.result;
+                    saveData();
+                    renderNoticias();
+                    renderHomeNews();
+                    document.getElementById('editNewsModal').classList.remove('show');
+                    alert('✅ Noticia actualizada.');
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                saveData();
+                renderNoticias();
+                renderHomeNews();
+                document.getElementById('editNewsModal').classList.remove('show');
+                alert('✅ Noticia actualizada.');
+            }
+        });
+
+        document.getElementById('closeEditNewsModal').addEventListener('click', function() {
+            document.getElementById('editNewsModal').classList.remove('show');
+        });
+        document.getElementById('editNewsModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('show');
+        });
+
         document.getElementById('newsForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if (currentRole === 'coordinator') {
-                alert('⚠️ Los coordinadores no pueden agregar noticias.');
-                return;
-            }
 
             const title = document.getElementById('newsTitle').value.trim();
             const content = document.getElementById('newsContent').value.trim();
+            const link = document.getElementById('newsLink').value.trim();
+            const imageInput = document.getElementById('newsImage');
 
             if (!title || !content) {
                 alert('Completa todos los campos.');
@@ -2947,91 +2346,166 @@
                 id: nextNewsId++,
                 title: title,
                 content: content,
-                date: new Date().toLocaleDateString()
+                link: link || '',
+                image: ''
             };
 
-            data.noticias.push(newNews);
-            saveData();
-            renderNoticias();
-            renderInfo();
-            document.getElementById('newsForm').reset();
-            alert('✅ Noticia agregada correctamente.');
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newNews.image = e.target.result;
+                    data.noticias.push(newNews);
+                    saveData();
+                    renderNoticias();
+                    renderHomeNews();
+                    document.getElementById('newsForm').reset();
+                    alert('✅ Noticia agregada correctamente.');
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                data.noticias.push(newNews);
+                saveData();
+                renderNoticias();
+                renderHomeNews();
+                document.getElementById('newsForm').reset();
+                alert('✅ Noticia agregada correctamente.');
+            }
         });
 
         // ============================================================
-        // 27. MÚSICA
+        // 20. REPORTE PDF - TODOS LOS ATLETAS
         // ============================================================
-        let audio = null;
-        let isMusicPlaying = false;
+        document.getElementById('downloadPDFAll')?.addEventListener('click', function() {
+            const athletes = data.atletas || [];
 
-        function initMusic() {
-            try {
-                const musicUrl = 'https://github.com/tu-usuario/tu-repo/raw/main/himno-avcs.mp3';
-                audio = new Audio(musicUrl);
-                audio.loop = true;
-                audio.volume = 0.5;
-
-                const toggleBtn = document.getElementById('musicToggle');
-                if (!toggleBtn) return;
-
-                toggleBtn.addEventListener('click', function() {
-                    if (!audio) return;
-                    if (isMusicPlaying) {
-                        audio.pause();
-                        this.innerHTML = '<i class="fas fa-play"></i>';
-                        isMusicPlaying = false;
-                    } else {
-                        audio.play().catch(e => console.warn('Error al reproducir música:', e));
-                        this.innerHTML = '<i class="fas fa-pause"></i>';
-                        isMusicPlaying = true;
-                    }
-                });
-
-                audio.play().then(() => {
-                    isMusicPlaying = true;
-                    toggleBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                }).catch(() => {
-                    console.log('Autoplay bloqueado, esperando interacción del usuario');
-                });
-
-                document.addEventListener('click', function playOnInteraction() {
-                    if (audio && !isMusicPlaying) {
-                        audio.play().then(() => {
-                            isMusicPlaying = true;
-                            const btn = document.getElementById('musicToggle');
-                            if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
-                        }).catch(() => {});
-                    }
-                    document.removeEventListener('click', playOnInteraction);
-                }, { once: true });
-
-            } catch (e) {
-                console.warn('Error al inicializar música:', e);
+            if (athletes.length === 0) {
+                document.getElementById('reportFeedback').textContent = '⚠️ No hay atletas registrados.';
+                return;
             }
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('landscape', 'mm', 'a4');
+
+                // Fondo blanco
+                doc.setFillColor(255, 255, 255);
+                doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+
+                // Título - Negro
+                doc.setFontSize(18);
+                doc.setTextColor(0, 0, 0);
+                doc.text('Reporte de Atletas - Olimpiadas AVCS 2026', pageWidth / 2, 20, { align: 'center' });
+
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Generado: ${new Date().toLocaleString()}`, pageWidth / 2, 28, { align: 'center' });
+
+                const headers = ['Nombre', 'Apellido', 'Edad', 'Cédula', 'Categoría', 'Disciplina', 'Zona'];
+                const colWidths = [30, 30, 15, 30, 25, 30, 25];
+                let y = 38;
+
+                // Cabeceras - Negro
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                doc.setFont('helvetica', 'bold');
+
+                let x = 10;
+                headers.forEach((h, i) => {
+                    doc.text(h, x, y);
+                    x += colWidths[i];
+                });
+
+                // Línea separadora
+                doc.setDrawColor(0, 0, 0);
+                doc.line(10, y + 2, pageWidth - 10, y + 2);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+                y += 8;
+
+                athletes.forEach((a, index) => {
+                    if (y > pageHeight - 20) {
+                        doc.addPage();
+                        // Fondo blanco en página nueva
+                        doc.setFillColor(255, 255, 255);
+                        doc.rect(0, 0, pageWidth, pageHeight, 'F');
+                        y = 20;
+
+                        // Repetir cabeceras en cada página
+                        doc.setFontSize(10);
+                        doc.setTextColor(0, 0, 0);
+                        doc.setFont('helvetica', 'bold');
+                        let xHead = 10;
+                        headers.forEach((h, i) => {
+                            doc.text(h, xHead, y);
+                            xHead += colWidths[i];
+                        });
+                        doc.setDrawColor(0, 0, 0);
+                        doc.line(10, y + 2, pageWidth - 10, y + 2);
+                        doc.setFont('helvetica', 'normal');
+                        y += 8;
+                    }
+
+                    const row = [a.nombre || '', a.apellido || '', String(a.edad || ''), a.cedula || '', a.categoria || '',
+                        a.disciplina || '', a.zona || ''
+                    ];
+                    let xPos = 10;
+                    row.forEach((cell, i) => {
+                        doc.text(String(cell), xPos, y);
+                        xPos += colWidths[i];
+                    });
+                    y += 6;
+                });
+
+                // Contador de atletas - Negro
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                doc.text(`Total de atletas: ${athletes.length}`, pageWidth - 30, pageHeight - 10);
+
+                doc.save(`Atletas_AVCS_${new Date().toISOString().slice(0,10)}.pdf`);
+                document.getElementById('reportFeedback').textContent = `✅ PDF con ${athletes.length} atletas descargado.`;
+            } catch (e) {
+                document.getElementById('reportFeedback').textContent = '❌ Error: ' + e.message;
+            }
+        });
+
+        // ============================================================
+        // 21. ADMIN DATA
+        // ============================================================
+        function loadAdminData() {
+            populateSelectors();
+            loadSliderForm();
+            renderAdminAthletes();
+            renderNoticias();
         }
 
         // ============================================================
-        // 28. INICIALIZAR - VERSIÓN SIMPLIFICADA Y ESTABLE
+        // 22. INICIALIZAR
         // ============================================================
         function initializeApp() {
             console.log('🚀 Iniciando aplicación...');
 
             loadDataFromLocalStorage();
 
-            applyHomeContent();
-            renderInfo();
+            renderHomeNews();
             renderAthletes();
             populateSelectors();
-            loadAdminData();
+            loadSliderForm();
+            renderAdminAthletes();
+            renderNoticias();
             updateSliderImages();
 
             if (firebaseReady) {
                 loadDataFromFirebase(() => {
-                    applyHomeContent();
-                    renderInfo();
+                    renderHomeNews();
                     renderAthletes();
                     populateSelectors();
-                    loadAdminData();
+                    loadSliderForm();
+                    renderAdminAthletes();
+                    renderNoticias();
                     updateSliderImages();
                     setTimeout(() => {
                         listenFirebaseChanges();
@@ -3049,7 +2523,6 @@
                 loadAdminData();
             });
 
-            initMusic();
             console.log('✅ Aplicación inicializada correctamente');
         }
 
