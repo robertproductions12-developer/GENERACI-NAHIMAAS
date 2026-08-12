@@ -1774,44 +1774,119 @@
 
         async function saveDataToFirebase() {
             if (!firebaseReady || !database) {
-                throw new Error('Firebase no está conectado. Verifica la configuración y las reglas de Realtime Database.');
+                throw new Error('Firebase no está conectado. Verifica la configuración y la conexión a Internet.');
             }
 
-            const ref = database.ref(FIREBASE_DATA_PATH);
+            const root = database.ref(FIREBASE_DATA_PATH);
             const base = cloneData(lastSyncedData || data);
             const local = cloneData(data);
             firebaseWriteInProgress = true;
 
-            try {
-                const result = await ref.transaction(current => {
-                    const remote = normalizeFirebaseData(current);
-                    return {
-                        disciplinas: mergeStringList(remote.disciplinas, base.disciplinas, local.disciplinas),
-                        categorias: mergeStringList(remote.categorias, base.categorias, local.categorias),
-                        atletas: mergeCollection(remote.atletas, base.atletas, local.atletas),
-                        noticias: mergeCollection(remote.noticias, base.noticias, local.noticias),
-                        sliderImages: mergeSliderImages(remote.sliderImages, base.sliderImages, local.sliderImages)
-                    };
-                });
+            const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-                if (!result.committed) {
-                    throw new Error('Firebase no confirmó la escritura. Intenta nuevamente.');
+            async function transactionWithRetry(ref, updater, label, attempts = 3) {
+                let lastError = null;
+
+                for (let attempt = 1; attempt <= attempts; attempt++) {
+                    try {
+                        const result = await ref.transaction(updater);
+                        if (!result.committed) {
+                            throw new Error('Firebase no confirmó la escritura de ' + label + '.');
+                        }
+                        return result;
+                    } catch (error) {
+                        lastError = error;
+                        console.error(`❌ Firebase ${label} intento ${attempt}/${attempts}:`, error);
+
+                        const code = String(error?.code || '').toLowerCase();
+                        const retryable =
+                            code.includes('disconnect') ||
+                            code.includes('network') ||
+                            code.includes('unavailable') ||
+                            !navigator.onLine;
+
+                        if (!retryable || attempt === attempts) break;
+                        await wait(1000 * attempt);
+                    }
                 }
 
-                const saved = normalizeFirebaseData(result.snapshot.val());
+                throw lastError || new Error('No se pudo completar la escritura en Firebase.');
+            }
+
+            try {
+                // ATLETAS: transacción independiente. Así dos dispositivos
+                // pueden registrar/editar/eliminar atletas sin sobrescribirse.
+                await transactionWithRetry(
+                    root.child('atletas'),
+                    current => mergeCollection(
+                        normalizeArray(current),
+                        base.atletas,
+                        local.atletas
+                    ),
+                    'atletas'
+                );
+
+                // NOTICIAS: misma protección contra escrituras simultáneas.
+                await transactionWithRetry(
+                    root.child('noticias'),
+                    current => mergeCollection(
+                        normalizeArray(current),
+                        base.noticias,
+                        local.noticias
+                    ),
+                    'noticias'
+                );
+
+                // DISCIPLINAS Y CATEGORÍAS: también se fusionan mediante
+                // transacción para evitar que un equipo borre cambios de otro.
+                await transactionWithRetry(
+                    root.child('disciplinas'),
+                    current => mergeStringList(
+                        normalizeArray(current),
+                        base.disciplinas,
+                        local.disciplinas
+                    ),
+                    'disciplinas'
+                );
+
+                await transactionWithRetry(
+                    root.child('categorias'),
+                    current => mergeStringList(
+                        normalizeArray(current),
+                        base.categorias,
+                        local.categorias
+                    ),
+                    'categorias'
+                );
+
+                // El slider se guarda solamente cuando realmente cambió.
+                // Se mantiene separado para no enviar todo el registro de
+                // atletas/noticias cada vez que cambia una imagen.
+                if (!sameObject(base.sliderImages, local.sliderImages)) {
+                    await root.child('sliderImages').set(local.sliderImages || []);
+                }
+
+                // Leer el estado FINAL confirmado por Firebase.
+                const snapshot = await root.once('value');
+                const saved = normalizeFirebaseData(snapshot.val());
+
                 data.disciplinas = saved.disciplinas;
                 data.categorias = saved.categorias;
                 data.atletas = saved.atletas;
                 data.noticias = saved.noticias;
-                data.sliderImages = saved.sliderImages;
+                data.sliderImages = saved.sliderImages.length ? saved.sliderImages : data.sliderImages;
+
                 updateNextIds();
                 lastSyncedData = cloneData(data);
                 saveDataToLocalStorage();
 
-                console.log('💾 Firebase confirmó la escritura:', new Date().toLocaleString());
+                console.log('✅ FIREBASE CONFIRMÓ TODOS LOS CAMBIOS');
                 return true;
+
             } catch (err) {
-                console.error('❌ Error real de Firebase al guardar:', err);
+                console.error('❌ ERROR REAL DE FIREBASE:', err);
+                console.error('Código Firebase:', err?.code);
+                console.error('Mensaje Firebase:', err?.message);
                 throw err;
             } finally {
                 firebaseWriteInProgress = false;
@@ -1841,10 +1916,21 @@
                     lastSyncedData = cloneData(data);
                     saveDataToLocalStorage();
                 } else {
-                    // Primera instalación: Firebase está vacío, por lo que se
-                    // inicializa una sola vez con los datos locales actuales.
-                    lastSyncedData = cloneData(data);
-                    await saveDataToFirebase();
+                    // Primera instalación: Firebase está vacío. Es importante
+                    // escribir el estado inicial directamente porque no existe
+                    // todavía un estado base contra el cual hacer el merge.
+                    const initialData = {
+                        disciplinas: data.disciplinas || [],
+                        categorias: data.categorias || [],
+                        atletas: data.atletas || [],
+                        noticias: data.noticias || [],
+                        sliderImages: data.sliderImages || []
+                    };
+
+                    await root.set(initialData);
+                    lastSyncedData = cloneData(initialData);
+                    saveDataToLocalStorage();
+                    console.log('🟢 Firebase inicializado con los datos actuales.');
                 }
 
                 if (callback) callback();
@@ -1971,15 +2057,36 @@
         }
 
         async function saveData() {
+            const previous = cloneData(lastSyncedData || data);
             saveDataToLocalStorage();
+
             if (!firebaseReady || !database) {
-                console.warn('⚠️ Cambio guardado solo localmente porque Firebase no está disponible.');
+                alert('❌ Firebase no está disponible. El cambio NO se considerará sincronizado.');
+                data = previous;
+                saveDataToLocalStorage();
+                refreshAllViews();
                 return false;
             }
+
             try {
-                return await saveDataToFirebase();
+                await saveDataToFirebase();
+                return true;
             } catch (err) {
-                alert('❌ No se pudo guardar en Firebase. El cambio NO se considerará sincronizado.\n\n' + err.message);
+                const code = String(err?.code || '').toLowerCase();
+                let detail = err?.message || 'Error desconocido.';
+
+                if (code.includes('permission_denied') || code.includes('permission')) {
+                    detail = 'Firebase rechazó la escritura. Revisa las Rules de Realtime Database.';
+                } else if (code.includes('disconnect') || code.includes('network') || !navigator.onLine) {
+                    detail = 'El dispositivo perdió la conexión con Firebase. Comprueba Internet e inténtalo nuevamente.';
+                }
+
+                // Nunca dejamos un cambio falso como si estuviera sincronizado.
+                data = previous;
+                saveDataToLocalStorage();
+                refreshAllViews();
+
+                alert('❌ No se pudo guardar en Firebase.\n\n' + detail + '\n\nEl cambio fue revertido para evitar inconsistencias.');
                 return false;
             }
         }
@@ -2301,9 +2408,9 @@
             }
         });
 
-        function saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto) {
+        async function saveAthlete(nombre, apellido, edad, cedula, categoria, disciplina, zona, foto) {
             const newAthlete = {
-                id: Date.now() + Math.floor(Math.random() * 1000),
+                id: Date.now() * 1000 + Math.floor(Math.random() * 1000),
                 nombre,
                 apellido,
                 edad,
@@ -2311,14 +2418,24 @@
                 categoria,
                 disciplina,
                 zona,
-                foto
+                foto: foto || '',
+                createdAt: Date.now()
             };
+
             data.atletas.push(newAthlete);
-            saveData();
-            document.getElementById('athleteForm').reset();
-            alert('✅ Atleta registrado correctamente.');
             renderAthletes();
             renderAdminAthletes();
+
+            const saved = await saveData();
+
+            if (!saved) {
+                return;
+            }
+
+            document.getElementById('athleteForm').reset();
+            renderAthletes();
+            renderAdminAthletes();
+            alert('✅ Atleta registrado y sincronizado correctamente con Firebase.');
         }
 
         // ============================================================
